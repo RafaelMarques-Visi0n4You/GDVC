@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import Funcionarios from '../models/funcionarios.js';
 import ServicosHasTarefas from '../models/servicosHasTarefas.js';
+import setupSocket from '../config/socket.js';
 
 
 const getAgendaServicos = async (req, res) => {
@@ -355,6 +356,11 @@ const createAgendaServico = async (req, res) => {
             }
         }
 
+
+        if (req.body.ativo === 0) {
+            // Chame io.emit para enviar o evento 'nova-visita-para-aprovar'
+            setupSocket.io.emit('nova-visita-para-aprovar', req.body.departamento);
+        }
 
 
         return res.json({ Status: "Success", agendaServico: agendaServico, visitas: novasVisitas });
