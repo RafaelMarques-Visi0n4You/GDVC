@@ -91,11 +91,9 @@ sequelize.authenticate()
   .catch((error) => console.error('Unable to connect to the database:', error));
 
 // Specify the URL where the server will be running
-const HOST = process.env.HOST || 127.0.0.1;
-const PORT = process.env.PORT || '4000';
-const URL = `http://${HOST}:${PORT}`;
+const PORT = process.env.PORT || '10000';
 
 // Start the server
-app.listen(PORT, HOST, () => {
-  console.log(`Server is running at ${URL}`);
+app.listen(PORT, hostname: () => {
+  console.log(`Server is running at ${PORT}`);
 });
