@@ -9,7 +9,7 @@ const expo = new Expo();
 const setupSocket = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: [process.env.HOST]
+            origin: ["https://gdvc.onrender.com"]
         }
     });
 
