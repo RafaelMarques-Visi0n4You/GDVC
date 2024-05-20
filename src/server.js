@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import cors from 'cors';
 import { sequelize } from './config/sequelize.js';
-import setupSocket from './config/socket.js';
+import { setupSocket } from './config/socket.js';
 
 import UserRouter from './routes/UserRouter.js';
 import LoginRouter from './routes/LoginRouter.js';
@@ -88,7 +88,6 @@ app.get('/me', verificarToken, async (req, res) => {
         model: Equipas,
         attributes: ['nome']
       },
-      include: { model: Empresas, attributes: ['nome', 'logo_empresa'] }
     }
   });
 
@@ -108,18 +107,21 @@ sequelize.authenticate()
   .then(() => console.log('Database connection has been established successfully.'))
   .catch((error) => console.error('Unable to connect to the database:', error));
 
-// Specify the URL where the server will be running
-//const HOST = process.env.HOST;
-//const PORT = process.env.PORT;
-//const URL = `http://${HOST}:${PORT}`;
 
-// Start the server
-//app.listen(PORT, HOST, () => {
-//  console.log(`Server is running at ${URL}`);
-//});
+// const HOST = process.env.HOST;
+// const PORT = process.env.PORT;
+// const URL = `http://${HOST}:${PORT}`;
+
 
 app.set('port', process.env.PORT || 10000);
 
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
   console.log("Start server on port " + app.get('port'));
 })
+
+
+// app.set('port', process.env.PORT || 10000);
+
+// app.listen(app.get('port'), () => {
+//   console.log("Start server on port " + app.get('port'));
+// })

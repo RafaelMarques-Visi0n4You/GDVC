@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import Funcionarios from '../models/funcionarios.js';
 import ServicosHasTarefas from '../models/servicosHasTarefas.js';
-import setupSocket from '../config/socket.js';
+import { setupSocket, io, sendPushNotification } from '../config/socket.js';
 
 
 const getAgendaServicos = async (req, res) => {
@@ -358,8 +358,11 @@ const createAgendaServico = async (req, res) => {
 
 
         if (req.body.ativo === 0) {
-            // Chame io.emit para enviar o evento 'nova-visita-para-aprovar'
-            setupSocket.io.emit('nova-visita-para-aprovar');
+            console.log('Emitindo evento nova-visita-para-aprovar');
+
+            const teste = io.emit('nova-visita-para-aprovar', req.body.departamento);
+            console.log("teste", teste);
+            sendPushNotification(req.body.departamento, 'Nova visita para aprovar')
         }
 
 

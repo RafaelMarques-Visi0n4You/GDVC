@@ -5,9 +5,9 @@ import planoSubscricao from '../models/planoSubscricao.js';
 const getEmpresas = async (req, res) => {
     try {
         const empresas = await Empresa.findAll({
-           where: {
+            where: {
                 empresa_id: req.body.empresa_id || req.body.id,
-              } 
+            }
         });
         return res.json({ Status: "Success", empresas: empresas });
     } catch (error) {
@@ -107,6 +107,14 @@ const setAcesso = async (req, res) => {
     }
 }
 
+const getTodasEmpresas = async (req, res) => {
+    try {
+        const empresas = await Empresa.findAll();
+        return res.json({ Status: "Success", empresas: empresas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
 
 export {
     getEmpresas,
@@ -114,7 +122,8 @@ export {
     createEmpresa,
     updateEmpresa,
     deleteEmpresa,
-    setAcesso
+    setAcesso,
+    getTodasEmpresas
 }
 
 

@@ -119,12 +119,41 @@ const deleteResponsavelDepartamento = async (req, res) => {
     }
 }
 
+const getResponsavel = async (req, res) => {
+    try {
+        const responsaveldepartamento = await ResponsavelDepartamento.findAll({
+            include: [
+                {
+                    model: Funcionario,
+                    attributes: ['nome_completo'],
+                },
+                {
+                    model: Departamento,
+                    attributes: ['empresa_id'],
+
+
+                }
+            ],
+            where: {
+                departamento_id: req.body.departamento_id || req.body.id
+            }
+        });
+        if (!responsaveldepartamento) {
+            return res.json({ Error: "ResponsavelDepartamento não encontrado" });
+        }
+        return res.json({ Status: "Success", responsaveldepartamento: responsaveldepartamento });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
 export {
     getResponsavelDepartamentos,
     getResponsavelDepartamentoById,
     createResponsavelDepartamento,
     updateResponsavelDepartamento,
     deleteResponsavelDepartamento,
-    getresponvalpordepartamento
+    getresponvalpordepartamento,
+    getResponsavel
 }
 
