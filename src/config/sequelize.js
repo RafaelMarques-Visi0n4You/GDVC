@@ -1,8 +1,8 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config()
 
-const sequelize = new Sequelize(process.env.DB_NAME , process.env.DB_USER, process.env.DB_PASS, {
-    host: process.env.DB_HOST,
+const sequelize = new Sequelize('gdvc', 'gdvcweb', 'J_zJQ6K?UpFx', {
+    host: '207.180.232.121',
     dialect: 'postgres',
     logging: false, // Remove this line if you don't want to see the raw SQL queries
     });
