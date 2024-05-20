@@ -359,7 +359,7 @@ const createAgendaServico = async (req, res) => {
 
         if (req.body.ativo === 0) {
             // Chame io.emit para enviar o evento 'nova-visita-para-aprovar'
-            setupSocket.io.emit('nova-visita-para-aprovar', req.body.departamento);
+            setupSocket.io.emit('nova-visita-para-aprovar');
         }
 
 
