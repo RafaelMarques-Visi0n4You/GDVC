@@ -82,7 +82,7 @@ app.get('/me', Verificar.verificarToken, async (req, res) => {
 });
 
 
-app.get('/help/check', (req, res) => {
+app.get('/check', (req, res) => {
   res.status(200).send({message: "Wecolme to GDVC API"});
 });
 
