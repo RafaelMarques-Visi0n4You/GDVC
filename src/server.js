@@ -88,6 +88,7 @@ app.get('/me', verificarToken, async (req, res) => {
         model: Equipas,
         attributes: ['nome']
       },
+      include: { model: Empresas, attributes: ['nome', 'logo_empresa'] }
     }
   });
 
@@ -97,6 +98,7 @@ app.get('/me', verificarToken, async (req, res) => {
 
   return res.json({ Status: "Success", user });
 });
+
 
 
 app.get('/check', (req, res) => {
