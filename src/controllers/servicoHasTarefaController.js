@@ -1,4 +1,5 @@
-const ServicoHasTarefa = require("../models/servicosHasTarefas");
+
+import ServicoHasTarefa from "../models/servicosHasTarefas.js";
 
 const getServicoHasTarefas = async (req, res) => {
     try {
@@ -56,10 +57,10 @@ const deleteServicoHasTarefa = async (req, res) => {
     }
 }
 
-module.exports = { 
-    getServicoHasTarefas, 
-    getServicoHasTarefaById, 
-    createServicoHasTarefa, 
-    updateServicoHasTarefa, 
-    deleteServicoHasTarefa 
+export {
+    getServicoHasTarefas,
+    getServicoHasTarefaById,
+    createServicoHasTarefa,
+    updateServicoHasTarefa,
+    deleteServicoHasTarefa
 }

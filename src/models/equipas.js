@@ -1,7 +1,7 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Empresas = require('./empresas');
-const Departamento = require('./departamentos');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Empresas from './empresas.js';
+import Departamento from './departamentos.js';
 
 const Equipas = sequelize.define('equipas', {
     equipa_id: {
@@ -24,11 +24,12 @@ const Equipas = sequelize.define('equipas', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-        
+
     },
     ativo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 1
     },
     criado_por_id: {
         type: DataTypes.INTEGER,
@@ -54,7 +55,7 @@ Equipas.belongsTo(Empresas, { foreignKey: 'empresa_id' });
 Equipas.belongsTo(Departamento, { foreignKey: 'departamento_id' });
 
 
-Equipas.sync( { force: false })
+Equipas.sync({ force: false })
     .then(() => {
         //console.log('Equipas table created');
     })
@@ -62,4 +63,4 @@ Equipas.sync( { force: false })
         console.error('Error creating Equipas table:', error);
     });
 
-module.exports = Equipas;
+export default Equipas;

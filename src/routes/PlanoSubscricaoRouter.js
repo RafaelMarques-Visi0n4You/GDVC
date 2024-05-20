@@ -1,15 +1,15 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const planoSubscricaoController = require('../controllers/planoSubscricaoController');
-const Verificar = require("../controllers/authMiddleware");
+import { getPlanoSubscricao, getPlanoSubscricaoById, createPlanoSubscricao, updatePlanoSubscricao, deletePlanoSubscricao } from '../controllers/PlanoSubscricaoController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get',  planoSubscricaoController.getPlanoSubscricao);
-router.get('/get/:id',  planoSubscricaoController.getPlanoSubscricaoById);
-router.post('/create',  planoSubscricaoController.createPlanoSubscricao);
-router.put('/update/:id', planoSubscricaoController.updatePlanoSubscricao);
-router.delete('/delete/:id',  planoSubscricaoController.deletePlanoSubscricao);
-
-
+router.get('/get', verificarToken, getPlanoSubscricao);
+router.get('/get/:id', verificarToken, getPlanoSubscricaoById);
+router.post('/create', verificarToken, createPlanoSubscricao);
+router.put('/update/:id', verificarToken, updatePlanoSubscricao);
+router.delete('/delete/:id', verificarToken, deletePlanoSubscricao);
 
 
-module.exports = router;
+
+
+export default router;

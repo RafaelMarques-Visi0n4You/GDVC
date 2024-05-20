@@ -1,7 +1,7 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Equipas = require('./equipas');
-const Servicos = require('./servicos');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Equipas from './equipas.js';
+import Servicos from './servicos.js';
 
 const EquipasHasServicos = sequelize.define('equipas_has_servicos', {
     equipa_id: {
@@ -30,16 +30,16 @@ const EquipasHasServicos = sequelize.define('equipas_has_servicos', {
     tableName: 'equipas_has_servicos'
 });
 
-EquipasHasServicos.belongsTo(Equipas, {foreignKey: 'equipa_id'});
-EquipasHasServicos.belongsTo(Servicos, {foreignKey: 'servico_id'});
+EquipasHasServicos.belongsTo(Equipas, { foreignKey: 'equipa_id' });
+EquipasHasServicos.belongsTo(Servicos, { foreignKey: 'servico_id' });
 
 
 EquipasHasServicos.sync({ force: false })
-.then(() => {
-    // console.log('EquipasHasServicos table created');
-})
-.catch((error) => {
-    console.error('Error creating EquipasHasServicos table:', error);
-});
+    .then(() => {
+        // console.log('EquipasHasServicos table created');
+    })
+    .catch((error) => {
+        console.error('Error creating EquipasHasServicos table:', error);
+    });
 
-module.exports = EquipasHasServicos;
+export default EquipasHasServicos;

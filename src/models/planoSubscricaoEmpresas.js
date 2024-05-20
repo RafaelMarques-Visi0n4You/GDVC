@@ -1,6 +1,7 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const planoSubscricao = require('./planoSubscricao');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import planoSubscricao from './planoSubscricao.js';
+import Empresas from './empresas.js';
 
 
 const planoSubscricaoEmpresas = sequelize.define('plano_subscricao_empresas', {
@@ -9,14 +10,16 @@ const planoSubscricaoEmpresas = sequelize.define('plano_subscricao_empresas', {
         primaryKey: true,
         autoIncrement: true
     },
+
     data_subscricao: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     },
     ativo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 1
     },
     plano_subscricao_id: {
         type: DataTypes.INTEGER,
@@ -24,14 +27,28 @@ const planoSubscricaoEmpresas = sequelize.define('plano_subscricao_empresas', {
             model: 'plano_subscricao',
             key: 'plano_subscricao_id'
         }
-    }
+    },
+    empresa_id: {
+        type: DataTypes.INTEGER,
+        unique: true,
+        references: {
+            model: 'empresas',
+            key: 'empresa_id'
+        }
+    },
 
 }, {
     tableName: 'plano_subscricao_empresas',
     timestamps: false
 });
 
+
+planoSubscricaoEmpresas.belongsTo(Empresas, { foreignKey: 'empresa_id' });
+
 planoSubscricaoEmpresas.belongsTo(planoSubscricao, { foreignKey: 'plano_subscricao_id' });
+
+
+
 
 planoSubscricaoEmpresas.sync({ force: false })
     .then(() => {
@@ -43,4 +60,4 @@ planoSubscricaoEmpresas.sync({ force: false })
 
 
 
-module.exports = planoSubscricaoEmpresas;
+export default planoSubscricaoEmpresas;

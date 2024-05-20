@@ -1,4 +1,5 @@
-const TarefaServicoVisita = require("../models/tarefasServicosVisita");
+
+import TarefaServicoVisita from "../models/tarefasServicosVisita.js";
 
 const getTarefasServicosVisita = async (req, res) => {
     try {
@@ -72,7 +73,7 @@ const deleteTarefaServicoVisita = async (req, res) => {
     }
 }
 
-module.exports = {
+export {
     getTarefasServicosVisita,
     getTarefaServicoVisitaById,
     createTarefaServicoVisita,

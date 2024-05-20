@@ -1,4 +1,4 @@
-const ContratoHasServico = require('../models/contratosHasServicos');
+import ContratoHasServico from '../models/contratosHasServicos.js';
 
 const getContratoHasServicos = async (req, res) => {
     try {
@@ -71,10 +71,11 @@ const deleteContratoHasServico = async (req, res) => {
     }
 }
 
-module.exports = { 
-    getContratoHasServicos, 
-    getContratoHasServicoById, 
-    createContratoHasServico, 
-    updateContratoHasServico, 
-    deleteContratoHasServico 
+
+export {
+    getContratoHasServicos,
+    getContratoHasServicoById,
+    createContratoHasServico,
+    updateContratoHasServico,
+    deleteContratoHasServico
 }

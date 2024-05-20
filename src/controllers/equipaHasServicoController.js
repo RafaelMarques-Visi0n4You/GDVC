@@ -1,4 +1,4 @@
-const EquipaHasServico = require('../models/equipasHasServicos');
+import EquipaHasServico from '../models/equipasHasServicos.js';
 
 
 const getEquipaHasServicos = async (req, res) => {
@@ -13,23 +13,23 @@ const getEquipaHasServicos = async (req, res) => {
 
 
 
-   const getEquipaHasServicoById = async (req, res) => {
-       try {
-           const equipaHasServico = await EquipaHasServico.findOne({
-               where: {
-                   equipa_id: req.params.id1,
-                   servico_id: req.params.id2
-               }
-           });
-           if (!equipaHasServico) {
-               return res.json({ Error: "EquipaHasServico não encontrado" });
-           }
-           return res.json({ Status: "Success", equipaHasServico: equipaHasServico });
-       } catch (error) {
-           return res.json({ Error: error });
-       }
-   }
-   
+const getEquipaHasServicoById = async (req, res) => {
+    try {
+        const equipaHasServico = await EquipaHasServico.findOne({
+            where: {
+                equipa_id: req.params.id1,
+                servico_id: req.params.id2
+            }
+        });
+        if (!equipaHasServico) {
+            return res.json({ Error: "EquipaHasServico não encontrado" });
+        }
+        return res.json({ Status: "Success", equipaHasServico: equipaHasServico });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
 
 
 const createEquipaHasServico = async (req, res) => {
@@ -77,7 +77,7 @@ const deleteEquipaHasServico = async (req, res) => {
     }
 }
 
-module.exports = {
+export {
     getEquipaHasServicos,
     getEquipaHasServicoById,
     createEquipaHasServico,

@@ -1,8 +1,7 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Cliente = require('./clientes');
-const ContaUtilizador = require('./contaUtilizadores');
-const Servicos = require('./servicos');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Cliente from './clientes.js';
+import ContaUtilizador from './contaUtilizadores.js';
 
 
 const Contratos = sequelize.define('contratos', {
@@ -48,7 +47,8 @@ const Contratos = sequelize.define('contratos', {
     },
     ativo: {
         type: DataTypes.SMALLINT,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
     },
     tipo_contrato: {
         type: DataTypes.TEXT,
@@ -77,11 +77,11 @@ Contratos.belongsTo(ContaUtilizador, { foreignKey: 'criado_por_id' });
 
 
 Contratos.sync({ force: false })
-.then(() => {
-    // console.log('Contratos table created');
-})
-.catch((error) => {
-    console.error('Error creating Contratos table:', error);
-});
+    .then(() => {
+        // console.log('Contratos table created');
+    })
+    .catch((error) => {
+        console.error('Error creating Contratos table:', error);
+    });
 
-module.exports = Contratos;
+export default Contratos;

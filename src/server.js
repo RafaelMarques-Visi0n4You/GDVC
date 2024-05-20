@@ -1,89 +1,107 @@
-const express = require('express');
-require('dotenv').config();
-const bodyParser = require('body-parser'); // Import body-parser middleware
+import express from 'express';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import http from 'http';
+import cors from 'cors';
+import { sequelize } from './config/sequelize.js';
+import setupSocket from './config/socket.js';
+
+import UserRouter from './routes/UserRouter.js';
+import LoginRouter from './routes/LoginRouter.js';
+import TipoServicoRouter from './routes/TipoServicoRouter.js';
+import PlanoSubscricaoRouter from './routes/PlanoSubscricaoRouter.js';
+import PlanoSubscricaoEmpresaRouter from './routes/PlanoSubscricaoEmpresaRouter.js';
+import EmpresaRouter from './routes/EmpresaRouter.js';
+import DepartamentoRouter from './routes/DepartamentoRouter.js';
+import EquipaRouter from './routes/EquipaRouter.js';
+import FuncionarioRouter from './routes/FuncionarioRouter.js';
+import ClienteRouter from './routes/ClienteRouter.js';
+import ContaUtilizadorRouter from './routes/ContaUtilizadorRouter.js';
+import ServicoRouter from './routes/ServicoRouter.js';
+import EquipaHasServicoRouter from './routes/EquipaHasServicoRouter.js';
+import ContratoRouter from './routes/ContratoRouter.js';
+import ContratoHasServicoRouter from './routes/ContratoHasServicoRouter.js';
+import AgendaServicoRouter from './routes/AgendaServicoRouter.js';
+import VisitaRouter from './routes/VisitaRouter.js';
+import NotaVisitaRouter from './routes/NotaVisitaRouter.js';
+import ServicoHasTarefaRouter from './routes/ServicoHasTarefaRouter.js';
+import ResponsavelDepartamentoRouter from './routes/ResponsavelDepartamentoRouter.js';
+import ChefeEquipaRouter from './routes/ChefeEquipaRouter.js';
+import TarefaServicoVisitaRouter from './routes/TarefaServicoVisitaRouter.js';
+import AnomaliaVisitaRouter from './routes/AnomaliaVisitaRouter.js';
+import verificarToken from "./middleware/authMiddleware.js";
+import ContaUtilizador from './models/contaUtilizadores.js';
+import Empresas from './models/empresas.js';
+import Funcionarios from './models/funcionarios.js';
+import Equipas from './models/equipas.js';
+
+dotenv.config();
+
 const app = express();
-const { sequelize } = require('./config/sequelize');
-const UserRouter = require('./routes/UserRouter.js');
-const ContaUtilizador = require('./models/contaUtilizadores');
-const Funcionario = require('./models/funcionarios');
-const Verificar = require("./controllers/authMiddleware");
-const LoginRouter = require('./routes/LoginRouter.js');
-const TipoServico = require('./routes/TipoServicoRouter.js');
-const PlanoSubscricao = require('./routes/PlanoSubscricaoRouter.js');
-const PlanoSubscricaoEmpresaRouter = require('./routes/PlanoSubscricaoEmpresaRouter.js');
-const Empresa = require('./routes/EmpresaRouter.js');
-const Departamento = require('./routes/DepartamentoRouter.js');
-const Equipa = require('./routes/EquipaRouter.js');
-const Funcionarios = require('./routes/FuncionarioRouter.js');
-const Cliente = require('./routes/ClienteRouter.js');
-const ContaUtilizadores = require('./routes/ContaUtilizadorRouter.js');
-const servico = require('./routes/ServicoRouter.js');
-const EquipaHasServico = require('./routes/EquipaHasServicoRouter.js');
-const Contrato = require('./routes/ContratoRouter.js')
-const ContratoHasServico = require('./routes/ContratoHasServicoRouter.js');
-const AgendaServico = require('./routes/AgendaServicoRouter.js');
-const Visita = require('./routes/VisitaRouter.js');
-const NotaVisita = require('./routes/NotaVisitaRouter.js');
-const HistoricoVisita = require('./routes/HistoricoVisitaRouter.js');
-const ServicoHasTarefa = require('./routes/ServicoHasTarefaRouter.js');
-const ResponsavelDepartamentoRouter = require('./routes/ResponsavelDepartamentoRouter.js');
-const ChefeEquipaRouter = require('./routes/ChefeEquipaRouter.js');
-const TarefaServicoVisita = require('./routes/TarefaServicoVisitaRouter.js');
-const AnomaliasVisita = require('./routes/AnomaliaVisitaRouter.js');
+const server = http.createServer(app);
+
+setupSocket(server);
 
 
-var cors = require('cors');
+
+
+
 app.use(cors());
-
-// Middleware to parse JSON bodies
 app.use(bodyParser.json());
-
 
 app.use('/user', UserRouter);
 app.use('/login', LoginRouter);
-app.use('/tiposervico', TipoServico);
-app.use('/planosubscricao',PlanoSubscricao );
-app.use('/planosubscricaoempresa',PlanoSubscricaoEmpresaRouter );
-app.use('/empresa',Empresa );
-app.use('/departamento',Departamento );
-app.use('/equipa',Equipa );
-app.use('/funcionario',Funcionarios );
-app.use('/cliente',Cliente );
-app.use('/contautilizador',ContaUtilizadores );
-app.use('/servico',servico );
-app.use('/equipahasservico',EquipaHasServico );
-app.use('/contrato',Contrato );
-app.use('/contratohasservico',ContratoHasServico );
-app.use('/agendaservico',AgendaServico );
-app.use('/visita',Visita );
-app.use('/notavisita',NotaVisita );
-app.use('/historicovisita',HistoricoVisita );
-app.use('/servicohastarefa',ServicoHasTarefa );
-app.use('/responsaveldepartamento',ResponsavelDepartamentoRouter );
-app.use('/chefeequipa',ChefeEquipaRouter );
-app.use('/tarefaservicovisita',TarefaServicoVisita );
-app.use('/anomaliavisita',AnomaliasVisita );
+app.use('/tiposervico', TipoServicoRouter);
+app.use('/planosubscricao', PlanoSubscricaoRouter);
+app.use('/planosubscricaoempresa', PlanoSubscricaoEmpresaRouter);
+app.use('/empresa', EmpresaRouter);
+app.use('/departamento', DepartamentoRouter);
+app.use('/equipa', EquipaRouter);
+app.use('/funcionario', FuncionarioRouter);
+app.use('/cliente', ClienteRouter);
+app.use('/contautilizador', ContaUtilizadorRouter);
+app.use('/servico', ServicoRouter);
+app.use('/equipahasservico', EquipaHasServicoRouter);
+app.use('/contrato', ContratoRouter);
+app.use('/contratohasservico', ContratoHasServicoRouter);
+app.use('/agendaservico', AgendaServicoRouter);
+app.use('/visita', VisitaRouter);
+app.use('/notavisita', NotaVisitaRouter);
+app.use('/servicohastarefa', ServicoHasTarefaRouter);
+app.use('/responsaveldepartamento', ResponsavelDepartamentoRouter);
+app.use('/chefeequipa', ChefeEquipaRouter);
+app.use('/tarefaservicovisita', TarefaServicoVisitaRouter);
+app.use('/anomaliavisita', AnomaliaVisitaRouter);
 
-
-app.get('/me', Verificar.verificarToken, async (req, res) => {
-  console.log(req.userId)
+app.get('/me', verificarToken, async (req, res) => {
+  console.log(req.userId);
   const user = await ContaUtilizador.findByPk(req.userId, {
-    attributes: {
-      exclude: ['password']
-    },
-    include: { model: Funcionario, attributes: ['nome_completo', 'email', 'funcionario_id', 'empresa_id','equipa_id'] }
-  })
+    attributes: { exclude: ['password'] },
+    include: {
+      model: Funcionarios,
+      attributes: ['nome_completo', 'email', 'funcionario_id', 'empresa_id', 'equipa_id', 'departamento_id'],
+      include: {
+        model: Empresas,
+        attributes: ['nome', 'logo_empresa']
+      },
+      include: {
+        model: Equipas,
+        attributes: ['nome']
+      },
+      include: { model: Empresas, attributes: ['nome', 'logo_empresa'] }
+    }
+  });
 
   if (!user) {
-    return res.json({ Error: "Utilizador não encontrado" })
+    return res.json({ Error: "Utilizador não encontrado" });
   }
 
-  return res.json({ Status: "Success", user: user })
+  return res.json({ Status: "Success", user });
 });
 
 
 app.get('/check', (req, res) => {
-  res.status(200).send({message: "Wecolme to GDVC API"});
+  res.status(200).send({ message: "Wecolme to GDVC API" });
 });
 
 sequelize.authenticate()
@@ -103,5 +121,5 @@ sequelize.authenticate()
 app.set('port', process.env.PORT || 10000);
 
 app.listen(app.get('port'), () => {
-    console.log("Start server on port " + app.get('port'));
+  console.log("Start server on port " + app.get('port'));
 })

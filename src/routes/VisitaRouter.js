@@ -1,15 +1,23 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const visita = require('../controllers/visitaController');
-const Verificar = require("../controllers/authMiddleware");
+import { getAllVisitas, getContactDetails, getVisitas, getEmpresaVisitas, getNivel1Visitas, getNivel3Visitas, getVisitasPendentes, getVisitaById, createVisita, updateVisita, deleteVisita, updateStatus, acceptVisit, sendEmailWithoutNextVisit, sendEmailWithNextVisit } from '../controllers/VisitaController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/getAll', visita.getAllVisitas);
-router.post('/get', visita.getVisitas);
-router.get('/get/:id', visita.getVisitaById);
-router.post('/create', visita.createVisita);
-router.put('/update/:id', visita.updateVisita);
-router.delete('/delete/:id', visita.deleteVisita);
-router.put('/updateStatus', visita.updateStatus);
+router.get('/getAll', verificarToken, getAllVisitas);
+router.post('/getContactDetails', verificarToken, getContactDetails);
+router.post('/get', verificarToken, getVisitas);
+router.post('/getByEmpresa', verificarToken, getEmpresaVisitas);
+router.post('/getByNivel1', verificarToken, getNivel1Visitas);
+router.post('/getByNivel3', verificarToken, getNivel3Visitas);
+router.post('/getVisitasPendentes', verificarToken, getVisitasPendentes);
+router.get('/get/:id', verificarToken, getVisitaById);
+router.post('/create', verificarToken, createVisita);
+router.put('/update/:id', verificarToken, updateVisita);
+router.delete('/delete/:id', verificarToken, deleteVisita);
+router.put('/updateStatus', verificarToken, updateStatus);
+router.put('/acceptVisit', verificarToken, acceptVisit);
+router.post('/sendEmailWithoutNextVisit', verificarToken, sendEmailWithoutNextVisit);
+router.post('/sendEmailWithNextVisit', verificarToken, sendEmailWithNextVisit);
 
 
-module.exports = router;
+export default router;

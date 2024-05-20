@@ -1,13 +1,13 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const ServicoHasTarefa = require("../controllers/servicoHasTarefaController");
-const Verificar = require("../controllers/authMiddleware");
+import { getServicoHasTarefas, getServicoHasTarefaById, createServicoHasTarefa, updateServicoHasTarefa, deleteServicoHasTarefa } from '../controllers/ServicoHasTarefaController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get', ServicoHasTarefa.getServicoHasTarefas);
-router.get('/get/:id', ServicoHasTarefa.getServicoHasTarefaById);
-router.post('/create', ServicoHasTarefa.createServicoHasTarefa);
-router.put('/update/:id', ServicoHasTarefa.updateServicoHasTarefa);
-router.delete('/delete/:id', ServicoHasTarefa.deleteServicoHasTarefa);
+router.get('/get', verificarToken, getServicoHasTarefas);
+router.get('/get/:id', verificarToken, getServicoHasTarefaById);
+router.post('/create', verificarToken, createServicoHasTarefa);
+router.put('/update/:id', verificarToken, updateServicoHasTarefa);
+router.delete('/delete/:id', verificarToken, deleteServicoHasTarefa);
 
 
-module.exports = router;
+export default router;

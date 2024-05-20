@@ -1,13 +1,14 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const departamentoController = require('../controllers/departamentoController');
-const Verificar = require("../controllers/authMiddleware");
+import { getDepartamentos, getDepartamentoById, createDepartamento, updateDepartamento, deleteDepartamento, getDepartamentoByEmpresa } from '../controllers/DepartamentoController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get',  departamentoController.getDepartamentos);
-router.get('/get/:id', departamentoController.getDepartamentoById);
-router.post('/create', departamentoController.createDepartamento);
-router.put('/update/:id', departamentoController.updateDepartamento);
-router.delete('/delete/:id', departamentoController.deleteDepartamento);
+router.get('/get', getDepartamentos);
+router.post('/get', verificarToken, getDepartamentoByEmpresa);
+router.get('/get/:id', verificarToken, getDepartamentoById);
+router.post('/create', verificarToken, createDepartamento);
+router.put('/update/:id', verificarToken, updateDepartamento);
+router.delete('/delete/:id', deleteDepartamento);
 
 
-module.exports = router;
+export default router;

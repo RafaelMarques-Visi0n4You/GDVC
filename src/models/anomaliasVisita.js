@@ -1,8 +1,8 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Visitas = require('./visitas');
-const ContaUtilizadores = require('./contaUtilizadores');
-   
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Visitas from './visitas.js';
+import ContaUtilizadores from './contaUtilizadores.js';
+
 const AnomaliasVisita = sequelize.define('anomalias_visita', {
     anomalia_visita_id: {
         type: DataTypes.INTEGER,
@@ -43,17 +43,17 @@ const AnomaliasVisita = sequelize.define('anomalias_visita', {
 });
 
 
-AnomaliasVisita.belongsTo(Visitas, {foreignKey: 'visita_id'});
-AnomaliasVisita.belongsTo(ContaUtilizadores, {foreignKey: 'criado_por_id'});
+AnomaliasVisita.belongsTo(Visitas, { foreignKey: 'visita_id' });
+AnomaliasVisita.belongsTo(ContaUtilizadores, { foreignKey: 'criado_por_id' });
 
 
 AnomaliasVisita.sync({ force: false })
-.then(() => {
-    // console.log('AnomaliasVisita table created');
-})
-.catch((error) => {
-    console.error('Error creating AnomaliasVisita table:', error);
-});
+    .then(() => {
+        // console.log('AnomaliasVisita table created');
+    })
+    .catch((error) => {
+        console.error('Error creating AnomaliasVisita table:', error);
+    });
 
 
-module.exports = AnomaliasVisita;
+export default AnomaliasVisita;

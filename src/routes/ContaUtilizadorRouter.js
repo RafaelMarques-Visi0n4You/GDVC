@@ -1,13 +1,14 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const contaUtilizadorController = require('../controllers/contaUtilizadorController');
-const Verificar = require("../controllers/authMiddleware");
+import { getContaUtilizadores, getContaUtilizador, createContaUtilizador, updateContaUtilizador, deleteContaUtilizador } from '../controllers/contaUtilizadorController.js';
+import verificarToken from "../middleware/authMiddleware.js";
 
-router.get('/get', contaUtilizadorController.getContaUtilizadores);
-router.get('/get/:id', contaUtilizadorController.getContaUtilizador);
-router.post('/create', contaUtilizadorController.createContaUtilizador);
-router.put('/update/:id', contaUtilizadorController.updateContaUtilizador);
-router.delete('/delete/:id', contaUtilizadorController.deleteContaUtilizador);
+router.get('/get', getContaUtilizadores);
+router.get('/get/:criado_por_id', getContaUtilizador);
+router.post('/create', verificarToken, createContaUtilizador);
+router.put('/update/:id', verificarToken, updateContaUtilizador);
+router.put('/updateToken/:id', updateContaUtilizador);
+router.delete('/delete/:id', verificarToken, deleteContaUtilizador);
 
 
-module.exports = router;
+export default router;

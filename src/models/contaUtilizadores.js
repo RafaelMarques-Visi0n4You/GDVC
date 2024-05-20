@@ -1,7 +1,7 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Funcionario = require('./funcionarios');
-const Cliente = require('./clientes');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Funcionario from './funcionarios.js';
+import Cliente from './clientes.js';
 
 const ContaUtilizador = sequelize.define('conta_utilizadores', {
     conta_utilizador_id: {
@@ -52,6 +52,9 @@ const ContaUtilizador = sequelize.define('conta_utilizadores', {
     },
     reset: {
         type: DataTypes.SMALLINT
+    },
+    notification: {
+        type: DataTypes.TEXT
     }
 }, {
     timestamps: false,
@@ -63,11 +66,11 @@ ContaUtilizador.belongsTo(ContaUtilizador, { foreignKey: 'criado_por_id' });
 ContaUtilizador.belongsTo(Cliente, { foreignKey: 'cliente_id' });
 
 ContaUtilizador.sync({ force: false })
-.then(() => {
-    //   console.log('ContaUtilizador table synchronized successfully');
-})
-.catch((error) => {
-    console.error('Error synchronizing ContaUtilizador table:', error);
-});
+    .then(() => {
+        //   console.log('ContaUtilizador table synchronized successfully');
+    })
+    .catch((error) => {
+        console.error('Error synchronizing ContaUtilizador table:', error);
+    });
 
-module.exports = ContaUtilizador;
+export default ContaUtilizador;

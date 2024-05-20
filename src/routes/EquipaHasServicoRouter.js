@@ -1,14 +1,14 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const equipaHasServico = require('../controllers/equipaHasServicoController.js');
-const Verificar = require("../controllers/authMiddleware");
+import { getEquipaHasServicos, getEquipaHasServicoById, createEquipaHasServico, updateEquipaHasServico, deleteEquipaHasServico } from '../controllers/EquipaHasServicoController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get', equipaHasServico.getEquipaHasServicos);
-router.get('/get/:id1/:id2', equipaHasServico.getEquipaHasServicoById);
-router.post('/create', equipaHasServico.createEquipaHasServico);
-router.put('/update/:id1/:id2', equipaHasServico.updateEquipaHasServico);
-router.delete('/delete/:id1/:id2', equipaHasServico.deleteEquipaHasServico);
+router.get('/get', verificarToken, getEquipaHasServicos);
+router.get('/get/:id1/:id2', verificarToken, getEquipaHasServicoById);
+router.post('/create', verificarToken, createEquipaHasServico);
+router.put('/update/:id1/:id2', verificarToken, updateEquipaHasServico);
+router.delete('/delete/:id1/:id2', verificarToken, deleteEquipaHasServico);
 
 
 
-module.exports = router;
+export default router;

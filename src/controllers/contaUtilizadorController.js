@@ -1,9 +1,21 @@
-const ContaUtilizador = require('../models/contaUtilizadores');
+import ContaUtilizador from '../models/contaUtilizadores.js';
+import funcionarios from '../models/funcionarios.js';
 
 const getContaUtilizadores = async (req, res) => {
     try {
-        const contaUtilizadores = await ContaUtilizador.findAll();
-        res.json({ Status : "Success", contaUtilizadores: contaUtilizadores });
+        const contaUtilizadores = await ContaUtilizador.findAll({
+            attributes: {
+                exclude: ['password']
+            },
+
+            include: [
+                {
+                    model: funcionarios,
+                    attributes: ['nome_completo'],
+                },
+            ]
+        });
+        res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -11,8 +23,19 @@ const getContaUtilizadores = async (req, res) => {
 
 const getContaUtilizador = async (req, res) => {
     try {
-        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id);
-        res.json({Status : "Success", contaUtilizador: contaUtilizador });
+        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id, {
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                {
+                    model: funcionarios,
+                    attributes: ['nome_completo'],
+                },
+            ]
+        }
+        );
+        res.json({ Status: "Success", contaUtilizador: contaUtilizador });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -20,8 +43,13 @@ const getContaUtilizador = async (req, res) => {
 
 const createContaUtilizador = async (req, res) => {
     try {
-        const contaUtilizador = await ContaUtilizador.create(req.body);
-        res.json({ Status : "Success", contaUtilizador: contaUtilizador });
+        const contaUtilizador = await ContaUtilizador.create(req.body, {
+            attributes: {
+                exclude: ['password']
+            }
+        }
+        );
+        res.json({ Status: "Success", contaUtilizador: contaUtilizador });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -29,10 +57,15 @@ const createContaUtilizador = async (req, res) => {
 
 const updateContaUtilizador = async (req, res) => {
     try {
-        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id);
+        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id, {
+            attributes: {
+                exclude: ['password']
+            }
+        }
+        );
         if (contaUtilizador) {
             contaUtilizador.update(req.body);
-            res.json({ Status : "Success", contaUtilizador: contaUtilizador });
+            res.json({ Status: "Success", contaUtilizador: contaUtilizador });
         } else {
             res.status(404).json({ error: "ContaUtilizador não encontrado" });
         }
@@ -46,7 +79,7 @@ const deleteContaUtilizador = async (req, res) => {
         const contaUtilizador = await ContaUtilizador.findByPk(req.params.id);
         if (contaUtilizador) {
             contaUtilizador.destroy();
-            res.json({ Status : "Success", contaUtilizador: contaUtilizador });
+            res.json({ Status: "Success", contaUtilizador: contaUtilizador });
         } else {
             res.status(404).json({ error: "ContaUtilizador não encontrado" });
         }
@@ -55,7 +88,7 @@ const deleteContaUtilizador = async (req, res) => {
     }
 }
 
-module.exports  = {
+export {
     getContaUtilizadores,
     getContaUtilizador,
     createContaUtilizador,

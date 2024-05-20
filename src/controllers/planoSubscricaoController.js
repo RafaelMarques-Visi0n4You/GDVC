@@ -1,13 +1,13 @@
-const PlanoSubscricao = require('../models/planoSubscricao');
+import PlanoSubscricao from '../models/planoSubscricao.js';
 
 const getPlanoSubscricao = async (req, res) => {
     try {
         const planos = await PlanoSubscricao.findAll();
-        return res.json(planos);
+        return res.json({ Status: "Success", planos: planos });
     } catch (error) {
         return res.status(500).json({ Error: error });
     }
-    }
+}
 
 const getPlanoSubscricaoById = async (req, res) => {
     try {
@@ -56,7 +56,7 @@ const deletePlanoSubscricao = async (req, res) => {
     }
 }
 
-module.exports = {
+export {
     getPlanoSubscricao,
     getPlanoSubscricaoById,
     createPlanoSubscricao,

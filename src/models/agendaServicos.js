@@ -1,8 +1,8 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Empresas = require('./empresas');
-const Equipas = require('./equipas');
-const ContaUtilizadores = require('./contaUtilizadores');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Empresas from './empresas.js';
+import Equipas from './equipas.js';
+import ContaUtilizadores from './contaUtilizadores.js';
 
 
 const AgendaServicos = sequelize.define('agenda_servicos', {
@@ -53,18 +53,18 @@ const AgendaServicos = sequelize.define('agenda_servicos', {
     tableName: 'agenda_servicos'
 });
 
-AgendaServicos.belongsTo(Empresas, {foreignKey: 'empresa_id'});
-AgendaServicos.belongsTo(Equipas, {foreignKey: 'equipa_id'});
-AgendaServicos.belongsTo(ContaUtilizadores, {foreignKey: 'criado_por_id'});
-AgendaServicos.belongsTo(ContaUtilizadores, {foreignKey: 'aprovado_por_id'});
+AgendaServicos.belongsTo(Empresas, { foreignKey: 'empresa_id' });
+AgendaServicos.belongsTo(Equipas, { foreignKey: 'equipa_id' });
+AgendaServicos.belongsTo(ContaUtilizadores, { foreignKey: 'criado_por_id' });
+AgendaServicos.belongsTo(ContaUtilizadores, { foreignKey: 'aprovado_por_id' });
 
 
 AgendaServicos.sync({ force: false })
-.then(() => {
-    // console.log('AgendaServicos table created');
-})
-.catch((error) => {
-    console.error('Error creating AgendaServicos table:', error);
-});
+    .then(() => {
+        // console.log('AgendaServicos table created');
+    })
+    .catch((error) => {
+        console.error('Error creating AgendaServicos table:', error);
+    });
 
-module.exports = AgendaServicos;
+export default AgendaServicos;

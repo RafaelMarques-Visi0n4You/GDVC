@@ -1,8 +1,8 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Servicos = require('./servicos');
-const Contratos = require('./contratos');
-    
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Servicos from './servicos.js';
+import Contratos from './contratos.js';
+
 const ContratosHasServicos = sequelize.define('contratos_has_servicos', {
     servico_id: {
         type: DataTypes.INTEGER,
@@ -23,35 +23,27 @@ const ContratosHasServicos = sequelize.define('contratos_has_servicos', {
     prioritario: {
         type: DataTypes.TEXT
     },
-    descricao: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
+
     data_contratacao: {
         type: DataTypes.DATE,
         allowNull: false
     },
-    frequencia: {
-        type: DataTypes.TEXT
-    },
-    qtd_vezes: {
-        type: DataTypes.INTEGER
-    }
+
 }, {
     timestamps: false,
     tableName: 'contratos_has_servicos'
 });
 
-ContratosHasServicos.belongsTo(Servicos, {foreignKey: 'servico_id'});
-ContratosHasServicos.belongsTo(Contratos, {foreignKey: 'contrato_id'});
+ContratosHasServicos.belongsTo(Servicos, { foreignKey: 'servico_id' });
+ContratosHasServicos.belongsTo(Contratos, { foreignKey: 'contrato_id' });
 
 
 ContratosHasServicos.sync({ force: false })
-.then(() => {
-    // console.log('ContratosHasServicos table created');
-})
-.catch((error) => {
-    console.error('Error creating ContratosHasServicos table:', error);
-});
+    .then(() => {
+        // console.log('ContratosHasServicos table created');
+    })
+    .catch((error) => {
+        console.error('Error creating ContratosHasServicos table:', error);
+    });
 
-module.exports = ContratosHasServicos;
+export default ContratosHasServicos;

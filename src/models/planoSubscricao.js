@@ -1,5 +1,5 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
 
 
 const planoSubscricao = sequelize.define('plano_subscricao', {
@@ -24,11 +24,12 @@ const planoSubscricao = sequelize.define('plano_subscricao', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-      },
+    },
     ativo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-    }
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        defaultValue: 1
+    },
 }, {
     tableName: 'plano_subscricao',
     timestamps: false
@@ -44,4 +45,4 @@ planoSubscricao.sync({ force: false })
 
 
 
-module.exports = planoSubscricao;
+export default planoSubscricao;

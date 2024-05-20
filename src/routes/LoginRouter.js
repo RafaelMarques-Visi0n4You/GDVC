@@ -1,15 +1,16 @@
-const express = require('express');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 const router = express.Router();
-const bodyParser = require('body-parser');
-const loginController = require('../controllers/loginController');
-const cookieParser = require('cookie-parser');
+
+import { verificarCredenciais } from '../controllers/loginController.js';
+
 router.use(cookieParser());
 router.use(bodyParser.json());
 
 
-
-router.post('/', loginController.verificarCredenciais);
-
+router.post('/', verificarCredenciais);
 
 
-module.exports = router;
+
+export default router;

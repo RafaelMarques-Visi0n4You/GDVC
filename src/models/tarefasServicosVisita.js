@@ -1,7 +1,6 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const ServicosHasTarefas = require('./servicosHasTarefas');
-const Visitas = require('./visitas');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Visitas from './visitas.js';
 
 const TarefasServicosVisita = sequelize.define('tarefas_servicos_visita', {
     tarefa_servico_visita_id: {
@@ -17,7 +16,7 @@ const TarefasServicosVisita = sequelize.define('tarefas_servicos_visita', {
             key: 'visita_id'
         }
     },
-    tarefas: {
+    tarefa: {
         type: DataTypes.TEXT,
         allowNull: false
     },
@@ -31,12 +30,6 @@ const TarefasServicosVisita = sequelize.define('tarefas_servicos_visita', {
         validate: {
             isIn: [['em andamento', 'concluido']]
         }
-    },
-    tempo_estimado: {
-        type: DataTypes.INTEGER
-    },
-    tipo_tempo_estimado: {
-        type: DataTypes.TEXT
     }
 }, {
     timestamps: false,
@@ -44,16 +37,16 @@ const TarefasServicosVisita = sequelize.define('tarefas_servicos_visita', {
 });
 
 
-TarefasServicosVisita.belongsTo(Visitas, {foreignKey: 'visita_id'});
+TarefasServicosVisita.belongsTo(Visitas, { foreignKey: 'visita_id' });
 
 
 TarefasServicosVisita.sync({ force: false })
-.then(() => {
-    // console.log('TarefasServicosVisita table created');
-})
-.catch((error) => {
-    console.error('Error creating TarefasServicosVisita table:', error);
-});
+    .then(() => {
+        // console.log('TarefasServicosVisita table created');
+    })
+    .catch((error) => {
+        console.error('Error creating TarefasServicosVisita table:', error);
+    });
 
 
-module.exports = TarefasServicosVisita;
+export default TarefasServicosVisita;

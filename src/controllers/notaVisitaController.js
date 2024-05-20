@@ -1,13 +1,34 @@
-const NotaVisita = require('../models/notasVisitas');
-const moment = require('moment');
+import NotaVisita from '../models/notasVisitas.js';
+import moment from 'moment';
 
 
+
+const getMotivo = async (req, res) => {
+    try {
+        const notaVisita = await NotaVisita.findOne(
+            {
+                where: { visita_id: req.params.id }
+            }
+        );
+
+        if (!notaVisita || notaVisita.length === 0) {
+            return res.json({ Error: "Nota de Visita não encontrada" });
+        }
+
+        return res.json({ Status: "Success", notaVisita: notaVisita });
+    } catch (error) {
+        console.log(error)
+        return res.json({ Error: error });
+    }
+}
 
 const getNotaByVisita = async (req, res) => {
     try {
         const notaVisita = await NotaVisita.findAll(
-            { where: { visita_id: req.body.id },
-            order: [['notas_id', 'ASC']]}
+            {
+                where: { visita_id: req.body.id },
+                order: [['notas_id', 'ASC']]
+            }
         );
 
         if (!notaVisita || notaVisita.length === 0) {
@@ -62,9 +83,10 @@ const deleteNotaVisita = async (req, res) => {
     }
 }
 
-module.exports = { 
-    getNotaByVisita, 
-    createNotaVisita, 
-    updateNotaVisita, 
-    deleteNotaVisita 
+export {
+    getNotaByVisita,
+    createNotaVisita,
+    updateNotaVisita,
+    deleteNotaVisita,
+    getMotivo
 };

@@ -1,8 +1,8 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Empresas = require('./empresas');
-const Equipas = require('./equipas');
-const Departamento = require('./departamentos');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Empresas from './empresas.js';
+import Equipas from './equipas.js';
+import Departamento from './departamentos.js';
 
 const Funcionarios = sequelize.define('funcionarios', {
     funcionario_id: {
@@ -57,8 +57,9 @@ const Funcionarios = sequelize.define('funcionarios', {
         allowNull: false
     },
     ativo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+        type: DataTypes.TINYINT,
+        allowNull: false,
+        defaultValue: 1
     },
     departamento_id: {
         type: DataTypes.INTEGER,
@@ -81,7 +82,7 @@ Funcionarios.belongsTo(Equipas, { foreignKey: 'equipa_id' });
 Funcionarios.belongsTo(Departamento, { foreignKey: 'departamento_id' });
 
 
-Funcionarios.sync( )
+Funcionarios.sync()
     .then(() => {
         // console.log('Funcionarios table created');
     })
@@ -90,4 +91,4 @@ Funcionarios.sync( )
     });
 
 
-module.exports = Funcionarios;
+export default Funcionarios;

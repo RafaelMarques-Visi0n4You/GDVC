@@ -1,22 +1,22 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
 
 const tipoServicos = sequelize.define('tipo_servicos', {
-    tipo_servico_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    nome: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    }
+  tipo_servico_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  nome: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  }
 }, {
-    timestamps: false,
-    tableName: 'tipo_servicos'
+  timestamps: false,
+  tableName: 'tipo_servicos'
 });
 
-tipoServicos.sync( { force: false })
+tipoServicos.sync({ force: false })
   .then(() => {
     //console.log('tipoServicos table created');
   })
@@ -24,4 +24,4 @@ tipoServicos.sync( { force: false })
     console.error('Error creating tipoServicos table:', error);
   });
 
-module.exports = tipoServicos;
+export default tipoServicos;

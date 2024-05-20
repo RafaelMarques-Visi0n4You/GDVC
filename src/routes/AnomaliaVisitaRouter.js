@@ -1,13 +1,15 @@
-const express = require("express");
+import express from 'express';
+import { getAnomaliaVisitaById, createAnomaliaVisita, updateAnomaliaVisita, deleteAnomaliaVisita } from '../controllers/anomaliaVisitaController.js';
+import verificarToken from "../middleware/authMiddleware.js";
+import upload from '../config/multer.js';
+
+
 const router = express.Router();
-const AnomaliaVisita = require("../controllers/anomaliaVisitaController");
-const Verificar = require("../controllers/authMiddleware");
 
-router.post('/get', AnomaliaVisita.getAnomaliaVisitaById);
-router.post('/create', AnomaliaVisita.createAnomaliaVisita);
-router.put('/update/:id1', AnomaliaVisita.updateAnomaliaVisita);
-router.delete('/delete', AnomaliaVisita.deleteAnomaliaVisita);
+router.post('/get', verificarToken, getAnomaliaVisitaById);
+router.post('/create', verificarToken, upload.single('foto'), createAnomaliaVisita);
+router.put('/update/:id1', verificarToken, updateAnomaliaVisita);
+router.delete('/delete', verificarToken, deleteAnomaliaVisita);
 
 
-
-module.exports = router;
+export default router;

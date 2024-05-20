@@ -1,10 +1,22 @@
-const Contrato = require('../models/contratos');
-const ContratosHasServicos = require('../models/contratosHasServicos');
-const Servicos = require('../models/servicos');
+import Contrato from '../models/contratos.js';
+import ContratosHasServicos from '../models/contratosHasServicos.js';
+import Servicos from '../models/servicos.js';
+import clientes from '../models/clientes.js';
 
 const getContratos = async (req, res) => {
     try {
-        const contratos = await Contrato.findAll();
+        const contratos = await Contrato.findAll({
+            include: [
+                {
+                    model: clientes,
+                    attributes: ['nome_completo'],
+                },
+            ],
+            order: [
+                ['contrato_id', 'ASC']
+            ],
+
+        });
         return res.json({ Status: "Success", contratos: contratos });
     } catch (error) {
         return res.json({ Error: error });
@@ -13,9 +25,9 @@ const getContratos = async (req, res) => {
 
 const getContratoById = async (req, res) => {
     try {
-        const contrato = await Contrato.findByPk(req.body.id,{
-            include:{
-                all:true,
+        const contrato = await Contrato.findByPk(req.body.id, {
+            include: {
+                all: true,
             }
         });
         if (!contrato) {
@@ -23,8 +35,8 @@ const getContratoById = async (req, res) => {
         }
 
         const servicoid = await ContratosHasServicos.findOne({
-            where:{
-                contrato_id:req.body.id
+            where: {
+                contrato_id: req.body.id
             }
         });
 
@@ -32,8 +44,8 @@ const getContratoById = async (req, res) => {
             return res.json({ Error: "Servicoid não encontrado" });
         }
 
-        const servico = await Servicos.findByPk(servicoid.servico_id,{
-            attributes: ['nome','descricao']
+        const servico = await Servicos.findByPk(servicoid.servico_id, {
+            attributes: ['nome', 'descricao']
         });
 
         if (!servico) {
@@ -52,7 +64,13 @@ const getContratoById = async (req, res) => {
 const createContrato = async (req, res) => {
     try {
         const contrato = await Contrato.create(req.body);
-        return res.json({ Status: "Success", contrato: contrato });
+        const contratoHasServico = await ContratosHasServicos.create({
+            contrato_id: contrato.contrato_id,
+            servico_id: req.body.servico_id,
+            data_contratacao: contrato.data_inicio,
+            prioritario: req.body.prioritario,
+        });
+        return res.json({ Status: "Success", contrato: contrato, contratoHasServico: contratoHasServico });
     } catch (error) {
         return res.json({ Error: error });
     }
@@ -84,9 +102,51 @@ const deleteContrato = async (req, res) => {
     }
 }
 
-module.exports = { 
-    getContratos, 
-    getContratoById, 
-    createContrato, 
-    updateContrato, 
-    deleteContrato };
+const getClientContract = async (req, res) => {
+    try {
+        const contrato = await Contrato.findAll({
+            where: {
+                cliente_id: req.body.id
+            }
+        });
+
+        if (!contrato) {
+            return res.json({ Error: "Contrato não encontrado" });
+        }
+
+        return res.json({ Status: "Success", contrato: contrato });
+    }
+    catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+
+const setAcesso = async (req, res) => {
+    try {
+        const acesso = await Contrato.findByPk(req.params.id);
+        if (!acesso) {
+            res.status(404).json({ error: "Contrato não encontrado" });
+        } else {
+            const updateAcesso = !acesso.ativo ? 1 : 0;
+            acesso.ativo = updateAcesso;
+            await acesso.save();
+            res.json(updateAcesso);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
+
+export {
+    getContratos,
+    getContratoById,
+    createContrato,
+    updateContrato,
+    deleteContrato,
+    getClientContract,
+    setAcesso
+}

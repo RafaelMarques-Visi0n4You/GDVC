@@ -1,20 +1,20 @@
-const bcrypt = require('bcrypt');
-const ContaUtilizador = require('../models/contaUtilizadores');
-const Funcionario = require('../models/funcionarios');
+import bcrypt from 'bcrypt';
+import ContaUtilizador from '../models/contaUtilizadores.js';
+import Funcionario from '../models/funcionarios.js';
 
 const getUser = async (req, res) => {
-  try{
+  try {
     const user = await ContaUtilizador.findAll({
       attributes: { exclude: ['password'] },
       include: { model: Funcionario, attributes: ['nome_completo', 'email'] },
-      order : [['conta_utilizador_id', 'ASC']]
+      order: [['conta_utilizador_id', 'ASC']]
     });
     res.json({ Status: "Success", user: user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
- 
+
 
 
 const createUser = async (req, res) => {
@@ -41,10 +41,7 @@ const createUser = async (req, res) => {
 };
 
 
-
-
-
-module.exports = {
+export {
   getUser,
   createUser,
 };

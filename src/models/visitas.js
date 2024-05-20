@@ -1,8 +1,8 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Contratos = require('./contratos');
-const AgendaServicos = require('./agendaServicos');
-const ContaUtilizadores = require('./contaUtilizadores');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Contratos from './contratos.js';
+import AgendaServicos from './agendaServicos.js';
+import ContaUtilizadores from './contaUtilizadores.js';
 
 
 
@@ -66,17 +66,17 @@ const Visitas = sequelize.define('visitas', {
     tableName: 'visitas'
 });
 
-Visitas.belongsTo(Contratos, {foreignKey: 'contrato_id'});
-Visitas.belongsTo(AgendaServicos, {foreignKey: 'agenda_servico_id'});
-Visitas.belongsTo(ContaUtilizadores, {foreignKey: 'iniciado_por_id'});
+Visitas.belongsTo(Contratos, { foreignKey: 'contrato_id' });
+Visitas.belongsTo(AgendaServicos, { foreignKey: 'agenda_servico_id' });
+Visitas.belongsTo(ContaUtilizadores, { foreignKey: 'iniciado_por_id' });
 
 
 Visitas.sync({ force: false })
-.then(() => {
-    //console.log('Visitas table created');
-})
-.catch((error) => {
-    console.error('Error creating Visitas table:', error);
-});
+    .then(() => {
+        //console.log('Visitas table created');
+    })
+    .catch((error) => {
+        console.error('Error creating Visitas table:', error);
+    });
 
-module.exports = Visitas;
+export default Visitas;

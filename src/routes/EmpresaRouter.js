@@ -1,13 +1,15 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const empresaController = require('../controllers/empresaController');
-const Verificar = require("../controllers/authMiddleware");
-
-router.get('/get',  empresaController.getEmpresas);
-router.get('/get/:id',  empresaController.getEmpresaById);
-router.post('/create',  empresaController.createEmpresa);
-router.put('/update/:id',  empresaController.updateEmpresa);
-router.delete('/delete/:id',  empresaController.deleteEmpresa);
+import { getEmpresas, getEmpresaById, createEmpresa, updateEmpresa, deleteEmpresa, setAcesso } from '../controllers/EmpresaController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
 
-module.exports = router;
+router.post('/get', verificarToken, getEmpresas);
+router.get('/get/:id', verificarToken, getEmpresaById);
+router.post('/create', verificarToken, createEmpresa);
+router.put('/update/:id', verificarToken, updateEmpresa);
+router.delete('/delete/:id', verificarToken, deleteEmpresa);
+router.put('/setAcesso/:id', verificarToken, setAcesso);
+
+
+export default router;

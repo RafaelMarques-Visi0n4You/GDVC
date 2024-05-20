@@ -1,6 +1,7 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Visitas = require('./visitas');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Visitas from './visitas.js';
+
 
 const NotasVisitas = sequelize.define('notas_visitas', {
     notas_id: {
@@ -33,15 +34,15 @@ const NotasVisitas = sequelize.define('notas_visitas', {
     tableName: 'notas_visitas'
 });
 
-NotasVisitas.belongsTo(Visitas, {foreignKey: 'visita_id'});
+NotasVisitas.belongsTo(Visitas, { foreignKey: 'visita_id' });
 
 
 NotasVisitas.sync({ force: false })
-.then(() => {
-    // console.log('NotasVisitas table created');
-})
-.catch((error) => {
-    console.error('Error creating NotasVisitas table:', error);
-});
+    .then(() => {
+        // console.log('NotasVisitas table created');
+    })
+    .catch((error) => {
+        console.error('Error creating NotasVisitas table:', error);
+    });
 
-module.exports = NotasVisitas;
+export default NotasVisitas;

@@ -1,15 +1,14 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const contrato = require('../controllers/contratoController');
-const Verificar = require("../controllers/authMiddleware");
+import { getContratos, getContratoById, getClientContract, createContrato, updateContrato, deleteContrato, setAcesso } from '../controllers/contratoController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get', contrato.getContratos);
-router.post('/get', contrato.getContratoById);
-router.post('/create', contrato.createContrato);
-router.put('/update/:id', contrato.updateContrato);
-router.delete('/delete/:id', contrato.deleteContrato);
+router.get('/get', verificarToken, getContratos);
+router.post('/get', verificarToken, getContratoById);
+router.post('/getClientContract', verificarToken, getClientContract);
+router.post('/create', verificarToken, createContrato);
+router.put('/update/:id', verificarToken, updateContrato);
+router.delete('/delete/:id', verificarToken, deleteContrato);
+router.put('/setAcesso/:id', verificarToken, setAcesso);
 
-
-
-
-module.exports = router;
+export default router;

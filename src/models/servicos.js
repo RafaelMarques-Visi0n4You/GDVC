@@ -1,9 +1,8 @@
-const { sequelize } = require('../config/sequelize');
-const { DataTypes } = require('sequelize');
-const Empresas = require('./empresas');
-const TipoServicos = require('./tipoServicos');
-const ContaUtilizador = require('./contaUtilizadores');
-const Contratos = require('./contratos');
+import { sequelize } from '../config/sequelize.js';
+import { DataTypes } from 'sequelize';
+import Empresas from './empresas.js';
+import TipoServicos from './tipoServicos.js';
+import ContaUtilizador from './contaUtilizadores.js';
 
 
 const Servicos = sequelize.define('servicos', {
@@ -36,7 +35,8 @@ const Servicos = sequelize.define('servicos', {
     },
     ativo: {
         type: DataTypes.SMALLINT,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
     },
     preco_hora: {
         type: DataTypes.DECIMAL
@@ -51,7 +51,7 @@ const Servicos = sequelize.define('servicos', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-        
+
     },
     ultima_atualizacao: {
         type: DataTypes.DATE
@@ -80,4 +80,4 @@ Servicos.sync({ force: false })
         console.error('Error creating Servicos table:', error);
     });
 
-module.exports = Servicos;
+export default Servicos;

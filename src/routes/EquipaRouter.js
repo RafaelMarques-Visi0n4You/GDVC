@@ -1,15 +1,18 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const equipaController = require('../controllers/equipaController');
-const Verificar = require("../controllers/authMiddleware");
+import { getEquipas, getEquipaById, createEquipa, updateEquipa, deleteEquipa, getByDepartamento, gettodasequipas, setAcesso } from '../controllers/EquipaController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get',  equipaController.getEquipas);
-router.get('/get/:id', equipaController.getEquipaById);
-router.post('/create', equipaController.createEquipa);
-router.put('/update/:id', equipaController.updateEquipa);
-router.delete('/delete/:id', equipaController.deleteEquipa);
+router.post('/get', verificarToken, getEquipas);
+router.get('/getByDepartamento/:id', verificarToken, getByDepartamento);
+router.get('/getall', verificarToken, gettodasequipas);
+router.get('/get/:id', verificarToken, getEquipaById);
+router.post('/create', verificarToken, createEquipa);
+router.put('/update/:id', verificarToken, updateEquipa);
+router.delete('/delete/:id', verificarToken, deleteEquipa);
+router.put('/setAcesso/:id', verificarToken, setAcesso);
 
 
 
 
-module.exports = router;
+export default router;

@@ -1,14 +1,14 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const TarefaServicoVisita = require("../controllers/tarefaServicoVisitaController");
-const Verificar = require("../controllers/authMiddleware");
+import { getTarefasServicosVisita, getTarefaServicoVisitaById, createTarefaServicoVisita, updateStateTarefaServicoVisita, deleteTarefaServicoVisita } from '../controllers/TarefaServicoVisitaController.js';
+import verificarToken from '../middleware/authMiddleware.js';
 
-router.get('/get', TarefaServicoVisita.getTarefasServicosVisita);
-router.get('/get/:id1/:id2', TarefaServicoVisita.getTarefaServicoVisitaById);
-router.post('/create', TarefaServicoVisita.createTarefaServicoVisita);
-router.put('/update', TarefaServicoVisita.updateStateTarefaServicoVisita);
-router.delete('/delete/:id', TarefaServicoVisita.deleteTarefaServicoVisita);
+router.get('/get', verificarToken, getTarefasServicosVisita);
+router.get('/get/:id1/:id2', verificarToken, getTarefaServicoVisitaById);
+router.post('/create', verificarToken, createTarefaServicoVisita);
+router.put('/update', verificarToken, updateStateTarefaServicoVisita);
+router.delete('/delete/:id', verificarToken, deleteTarefaServicoVisita);
 
 
 
-module.exports = router;
+export default router;
