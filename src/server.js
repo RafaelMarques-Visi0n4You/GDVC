@@ -82,7 +82,9 @@ app.get('/me', Verificar.verificarToken, async (req, res) => {
 });
 
 
-
+app.get('/help/check', (req, res) => {
+  res.status(200).send({message: "Wecolme to GDVC API"});
+});
 
 sequelize.authenticate()
   .then(() => console.log('Database connection has been established successfully.'))
