@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getResponsavelDepartamentos, getResponsavelDepartamentoById, createResponsavelDepartamento, updateResponsavelDepartamento, deleteResponsavelDepartamento, getresponvalpordepartamento } from '../controllers/ResponsavelDepartamentoController.js';
+import { getResponsavelDepartamentos, getResponsavelDepartamentoById, createResponsavelDepartamento, updateResponsavelDepartamento, deleteResponsavelDepartamento, getresponvalpordepartamento } from '../controllers/responsavelDepartamentoController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.post('/getresponvalpordepartamento', getresponvalpordepartamento);

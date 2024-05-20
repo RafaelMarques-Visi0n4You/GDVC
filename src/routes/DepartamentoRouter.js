@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getDepartamentos, getDepartamentoById, createDepartamento, updateDepartamento, deleteDepartamento, getDepartamentoByEmpresa } from '../controllers/DepartamentoController.js';
+import { getDepartamentos, getDepartamentoById, createDepartamento, updateDepartamento, deleteDepartamento, getDepartamentoByEmpresa } from '../controllers/departamentoController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.get('/get', getDepartamentos);

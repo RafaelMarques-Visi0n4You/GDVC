@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getEquipas, getEquipaById, createEquipa, updateEquipa, deleteEquipa, getByDepartamento, gettodasequipas, setAcesso } from '../controllers/EquipaController.js';
+import { getEquipas, getEquipaById, createEquipa, updateEquipa, deleteEquipa, getByDepartamento, gettodasequipas, setAcesso } from '../controllers/equipaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.post('/get', verificarToken, getEquipas);

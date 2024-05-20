@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getEmpresas, getEmpresaById, createEmpresa, updateEmpresa, deleteEmpresa, setAcesso } from '../controllers/EmpresaController.js';
+import { getEmpresas, getEmpresaById, createEmpresa, updateEmpresa, deleteEmpresa, setAcesso } from '../controllers/empresaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 

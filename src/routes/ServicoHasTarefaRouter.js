@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getServicoHasTarefas, getServicoHasTarefaById, createServicoHasTarefa, updateServicoHasTarefa, deleteServicoHasTarefa } from '../controllers/ServicoHasTarefaController.js';
+import { getServicoHasTarefas, getServicoHasTarefaById, createServicoHasTarefa, updateServicoHasTarefa, deleteServicoHasTarefa } from '../controllers/servicoHasTarefaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.get('/get', verificarToken, getServicoHasTarefas);

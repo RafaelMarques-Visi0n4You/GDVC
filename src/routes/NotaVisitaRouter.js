@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getNotaByVisita, getMotivo, createNotaVisita, updateNotaVisita, deleteNotaVisita } from '../controllers/NotaVisitaController.js';
+import { getNotaByVisita, getMotivo, createNotaVisita, updateNotaVisita, deleteNotaVisita } from '../controllers/notaVisitaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 

@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getPlanoSubscricao, getPlanoSubscricaoById, createPlanoSubscricao, updatePlanoSubscricao, deletePlanoSubscricao } from '../controllers/PlanoSubscricaoController.js';
+import { getPlanoSubscricao, getPlanoSubscricaoById, createPlanoSubscricao, updatePlanoSubscricao, deletePlanoSubscricao } from '../controllers/planoSubscricaoController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.get('/get', verificarToken, getPlanoSubscricao);

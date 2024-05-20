@@ -1,11 +1,11 @@
 import express from 'express';
 const router = express.Router();
-import { getFuncionarios, getFuncionariosChefeEquipa, getfuncionariosequipa, getReponsvaelDepartamento, getFuncionario, createFuncionario, updateFuncionario, deleteFuncionario, setAcesso } from '../controllers/FuncionarioController.js';
+import { getFuncionarios, getFuncionariosChefeEquipa, getfuncionariosequipa, getReponsvaelDepartamento, getFuncionario, createFuncionario, updateFuncionario, deleteFuncionario, setAcesso } from '../controllers/funcionarioController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 
 router.post('/getfuncionarioempresa', verificarToken, getFuncionarios);
-router.post('/get',verificarToken, getFuncionariosChefeEquipa);
+router.post('/get', verificarToken, getFuncionariosChefeEquipa);
 router.post('/getfuncionariosequipa', getfuncionariosequipa);
 router.post('/getresponsaveldepartamento', getReponsvaelDepartamento);
 router.get('/get/:id', verificarToken, getFuncionario);
