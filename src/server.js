@@ -90,7 +90,7 @@ sequelize.authenticate()
 
 // Specify the URL where the server will be running
 const HOST = process.env.HOST;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || '4000';
 const URL = `http://${HOST}:${PORT}`;
 
 // Start the server
