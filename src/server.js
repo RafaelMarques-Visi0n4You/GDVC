@@ -1,5 +1,5 @@
 const express = require('express');
-require('dotenv').config()
+require('dotenv').config();
 const bodyParser = require('body-parser'); // Import body-parser middleware
 const app = express();
 const { sequelize } = require('./config/sequelize');
