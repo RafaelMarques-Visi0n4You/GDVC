@@ -122,8 +122,6 @@ server.listen(app.get('port'), () => {
 })
 
 
-// app.set('port', process.env.PORT || 10000);
-
-// app.listen(app.get('port'), () => {
-//   console.log("Start server on port " + app.get('port'));
-// })
+// server.listen(PORT, HOST, () => {
+//   console.log(`Server is running at ${URL}`);
+// });

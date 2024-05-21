@@ -65,6 +65,7 @@ const updateContaUtilizador = async (req, res) => {
         );
         if (contaUtilizador) {
             contaUtilizador.update(req.body);
+            await contaUtilizador.reload();
             res.json({ Status: "Success", contaUtilizador: contaUtilizador });
         } else {
             res.status(404).json({ error: "ContaUtilizador não encontrado" });

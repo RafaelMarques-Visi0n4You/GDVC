@@ -261,7 +261,7 @@ const getAgendaServicoById = async (req, res) => {
 
 const createAgendaServico = async (req, res) => {
     try {
-
+        console.log("entrei");
         let novasVisitas = [];
         let agendaServico;// Initialize the agendaServico variable with an empty object
 
@@ -357,8 +357,7 @@ const createAgendaServico = async (req, res) => {
         }
 
         let teste;
-
-        if (req.body.ativo === 0) {
+        if (req.body.ativo == 0) {
             console.log('Emitindo evento nova-visita-para-aprovar');
 
             teste = io.emit('nova-visita-para-aprovar', req.body.departamento);
