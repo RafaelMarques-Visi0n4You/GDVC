@@ -356,17 +356,18 @@ const createAgendaServico = async (req, res) => {
             }
         }
 
+        let teste;
 
         if (req.body.ativo === 0) {
             console.log('Emitindo evento nova-visita-para-aprovar');
 
-            const teste = io.emit('nova-visita-para-aprovar', req.body.departamento);
+            teste = io.emit('nova-visita-para-aprovar', req.body.departamento);
             console.log("teste", teste);
             sendPushNotification(req.body.departamento, 'Nova visita para aprovar')
         }
 
 
-        return res.json({ Status: "Success", agendaServico: agendaServico, visitas: novasVisitas });
+        return res.json({ Status: "Success", Teste: teste, agendaServico: agendaServico, visitas: novasVisitas });
     } catch (error) {
         console.log(error);
         return res.json({ Error: error });
