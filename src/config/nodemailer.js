@@ -44,6 +44,8 @@ async function sendEmail(dataArray) {
     // Formatando a data no formato desejado (adicionando zeros à esquerda se necessário)
     var dataFormatada = (dia < 10 ? '0' : '') + dia + '/' + (mes < 10 ? '0' : '') + mes + '/' + ano;
 
+    let htmlAnomalias = ''; // Definindo a variável antes do bloco if
+
     if (anomaliasData.length === 0) {
       //sem anomalias
       htmlAnomalias = `<div style="border-top: 1px solid #e2e3e4;"> 
@@ -67,6 +69,9 @@ async function sendEmail(dataArray) {
     </div>`;
     }
 
+    let htmlTarefasConcluidas = ''; // Definindo a variável antes do bloco if
+
+
     if (tarefasConcluidasData.length === 0) {
       //sem tarefas concluidas
       htmlTarefasConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px"> 
@@ -83,6 +88,10 @@ async function sendEmail(dataArray) {
                     </ul>
                     </div>`;
     }
+
+
+    let htmlTarefasNaoConcluidas = ''; // Definindo a variável antes do bloco if
+
     if (tarefasNaoConcluidasData.length === 0) {
       //sem tarefas concluidas
       htmlTarefasNaoConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px"> 
@@ -233,6 +242,7 @@ async function sendEmail(dataArray) {
     console.log('Email com detalhes da visita enviado com sucesso');
 
   } catch (error) {
+    console.log('Erro na funcao sendEmailWithoutNextVisit', error)
     console.error('Ocorreu um erro ao enviar o email:', error);
     throw new Error('Ocorreu um erro ao enviar o email.');
   }
@@ -274,7 +284,7 @@ async function sendEmailNextVisit(dataArray) {
 
     var dataVisita = new Date(visitData.data_visita);
 
-
+    let htmlContent = ''; // Definindo a variável antes do bloco if
     // const primeiraData = moment(data[0].data_visita).format('DD/MM/YYYY');
     // const ultimaData = moment(data[data.length - 1].data_visita).format('DD/MM/YYYY');
     if (data.length > 0) {
@@ -291,6 +301,8 @@ async function sendEmailNextVisit(dataArray) {
         htmlContent += ` - ${ultimaData}`;
       }
     }
+
+    let htmlAnomalias = ''; // Definindo a variável antes do bloco if
 
     if (anomaliasData.length === 0) {
       //sem anomalias
@@ -314,6 +326,8 @@ async function sendEmailNextVisit(dataArray) {
     </div>`;
     }
 
+    let htmlTarefasConcluidas = ''; // Definindo a variável antes do bloco if
+
     if (tarefasConcluidasData.length === 0) {
       //sem tarefas concluidas
       htmlTarefasConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px"> 
@@ -330,6 +344,9 @@ async function sendEmailNextVisit(dataArray) {
                     </ul>
                     </div>`;
     }
+
+    let htmlTarefasNaoConcluidas = ''; // Definindo a variável antes do bloco if
+
     if (tarefasNaoConcluidasData.length === 0) {
       //sem tarefas concluidas
       htmlTarefasNaoConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px"> 
@@ -511,6 +528,7 @@ async function sendEmailNextVisit(dataArray) {
     console.log('Email com detalhes da visita enviado com sucesso');
 
   } catch (error) {
+    console.log('Erro na funcao sendEmailNextVisit', error)
     console.error('Ocorreu um erro ao enviar o email:', error);
     throw new Error('Ocorreu um erro ao enviar o email.');
   }
