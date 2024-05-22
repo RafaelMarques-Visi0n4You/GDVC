@@ -15,9 +15,8 @@ const setupSocket = (server) => {
         cors: {
             // origin: [process.env.HOST]
             // origin: ['http://192.168.1.193:3000']
-            origin: ["https://gdvc.onrender.com"],
-            methods: ["GET", "POST"],
-            credentials: true
+            origin: ["https://gdvc.onrender.com"]
+            
         }
     });
 
