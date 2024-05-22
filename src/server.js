@@ -77,21 +77,22 @@ app.get('/me', verificarToken, async (req, res) => {
   console.log(req.userId);
   const user = await ContaUtilizador.findByPk(req.userId, {
     attributes: { exclude: ['password'] },
-    include: {
-      model: Funcionarios,
-      attributes: ['nome_completo', 'email', 'funcionario_id', 'empresa_id', 'equipa_id', 'departamento_id'],
-      include: {
-        model: Empresas,
-        attributes: ['nome', 'logo_empresa']
-        
-      },
-      include: {
-        model: Equipas,
-        attributes: ['nome']
-      },
-      include: { model: Empresas, attributes: ['nome', 'logo_empresa'] },
-    
-    }
+    include: [
+      {
+        model: Funcionarios,
+        attributes: ['nome_completo', 'email', 'funcionario_id', 'empresa_id', 'equipa_id', 'departamento_id'],
+        include: [
+          {
+            model: Empresas,
+            attributes: ['nome', 'logo_empresa']
+          },
+          {
+            model: Equipas,
+            attributes: ['nome']
+          }
+        ]
+      }
+    ]
   });
 
   if (!user) {
