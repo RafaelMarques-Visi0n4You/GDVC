@@ -83,12 +83,18 @@ app.get('/me', verificarToken, async (req, res) => {
       include: {
         model: Empresas,
         attributes: ['nome', 'logo_empresa']
+        
       },
       include: {
         model: Equipas,
         attributes: ['nome']
       },
-      include: { model: Empresas, attributes: ['nome', 'logo_empresa'] }
+      
+      include: { model: Empresas, attributes: ['nome', 'logo_empresa'] },
+      include: {
+        model: Equipas,
+        attributes: ['nome']
+      },
     }
   });
 
