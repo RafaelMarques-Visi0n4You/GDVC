@@ -88,8 +88,7 @@ app.get('/me', verificarToken, async (req, res) => {
           },
           {
             model: Equipas,
-            attributes: ['nome'],
-            as: 'Equipa'
+            attributes: ['nome']
           }
         ]
       }
