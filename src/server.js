@@ -103,9 +103,13 @@ app.get('/me', verificarToken, async (req, res) => {
 });
 
 
+import { sendEmailTeste } from './config/nodemailer.js';
 
 app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
+
+  sendEmailTeste();
+  
 });
 
 sequelize.authenticate()
