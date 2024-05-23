@@ -542,11 +542,19 @@ async function sendEmailTeste() {
       port: '587',
       secure: false,
       auth: {
-        user: 'sendemail@gdvc.devikweb.com',
-        pass: 'M=DTi)K7)R,p',
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
       },
     });
 
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
+    
     const mailOptions = {
       // from: userData.email, // O email do remetente deve ser o mesmo que o email do usuário autenticado no nodemailer
       to: 'rafmarques16@gmail.com',
