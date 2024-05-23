@@ -102,8 +102,27 @@ app.get('/me', verificarToken, async (req, res) => {
   return res.json({ Status: "Success", user });
 });
 
+import nodemailer from 'nodemailer';
+
 app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
+
+    const transporter = nodemailer.createTransport("SMTP",{
+      service: 'Gmail',
+      auth: {
+        user: "fbwgaming@gmail.com",
+        pass: "orlh pcsj ztsc xzdj",
+      },
+    });
+
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
+
 });
 
 sequelize.authenticate()
