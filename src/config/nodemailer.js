@@ -243,7 +243,7 @@ async function sendEmail(dataArray) {
 
   } catch (error) {
     console.log('Erro na funcao sendEmailWithoutNextVisit', error)
-    console.error('Ocorreu um erro ao enviar o email:', error);
+    console.error('Ocorreu um erro ao enviar o emailX:', error);
     throw new Error('Ocorreu um erro ao enviar o email.');
   }
 };
