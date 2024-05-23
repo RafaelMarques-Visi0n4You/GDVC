@@ -114,7 +114,7 @@ async function sendEmail(dataArray) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.MAIL_USER,
+        user: 'fbwgaming@gmail.com',
         pass: 'orlh pcsj ztsc xzdj',
       },
     });
@@ -249,7 +249,6 @@ async function sendEmail(dataArray) {
 };
 
 async function sendEmailNextVisit(dataArray) {
-/*
   let [
     userData,
     emailSupervisor,
@@ -530,10 +529,9 @@ async function sendEmailNextVisit(dataArray) {
 
   } catch (error) {
     console.log('Erro na funcao sendEmailNextVisit', error)
-    console.error('Ocorreu um erro ao enviar o email:', error);
+    console.error('Ocorreu um erro ao enviar o email Proxima Visita:', error);
     throw new Error('Ocorreu um erro ao enviar o email.');
   }
-  */
 };
 
 
