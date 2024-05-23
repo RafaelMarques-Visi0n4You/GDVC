@@ -115,7 +115,7 @@ async function sendEmail(dataArray) {
       service: 'gmail',
       auth: {
         user: process.env.MAIL_USER,
-        pass: "orlh pcsj ztsc xzdj",
+        pass: 'orlh pcsj ztsc xzdj',
       },
     });
 
