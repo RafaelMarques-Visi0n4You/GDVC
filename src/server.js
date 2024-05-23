@@ -104,7 +104,7 @@ app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
 
     const transporter = nodemailer.createTransport({
-      host: 'mail.gdvc.devikweb.com',
+      host: "mail.gdvc.devikweb.com",
       port: 587,
       secure: false,
       auth: {
