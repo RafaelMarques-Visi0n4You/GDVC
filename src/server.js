@@ -42,10 +42,6 @@ const server = http.createServer(app);
 
 setupSocket(server);
 
-
-
-
-
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -107,7 +103,7 @@ import nodemailer from 'nodemailer';
 app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
 
-    const transporter = nodemailer.createTransport("SMTP",{
+    const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
         user: "fbwgaming@gmail.com",
