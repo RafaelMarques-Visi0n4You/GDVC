@@ -118,14 +118,6 @@ async function sendEmail(dataArray) {
         pass: "orlh pcsj ztsc xzdj",
       },
     });
-
-    transporter.verify(function (error, success) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Server is ready to take our messages");
-      }
-    });
     
     const mailOptions = {
       // from: userData.email, // O email do remetente deve ser o mesmo que o email do usuário autenticado no nodemailer
