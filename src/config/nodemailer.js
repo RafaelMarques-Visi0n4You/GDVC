@@ -114,7 +114,7 @@ async function sendEmail(dataArray) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'fbwgaming@gmail.com',
+        user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
     });
