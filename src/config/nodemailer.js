@@ -209,7 +209,7 @@ async function sendEmail(dataArray) {
                     </table>
 
                     <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
-                      <strong>CONTRATO: login</strong>${contratoData.nome}
+                      <strong>CONTRATO: </strong>${contratoData.nome}
                     </div>
                     <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
                       <tr>
