@@ -108,8 +108,8 @@ app.get('/check', (req, res) => {
       port: 587,
       secure: false,
       auth: {
-        user: 'sendemail@gdvc.devikweb.com',
-        pass: 'M=DTi)K7)R,p',
+        user: "sendemail@gdvc.devikweb.com",
+        pass: "M=DTi)K7)R,p",
       },
     });
 
