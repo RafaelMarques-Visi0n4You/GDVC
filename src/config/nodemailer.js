@@ -247,7 +247,7 @@ async function sendEmail(dataArray) {
     throw new Error('Ocorreu um erro ao enviar o email.');
   }
 };
-
+/*
 async function sendEmailNextVisit(dataArray) {
   let [
     userData,
@@ -537,4 +537,9 @@ async function sendEmailNextVisit(dataArray) {
 
 export {
   sendEmail, sendEmailNextVisit
+}
+*/
+
+export {
+  sendEmail
 }
