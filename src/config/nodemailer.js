@@ -84,7 +84,7 @@ async function sendEmail(dataArray) {
 
       htmlTarefasConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px">
                     <ul class=" table-content">
-                      ${tarefasConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefas}</li>`).join('')}
+                      ${tarefasConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefa}</li>`).join('')}
                     </ul>
                     </div>`;
     }
@@ -104,11 +104,11 @@ async function sendEmail(dataArray) {
 
       htmlTarefasNaoConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px">
                     <ul class=" table-content">
-                      ${tarefasNaoConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefas}</li>`).join('')}
+                      ${tarefasNaoConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefa}</li>`).join('')}
                     </ul>
                     </div>`;
     }
-    
+
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       host: "smtp.gmail.com",
@@ -119,7 +119,7 @@ async function sendEmail(dataArray) {
         pass: process.env.MAIL_PASS,
       },
     });
-    
+
     const mailOptions = {
       // from: userData.email, // O email do remetente deve ser o mesmo que o email do usuário autenticado no nodemailer
       to: emailSupervisor,
@@ -189,7 +189,7 @@ async function sendEmail(dataArray) {
                     <span>A visita foi efetuada com sucesso. Poderá consultar aqui todos os detalhes da mesma.</span>
                     <br /><br />
                     <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
-                      <strong>NUMERO DA VISITA ${visitData.visita_id} </strong>
+                      <strong>NUMERO DA VISITA:  </strong>${visitData.visita_id}
                     </div>
                     <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
                       <tr>
@@ -209,7 +209,7 @@ async function sendEmail(dataArray) {
                     </table>
 
                     <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
-                      <strong>CONTRATO ${contratoData.nome}:</strong>
+                      <strong>CONTRATO: login</strong>${contratoData.nome}
                     </div>
                     <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
                       <tr>
@@ -341,7 +341,7 @@ async function sendEmailNextVisit(dataArray) {
 
       htmlTarefasConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px">
                     <ul class=" table-content">
-                      ${tarefasConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefas}</li>`).join('')}
+                      ${tarefasConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefa}</li>`).join('')}
                     </ul>
                     </div>`;
     }
@@ -360,7 +360,7 @@ async function sendEmailNextVisit(dataArray) {
 
       htmlTarefasNaoConcluidas = `<div style="border-top: 1px solid #e2e3e4; margin-bottom: 20px">
                     <ul class=" table-content">
-                      ${tarefasNaoConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefas}</li>`).join('')}
+                      ${tarefasNaoConcluidasData.map(tarefa => `<li class="list-item">${tarefa.tarefa}</li>`).join('')}
                     </ul>
                     </div>`;
     }
@@ -467,7 +467,7 @@ async function sendEmailNextVisit(dataArray) {
                 detalhes da mesma.</span>
             <br /><br />
             <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
-                      <strong>NUMERO DA VISITA ${visitData.visita_id} </strong>
+                      <strong>NUMERO DA VISITA: </strong> ${visitData.visita_id} 
                     </div>
             <table
               style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
@@ -487,7 +487,7 @@ async function sendEmailNextVisit(dataArray) {
                         </tr>
                     </table>
                     <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
-                    <strong>CONTRATO ${contratoData.nome}:</strong>
+                    <strong>CONTRATO: </strong>${contratoData.nome}
                   </div>
                   <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
                     <tr>
