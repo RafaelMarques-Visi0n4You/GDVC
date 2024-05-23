@@ -106,6 +106,7 @@ app.get('/me', verificarToken, async (req, res) => {
 
 app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
+  console.log(process.env.MAIL_PASS);
 });
 
 sequelize.authenticate()
