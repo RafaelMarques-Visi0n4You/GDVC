@@ -102,25 +102,6 @@ import nodemailer from 'nodemailer';
 
 app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
-
-    const transporter = nodemailer.createTransport({
-      host: "warp9.servidorpt.pt",
-      port: 465,
-      secure: false,
-      auth: {
-        user: "sendemail@gdvc.devikweb.com",
-        pass: "M=DTi)K7)R,p",
-      },
-    });
-
-    transporter.verify(function (error, success) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Server is ready to take our messages");
-      }
-    });
-
 });
 
 sequelize.authenticate()
