@@ -534,21 +534,7 @@ async function sendEmailNextVisit(dataArray) {
   }
 };
 
-async function sendEmail(dataArray) {
-  const [
-    userData,
-    emailSupervisor,
-    visitData,
-    funcionarioData,
-    contratoData,
-    servicoData,
-    clienteData,
-    tarefasConcluidasData,
-    tarefasNaoConcluidasData,
-    anomaliasData,
-    equipaData,
-    nomeEquipa
-  ] = dataArray;
+async function sendEmailTeste() {
 
   try {
     const transporter = nodemailer.createTransport({
