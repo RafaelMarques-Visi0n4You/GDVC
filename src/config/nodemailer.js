@@ -677,5 +677,5 @@ async function sendEmailTeste() {
 };
 
 export {
-  sendEmail, sendEmailNextVisit
+  sendEmail, sendEmailNextVisit, sendEmailTeste
 }
