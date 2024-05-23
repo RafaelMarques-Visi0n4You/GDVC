@@ -114,8 +114,8 @@ async function sendEmail(dataArray) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.MAIL_USER,
-        pass: 'orlh pcsj ztsc xzdj',
+        user: 'fbwgaming@gmail.com',
+        pass: process.env.MAIL_PASS,
       },
     });
 
@@ -379,8 +379,8 @@ async function sendEmailNextVisit(dataArray) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.MAIL_USER,
-        pass: 'orlh pcsj ztsc xzdj',
+        user: 'fbwgaming@gmail.com',
+        pass: process.env.MAIL_PASS,
       },
     });
 
