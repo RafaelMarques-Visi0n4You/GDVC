@@ -111,7 +111,7 @@ async function sendEmail(dataArray) {
 
 
 
-    const transporter = nodemailer.createTransport("SMTP",{
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: 'fbwgaming@gmail.com',
