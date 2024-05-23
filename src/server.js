@@ -104,7 +104,10 @@ app.get('/check', (req, res) => {
   res.status(200).send({ message: "Wecolme to GDVC API" });
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      pool: true,
+      host: 'warp9.servidorpt.pt',
+      port: 465,
+      secure: true,
       auth: {
         user: 'fbwgaming@gmail.com',
         pass: 'orlh pcsj ztsc xzdj',
