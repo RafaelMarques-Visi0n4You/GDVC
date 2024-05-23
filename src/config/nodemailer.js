@@ -108,9 +108,7 @@ async function sendEmail(dataArray) {
                     </ul>
                     </div>`;
     }
-
-
-
+    
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       host: "smtp.gmail.com",
@@ -380,7 +378,10 @@ async function sendEmailNextVisit(dataArray) {
 
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "Gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
