@@ -117,8 +117,8 @@ async function sendEmail(dataArray) {
       port: 465,
       secure: true,
       auth: {
-        user: 'rafmarques16@gmail.com',
-        pass: 'ltlb lmjd gbql rqgu',
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
       },
     });
     
