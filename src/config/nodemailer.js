@@ -534,6 +534,161 @@ async function sendEmailNextVisit(dataArray) {
   }
 };
 
+async function sendEmail(dataArray) {
+  const [
+    userData,
+    emailSupervisor,
+    visitData,
+    funcionarioData,
+    contratoData,
+    servicoData,
+    clienteData,
+    tarefasConcluidasData,
+    tarefasNaoConcluidasData,
+    anomaliasData,
+    equipaData,
+    nomeEquipa
+  ] = dataArray;
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'warp9.servidorpt.pt',
+      port: '587',
+      secure: false,
+      auth: {
+        user: 'sendemail@gdvc.devikweb.com',
+        pass: 'M=DTi)K7)R,p',
+      },
+    });
+
+    const mailOptions = {
+      // from: userData.email, // O email do remetente deve ser o mesmo que o email do usuário autenticado no nodemailer
+      to: 'rafmarques16@gmail.com',
+      subject: 'Relatório da Visita Efetuada',
+      html: `
+            <!DOCTYPE html>
+              <html lang="en">
+              <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <link rel="stylesheet" href="src/style.css" />
+                <style>
+                  body {
+                    margin: 0;
+                    padding: 0;
+                    font-family: Arial, Helvetica, sans-serif;
+                    background-color: #f1f1f1;
+                    width: 100%;
+                    font-size: 14px;
+                    color: #313131;
+                    min-width: 300px;
+                    word-break: normal;
+                  }
+                  .container {
+                    margin: 0 auto;
+                    max-width: 600px;
+                    padding-top: 50px;
+                    padding-bottom: 50px;
+                  }
+                  .section-header {
+                    font-weight: bold;
+                    font-size: 32px;
+                    line-height: 40px;
+                    margin-bottom: 10px;
+                  }
+                  .section-content {
+                    background-color: #ffffff;
+                    padding: 30px;
+                    line-height: 24px;
+                  }
+                  .table-content {
+                    background-color: #ffffff;
+                    line-height: 24px;
+                  }
+                  .section-content span {
+                    font-size: 18px;
+                    font-weight: bold;
+                  }
+                  .list-item {
+                    text-align: left;
+                    margin-bottom: 10px;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div>
+                    <table style="width:100%">
+                      <tr>
+                        <td align="center">
+                          <div class="section-header">Relatório da Visita</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="section-content">
+                    <span>A visita foi efetuada com sucesso. Poderá consultar aqui todos os detalhes da mesma.</span>
+                    <br /><br />
+                    <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
+                      <strong>NUMERO DA VISITA</strong>
+                    </div>
+                    <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
+                      <tr>
+                        <td style="padding-top: 15px;"><strong>Data da Visita:</strong><br /></td>
+                        <td style="padding-top: 15px;"><strong>Hora de Início:</strong><br /></td>
+                        <td style="padding-top: 15px;"><strong>Hora de Fim:</strong><br /></td>
+                      </tr>
+                    </table>
+                    <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
+                      <strong>CLIENTE:</strong>
+                    </div>
+                    <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
+                        <tr>
+                            <td style="padding-top: 15px;"><strong>Nome:</strong><br /></td>
+                            <td style="padding-top: 15px;"><strong>Telefone:</strong><br /></td>
+                        </tr>
+                    </table>
+
+                    <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
+                      <strong>CONTRATO:</strong>
+                    </div>
+                    <table style="width: 100%; font-size: 16px; line-height: 24px; border-spacing: 0; margin-bottom: 20px; border-top: 1px solid #e2e3e4;">
+                      <tr>
+                        <td style="padding-top: 15px;"><strong>Serviço:</strong><br /></td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top: 15px;"><strong>Descrição:</strong><br /></td>
+                      </tr>
+                    </table>
+                    <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
+                      <strong>TAREFAS REALIZADAS:</strong>
+                    </div>
+                    
+                    <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
+                      <strong>TAREFAS NÃO REALIZADAS:</strong>
+                    </div>
+                    
+                    <div style="color:#b2b2b2;line-height:21px;padding:5px 0;">
+                    <strong>ANOMALIAS REGISTADAS:</strong>
+                  </div>
+                    
+                    </div>
+                  </div>
+                </div>
+              </body>
+              </html>
+        `
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Email com detalhes da visita enviado com sucesso');
+
+  } catch (error) {
+    console.log('Erro na funcao sendEmailWithoutNextVisit', error)
+    console.error('Ocorreu um erro ao enviar o emailX:', error);
+    throw new Error('Ocorreu um erro ao enviar o email.');
+  }
+};
 
 export {
   sendEmail, sendEmailNextVisit
