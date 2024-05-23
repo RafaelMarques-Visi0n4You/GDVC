@@ -109,8 +109,8 @@ app.get('/check', (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: 'fbwgaming@gmail.com',
-        pass: 'orlh pcsj ztsc xzdj',
+        user: 'sendemail@gdvc.devikweb.com',
+        pass: 'M=DTi)K7)R,p',
       },
     });
 
