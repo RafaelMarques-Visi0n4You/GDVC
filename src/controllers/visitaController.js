@@ -98,9 +98,9 @@ const getNivel3Visitas = async (req, res) => {
         const visitas = await Visita.findAll({
             order: [
                 ['data_visita', 'ASC'],
-                ['inicio_visita', 'ASC'],
+                ['inicio_visita', ' ASC NULLS LAST'],
                 [
-                'hora_visita_inicio', 'ASC'
+                    'hora_visita_inicio', 'ASC'
                 ]
             ],
             include: [
