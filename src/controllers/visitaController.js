@@ -12,6 +12,7 @@ import TarefasServicosVisita from '../models/tarefasServicosVisita.js';
 import AnomaliasVisita from '../models/anomaliasVisita.js';
 import ResponsavelDepartamento from '../models/responsavelDepartamento.js';
 import NotasVisitas from '../models/notasVisitas.js';
+import Sequelize from 'sequelize';
 
 
 //4 tipos de perfil [nível 1 - Funcionário, nível 2 - Chef da equipa, nível 3 – Supervisor, nível 4 - Diretor (admin) ]
