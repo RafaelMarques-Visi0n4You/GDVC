@@ -97,7 +97,7 @@ const getNivel3Visitas = async (req, res) => {
         const visitas = await Visita.findAll({
             order: [
                 ['data_visita', 'ASC'],
-                ['hora_visita_inicio', 'ASC']
+                Sequelize.literal('CASE WHEN inicio_visita IS NOT NULL THEN inicio_visita ELSE hora_visita_inicio END ASC')
             ],
             include: [
                 {
