@@ -249,6 +249,85 @@ const getVisitasPendentes = async (req, res) => {
 }
 
 
+const getVisitasPendentesNivel4 = async (req, res) => {
+    const empresaID = req.body.empresa_id;
+    
+    try {
+        const visitas = await Visita.findAll({
+            order: [
+                ['data_visita', 'ASC'],
+                ['hora_visita_inicio', 'ASC']
+            ],
+            include: [
+                {
+                    model: Contratos,
+                    attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                },
+                {
+                    model: AgendaServico,
+                    attributes: ['empresa_id'],
+                    where: { empresa_id: empresaID, ativo: 0 },
+                    include: [
+                        {
+                            model: Equipas,
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                            where: { ativo: 1 }
+                        }
+                    ]
+                },
+
+            ]
+        });
+
+        const visitasComServicos = [];
+
+        // Iterar sobre cada visita
+        for (const visita of visitas) {
+            const contratoID = visita.contrato_id;
+            const contrato = await Contratos.findByPk(contratoID);
+
+            if (contrato) {
+                // Criando o campo 'endereco' a partir dos campos de morada, código postal e localidade do contrato
+                visita.dataValues.endereco = `${contrato.morada_servico}, ${contrato.cod_postal_servico} ${contrato.localidade_servico}`;
+            } else {
+                visita.dataValues.endereco = "Endereço não especificado";
+            }
+
+            // Consultar a tabela contratos_has_servicos para obter o id de cadas servico associado a este contrato
+            const servicos = await ContratosHasServicos.findAll({
+                where: {
+                    contrato_id: contratoID
+                }
+            });
+
+            // Array para armazenar os detalhes dos serviços
+            const detalhesServicos = [];
+
+            // Iterar sobre cada serviço e obter o nome e o ID do serviço na tabela Servicos
+            for (const servico of servicos) {
+                const servicoID = servico.servico_id;
+                const servicoInfo = await Servicos.findByPk(servicoID);
+                if (servicoInfo) {
+                    // Inclua o nome e o ID do serviço nos detalhes
+                    detalhesServicos.push({
+                        servico_id: servicoID,
+                        nome: servicoInfo.nome
+                    });
+                }
+            }
+
+            // Inclui os detalhes dos serviços na visita atual
+            visita.dataValues.servicos = detalhesServicos;
+            visitasComServicos.push(visita);
+        }
+
+        return res.json({ Status: "Success", visitas: visitasComServicos });
+    } catch (error) {
+        console.log(error);
+        return res.json({ Error: error });
+    }
+}
+
 const getNivel1Visitas = async (req, res) => {
     const equipaID = req.body.equipa_id;
     try {
@@ -735,5 +814,6 @@ export {
     sendEmailWithNextVisit,
     getNivel3Visitas,
     getVisitasPendentes,
+    getVisitasPendentesNivel4,
     acceptVisit
 }

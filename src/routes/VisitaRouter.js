@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getAllVisitas, getContactDetails, getVisitas, getEmpresaVisitas, getNivel1Visitas, getNivel3Visitas, getVisitasPendentes, getVisitaById, createVisita, updateVisita, deleteVisita, updateStatus, acceptVisit, sendEmailWithoutNextVisit, sendEmailWithNextVisit } from '../controllers/visitaController.js';
+import { getAllVisitas, getContactDetails, getVisitas, getEmpresaVisitas, getNivel1Visitas, getNivel3Visitas, getVisitasPendentes, getVisitaById, createVisita, updateVisita, deleteVisita, updateStatus, acceptVisit, sendEmailWithoutNextVisit, sendEmailWithNextVisit, getVisitasPendentesNivel4 } from '../controllers/visitaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.get('/getAll', verificarToken, getAllVisitas);
@@ -10,6 +10,7 @@ router.post('/getByEmpresa', verificarToken, getEmpresaVisitas);
 router.post('/getByNivel1', verificarToken, getNivel1Visitas);
 router.post('/getByNivel3', verificarToken, getNivel3Visitas);
 router.post('/getVisitasPendentes', verificarToken, getVisitasPendentes);
+router.post('/getVisitasPendentesnivel4', verificarToken, getVisitasPendentesNivel4);
 router.get('/get/:id', verificarToken, getVisitaById);
 router.post('/create', verificarToken, createVisita);
 router.put('/update/:id', verificarToken, updateVisita);
