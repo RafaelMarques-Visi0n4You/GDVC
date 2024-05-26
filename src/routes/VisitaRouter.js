@@ -10,7 +10,7 @@ router.post('/getByEmpresa', verificarToken, getEmpresaVisitas);
 router.post('/getByNivel1', verificarToken, getNivel1Visitas);
 router.post('/getByNivel3', verificarToken, getNivel3Visitas);
 router.post('/getVisitasPendentes', verificarToken, getVisitasPendentes);
-router.post('/getVisitasPendentesnivel4', verificarToken, getVisitasPendentesNivel4);
+router.post('/getVisitasPendentesnivel4',  getVisitasPendentesNivel4);
 router.get('/get/:id', verificarToken, getVisitaById);
 router.post('/create', verificarToken, createVisita);
 router.put('/update/:id', verificarToken, updateVisita);
