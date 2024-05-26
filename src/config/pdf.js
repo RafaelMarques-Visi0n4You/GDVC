@@ -13,28 +13,31 @@ app.get('/generate-pdf', async (req, res) => {
 
   
   const baseUrl = 'http://localhost:8081'; 
-  const url = `${baseUrl}/detalhe/detalhevisita/${id}`;
-
+  const url = `${baseUrl}/detalhe/detalhepdf/${id}`;
   try {
-    
-    const response = await axios.get(url);
-    const html = response.data;
-
-    
-    const options = { format: 'A4', orientation: 'portrait', border: '10mm' };
-
-    
-    pdf.create(html, options).toBuffer((err, buffer) => {
-      if (err) {
-        return res.status(500).json({ error: 'Erro ao gerar PDF' });
-      }
-
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename=details-${id}.pdf`);
-      res.send(buffer);
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: true
     });
+    const page = await browser.newPage();
+
+    await page.goto(url, {
+      waitUntil: 'networkidle2', // Aguarda até que a rede esteja ociosa
+    });
+
+    const pdf = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+    });
+
+    await browser.close();
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=details-${id}.pdf`);
+    res.send(pdf);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao obter o HTML da página' });
+    console.error('Erro ao gerar PDF:', error);
+    res.status(500).json({ error: 'Erro ao gerar PDF' });
   }
 });
 
