@@ -35,21 +35,20 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
             include: [
                 {
                     model: funcionarios,
-                   
                     attributes: ['nome_completo'],
                     where: {
                         empresa_id: req.body.empresa_id
-                    }
+                    },
+                    required: false 
                 },
-            ],
-            include: [
                 {
                     model: Cliente,
                     attributes: ['nome_completo'],
                     where: {
                         empresa_id: req.body.empresa_id
-                    }
-                },
+                    },
+                    required: false
+                }
             ]
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
