@@ -40,7 +40,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     where: {
                         empresa_id: empresaId
                     },
-                    required: false
+                    required: true
                 },
                 {
                     model: Cliente,
@@ -48,15 +48,10 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     where: {
                         empresa_id: empresaId
                     },
-                    required: false
+                    required: true
                 }
             ],
-            where: {
-                [Op.or]: [
-                    { '$funcionarios.empresa_id$': empresaId },
-                    { '$Cliente.empresa_id$': empresaId }
-                ]
-            }
+            
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
     } catch (error) {
