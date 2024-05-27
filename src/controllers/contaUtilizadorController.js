@@ -32,8 +32,11 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
             include: [
                 {
                     model: funcionarios,
-                    where: { empresa_id: req.body.empresa_id },
+                   
                     attributes: ['nome_completo'],
+                    where: {
+                        empresa_id: req.body.empresa_id
+                    }
                 },
             ]
         });
