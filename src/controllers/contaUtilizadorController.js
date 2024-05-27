@@ -71,8 +71,8 @@ const getContaUtilizador = async (req, res) => {
 const createContaUtilizador = async (req, res) => {
     try {
         if (
-          (formData.funcionario_id === null || formData.funcionario_id === 0) &&
-          (formData.cliente_id === null || formData.cliente_id === 0)
+          (req.body.funcionario_id === null || req.body.funcionario_id === 0) &&
+          (req.body.cliente_id === null || req.body.cliente_id === 0)
         ){
             return res.status(400).json({ error: 'funcionario_id ou cliente_id é obrigatório' });
         }
