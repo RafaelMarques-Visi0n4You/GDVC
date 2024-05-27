@@ -25,7 +25,7 @@ const getContaUtilizadores = async (req, res) => {
 
 const getContaUtilizadoresEmpresa = async (req, res) => {
     try {
-        const empresaId = req.body.empresa_id;
+        
         const contaUtilizadores = await ContaUtilizador.findAll({
             order: [
                 ['conta_utilizador_id', 'ASC']
@@ -38,7 +38,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     model: funcionarios,
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id: empresaId
+                        empresa_id: req.body.empresa_id
                     },
                     required: true
                 },
@@ -46,7 +46,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     model: Cliente,
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id: empresaId
+                        empresa_id:  req.body.empresa_id
                     },
                     required: true
                 }
