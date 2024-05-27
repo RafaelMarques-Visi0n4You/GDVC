@@ -41,14 +41,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     },
                     required: false 
                 },
-                {
-                    model: Cliente,
-                    attributes: ['nome_completo'],
-                    where: {
-                        empresa_id: req.body.empresa_id
-                    },
-                    required: false
-                }
+                
             ]
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
