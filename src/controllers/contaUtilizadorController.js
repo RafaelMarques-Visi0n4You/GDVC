@@ -170,6 +170,35 @@ const setAcesso = async (req, res) => {
     }
 }
 
+const test = async (req, res) => {
+    try {
+        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id, {
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                {
+                    where :{
+                        empresa_id: req.body.empresa_id,
+
+                  model: funcionarios,
+                  attributes: ['nome_completo'],
+                  include: [
+                    {
+                      model: clientes,
+                      attributes: ['nome_completo']
+                    },
+            ]
+        }}
+    ]});
+
+      
+        res.json({ Status: "Success", contaUtilizador: contaUtilizador });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+   
 export {
     getContaUtilizadores,
     getContaUtilizador,
@@ -178,5 +207,6 @@ export {
     deleteContaUtilizador,
     getContaUtilizadoresEmpresa,
     setAcesso,
-    getcontasclientesempresa
+    getcontasclientesempresa,
+    test
 }
