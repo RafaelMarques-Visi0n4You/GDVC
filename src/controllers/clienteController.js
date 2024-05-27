@@ -86,7 +86,7 @@ const getMyClients = async (req, res) => {
     try {
         const clientes = await Cliente.findAll({
             where: {
-                empresa_id: req.body.id
+                empresa_id: req.body.id || req.body.empresa_id
             }
         });
         res.json({ Status: "Success", clientes: clientes });
