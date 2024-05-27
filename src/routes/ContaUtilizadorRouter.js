@@ -11,7 +11,7 @@ router.put('/update/:id', verificarToken, updateContaUtilizador);
 router.put('/updateToken/:id', updateContaUtilizador);
 router.delete('/delete/:id', verificarToken, deleteContaUtilizador);
 router.put('/setAcesso/:id', verificarToken, setAcesso);
-router.post('/getcontasclientesempresa', getcontasclientesempresa);
+router.get('/getcontasclientesempresa', getcontasclientesempresa);
 
 
 export default router;
