@@ -1,4 +1,4 @@
-import { or, where } from 'sequelize';
+const { Op } = require('sequelize');
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import funcionarios from '../models/funcionarios.js';
 import Cliente from '../models/clientes.js';
@@ -25,7 +25,7 @@ const getContaUtilizadores = async (req, res) => {
 
 const getContaUtilizadoresEmpresa = async (req, res) => {
     try {
-        
+        const empresaId = req.body.empresa_id;
         const contaUtilizadores = await ContaUtilizador.findAll({
             order: [
                 ['conta_utilizador_id', 'ASC']
@@ -38,20 +38,25 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     model: funcionarios,
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id: req.body.empresa_id
+                        empresa_id: empresaId
                     },
-                    required: true
+                    required: true // Certifique-se de que o funcionário pertence à empresa
                 },
                 {
                     model: Cliente,
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id:  req.body.empresa_id
+                        empresa_id: empresaId
                     },
-                    required: true
+                    required: true // Certifique-se de que o cliente pertence à empresa
                 }
             ],
-            
+            where: {
+                [Op.or]: [
+                    { '$funcionarios.empresa_id$': empresaId },
+                    { '$Cliente.empresa_id$': empresaId }
+                ]
+            }
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
     } catch (error) {
