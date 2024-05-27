@@ -25,6 +25,7 @@ const getContaUtilizadores = async (req, res) => {
 
 const getContaUtilizadoresEmpresa = async (req, res) => {
     try {
+        const empresaId = req.body.empresa_id;
         const contaUtilizadores = await ContaUtilizador.findAll({
             order: [
                 ['conta_utilizador_id', 'ASC']
@@ -37,25 +38,32 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     model: funcionarios,
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id: req.body.empresa_id
+                        empresa_id: empresaId
                     },
-                    required: false 
+                    required: false
                 },
                 {
                     model: Cliente,
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id: req.body.empresa_id
+                        empresa_id: empresaId
                     },
                     required: false
                 }
-            ]
+            ],
+            where: {
+                [Op.or]: [
+                    { '$funcionarios.empresa_id$': empresaId },
+                    { '$Cliente.empresa_id$': empresaId }
+                ]
+            }
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
+
 
 const getContaUtilizador = async (req, res) => {
     try {
