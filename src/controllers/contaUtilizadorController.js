@@ -176,11 +176,11 @@ const test = async (req, res) => {
             attributes: {
                 exclude: ['password']
             },
+            where :{
+                empresa_id: req.body.empresa_id,
+           
             include: [
                 {
-                    where :{
-                        empresa_id: req.body.empresa_id,
-
                   model: funcionarios,
                   attributes: ['nome_completo'],
                   include: [
@@ -189,10 +189,10 @@ const test = async (req, res) => {
                       attributes: ['nome_completo']
                     },
             ]
-        }}
-    ]});
-
-      
+        }
+    ]
+}
+        });
         res.json({ Status: "Success", contaUtilizador: contaUtilizador });
     } catch (error) {
         res.status(500).json({ error: error.message });
