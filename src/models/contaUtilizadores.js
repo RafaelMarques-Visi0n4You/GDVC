@@ -14,14 +14,16 @@ const ContaUtilizador = sequelize.define('conta_utilizadores', {
         references: {
             model: 'funcionarios', // Use the name of the table here
             key: 'funcionario_id'
-        }
+        },
+        allowNull: true
     },
     cliente_id: {
         type: DataTypes.INTEGER,
         references: {
             model: 'clientes', // Use the name of the table here
             key: 'cliente_id'
-        }
+        },
+        allowNull: true
     },
     criado_por_id: {
         type: DataTypes.INTEGER,
