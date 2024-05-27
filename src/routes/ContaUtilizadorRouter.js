@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getContaUtilizadores, getContaUtilizador, createContaUtilizador, updateContaUtilizador, deleteContaUtilizador, getContaUtilizadoresEmpresa, setAcesso, getcontasclientesempresa, test } from '../controllers/contaUtilizadorController.js';
+import { getContaUtilizadores, getContaUtilizador, createContaUtilizador, updateContaUtilizador, deleteContaUtilizador, getContaUtilizadoresEmpresa, setAcesso, getcontasclientesempresa, todascontas } from '../controllers/contaUtilizadorController.js';
 import verificarToken from "../middleware/authMiddleware.js";
 
 router.get('/get', getContaUtilizadores);
@@ -12,7 +12,7 @@ router.put('/updateToken/:id', updateContaUtilizador);
 router.delete('/delete/:id', verificarToken, deleteContaUtilizador);
 router.put('/setAcesso/:id', verificarToken, setAcesso);
 router.post('/getcontacliente', getcontasclientesempresa);
-router.post('/test' , test);
+router.post('/todasAsContas' , todascontas);
 
 
 export default router;

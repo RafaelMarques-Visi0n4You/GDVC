@@ -170,7 +170,7 @@ const setAcesso = async (req, res) => {
     }
 }
 
-const test = async (req, res) => {
+const todascontas = async (req, res) => {
     try {
         const contasFuncionarios = await ContaUtilizador.findAll({
             order: [
@@ -240,5 +240,5 @@ export {
     getContaUtilizadoresEmpresa,
     setAcesso,
     getcontasclientesempresa,
-    test
+    todascontas
 }
