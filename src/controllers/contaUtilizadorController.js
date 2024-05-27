@@ -172,28 +172,51 @@ const setAcesso = async (req, res) => {
 
 const test = async (req, res) => {
     try {
-        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id, {
+        const contasFuncionarios = await ContaUtilizador.findAll({
             attributes: {
                 exclude: ['password']
             },
-            where :{
-                empresa_id: req.body.empresa_id,
-           
             include: [
                 {
-                  model: funcionarios,
-                  attributes: ['nome_completo'],
-                  include: [
-                    {
-                      model: clientes,
-                      attributes: ['nome_completo']
-                    },
+                    model: funcionarios,
+                    attributes: ['nome_completo'],
+                    where: { empresa_id: req.body.empresa_id }
+                }
             ]
-        }
-    ]
-}
         });
-        res.json({ Status: "Success", contaUtilizador: contaUtilizador });
+
+        const contasClientes = await ContaUtilizador.findAll({
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                {
+                    model: clientes,
+                    attributes: ['nome_completo'],
+                    where: { empresa_id: req.body.empresa_id }
+                }
+            ]
+        });
+
+        const contadupla = await ContaUtilizador.findAll({
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                {
+                    model: funcionarios,
+                    attributes: ['nome_completo'],
+                    where: { empresa_id: req.body.empresa_id }
+                },
+                {
+                    model: clientes,
+                    attributes: ['nome_completo'],
+                    where: { empresa_id: req.body.empresa_id }
+                }
+            ]
+        });
+
+        res.json({ Status: "Success", contasFuncionarios, contasClientes, contadupla });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
