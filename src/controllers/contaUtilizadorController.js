@@ -1,4 +1,4 @@
-import { where } from 'sequelize';
+import { or, where } from 'sequelize';
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import funcionarios from '../models/funcionarios.js';
 
@@ -25,7 +25,9 @@ const getContaUtilizadores = async (req, res) => {
 const getContaUtilizadoresEmpresa = async (req, res) => {
     try {
         const contaUtilizadores = await ContaUtilizador.findAll({
-           
+            order: [
+                ['conta_utilizador_id', 'ASC']
+            ],
             attributes: {
                 exclude: ['password']
             },
