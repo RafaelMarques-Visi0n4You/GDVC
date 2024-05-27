@@ -39,7 +39,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     where: {
                         empresa_id: req.body.empresa_id
                     },
-                   
+                    required: false 
                 },
                 {
                     model: Cliente,
@@ -47,7 +47,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     where: {
                         empresa_id: req.body.empresa_id
                     },
-                   
+                    required: false
                 }
             ]
         });
