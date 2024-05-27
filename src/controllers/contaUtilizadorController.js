@@ -1,7 +1,7 @@
 import { or, where } from 'sequelize';
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import funcionarios from '../models/funcionarios.js';
-import Cliente from '../models/clientes.js';
+import clientes from '../models/clientes.js';
 
 const getContaUtilizadores = async (req, res) => {
     try {
@@ -60,8 +60,7 @@ const getcontasclientesempresa = async (req, res) => {
             },
             include: [
                 {
-                    model: Cliente,
-                   
+                    model: clientes,
                     attributes: ['nome_completo'],
                     where: {
                         empresa_id: req.body.empresa_id
