@@ -40,7 +40,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     where: {
                         empresa_id: empresaId
                     },
-                    required: true // Certifique-se de que o funcionário pertence à empresa
+                    required: false // Certifique-se de que o funcionário pertence à empresa
                 },
                 {
                     model: Cliente,
@@ -48,7 +48,7 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
                     where: {
                         empresa_id: empresaId
                     },
-                    required: true // Certifique-se de que o cliente pertence à empresa
+                    required: false // Certifique-se de que o cliente pertence à empresa
                 }
             ],
             where: {
