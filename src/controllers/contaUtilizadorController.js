@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+import { or, where } from 'sequelize';
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import funcionarios from '../models/funcionarios.js';
 import Cliente from '../models/clientes.js';
@@ -25,7 +25,6 @@ const getContaUtilizadores = async (req, res) => {
 
 const getContaUtilizadoresEmpresa = async (req, res) => {
     try {
-        const empresaId = req.body.empresa_id;
         const contaUtilizadores = await ContaUtilizador.findAll({
             order: [
                 ['conta_utilizador_id', 'ASC']
@@ -36,27 +35,13 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
             include: [
                 {
                     model: funcionarios,
+                   
                     attributes: ['nome_completo'],
                     where: {
-                        empresa_id: empresaId
-                    },
-                    required: false // Certifique-se de que o funcionário pertence à empresa
+                        empresa_id: req.body.empresa_id
+                    }
                 },
-                {
-                    model: Cliente,
-                    attributes: ['nome_completo'],
-                    where: {
-                        empresa_id: empresaId
-                    },
-                    required: false // Certifique-se de que o cliente pertence à empresa
-                }
             ],
-            where: {
-                [Op.or]: [
-                    { '$funcionarios.empresa_id$': empresaId },
-                    { '$Cliente.empresa_id$': empresaId }
-                ]
-            }
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
     } catch (error) {
@@ -64,6 +49,31 @@ const getContaUtilizadoresEmpresa = async (req, res) => {
     }
 }
 
+const getcontasclientesempresa = async (req, res) => {
+    try {
+        const contaUtilizadores = await ContaUtilizador.findAll({
+            order: [
+                ['conta_utilizador_id', 'ASC']
+            ],
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                {
+                    model: Cliente,
+                   
+                    attributes: ['nome_completo'],
+                    where: {
+                        empresa_id: req.body.empresa_id
+                    }
+                },
+            ],
+        });
+        res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 const getContaUtilizador = async (req, res) => {
     try {
@@ -167,5 +177,6 @@ export {
     updateContaUtilizador,
     deleteContaUtilizador,
     getContaUtilizadoresEmpresa,
-    setAcesso
+    setAcesso,
+    getcontasclientesempresa
 }
