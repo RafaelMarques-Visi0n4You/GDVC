@@ -58,6 +58,16 @@ const getcontasclientesempresa = async (req, res) => {
             attributes: {
                 exclude: ['password']
             },
+            include: [
+                {
+                    model: Cliente,
+                   
+                    attributes: ['nome_completo'],
+                    where: {
+                        empresa_id: req.body.empresa_id
+                    }
+                },
+            ],
            
         });
         res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
