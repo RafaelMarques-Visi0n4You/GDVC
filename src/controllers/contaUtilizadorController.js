@@ -114,11 +114,29 @@ const deleteContaUtilizador = async (req, res) => {
     }
 }
 
+const setAcesso = async (req, res) => {
+    try {
+        const acesso = await ContaUtilizador.findByPk(req.params.id);
+        if (!acesso) {
+            res.status(404).json({ error: "ContaUtilizador não encontrado" });
+        } else {
+            const updateAcesso = !acesso.ativo ? 1 : 0;
+            acesso.ativo = updateAcesso;
+            await acesso.save();
+            res.json(updateAcesso);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 export {
     getContaUtilizadores,
     getContaUtilizador,
     createContaUtilizador,
     updateContaUtilizador,
     deleteContaUtilizador,
-    getContaUtilizadoresEmpresa
+    getContaUtilizadoresEmpresa,
+    setAcesso
 }
