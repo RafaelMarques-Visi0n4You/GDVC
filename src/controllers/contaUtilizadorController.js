@@ -21,6 +21,26 @@ const getContaUtilizadores = async (req, res) => {
     }
 }
 
+const getContaUtilizadoresEmpresa = async (req, res) => {
+    try {
+        const contaUtilizadores = await ContaUtilizador.findAll({
+            where: { empresa_id: req.params.empresa_id },
+            attributes: {
+                exclude: ['password']
+            },
+            include: [
+                {
+                    model: funcionarios,
+                    attributes: ['nome_completo'],
+                },
+            ]
+        });
+        res.json({ Status: "Success", contaUtilizadores: contaUtilizadores });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 const getContaUtilizador = async (req, res) => {
     try {
         const contaUtilizador = await ContaUtilizador.findByPk(req.params.id, {
@@ -94,5 +114,6 @@ export {
     getContaUtilizador,
     createContaUtilizador,
     updateContaUtilizador,
-    deleteContaUtilizador
+    deleteContaUtilizador,
+    getContaUtilizadoresEmpresa
 }
