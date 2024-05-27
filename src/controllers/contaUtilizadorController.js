@@ -76,6 +76,10 @@ const createContaUtilizador = async (req, res) => {
         ){
             return res.status(400).json({ error: 'funcionario_id ou cliente_id é obrigatório' });
         }
+        if (
+            (req.body.funcionario_id !== null || req.body.funcionario_id !== 0) &&
+            (req.body.cliente_id !== null || req.body.cliente_id !== 0)
+          ){
         const contaUtilizador = await ContaUtilizador.create(req.body, {
             attributes: {
                 exclude: ['password']
@@ -83,7 +87,7 @@ const createContaUtilizador = async (req, res) => {
         }
         );
         res.json({ Status: "Success", contaUtilizador: contaUtilizador });
-    } catch (error) {
+    } }catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
