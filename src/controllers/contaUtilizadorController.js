@@ -173,6 +173,9 @@ const setAcesso = async (req, res) => {
 const test = async (req, res) => {
     try {
         const contasFuncionarios = await ContaUtilizador.findAll({
+            order: [
+                ['conta_utilizador_id', 'ASC']
+            ],
             attributes: {
                 exclude: ['password']
             },
@@ -186,6 +189,9 @@ const test = async (req, res) => {
         });
 
         const contasClientes = await ContaUtilizador.findAll({
+            order: [
+                ['conta_utilizador_id', 'ASC']
+            ],
             attributes: {
                 exclude: ['password']
             },
@@ -199,6 +205,9 @@ const test = async (req, res) => {
         });
 
         const contadupla = await ContaUtilizador.findAll({
+            order: [
+                ['conta_utilizador_id', 'ASC']
+            ],
             attributes: {
                 exclude: ['password']
             },
