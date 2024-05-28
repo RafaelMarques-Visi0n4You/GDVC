@@ -81,7 +81,7 @@ const createResponsavelDepartamento = async (req, res) => {
         });
     
         return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
-    } else {
+    } if(!req.body.funcionario_id in ContaUtilizador) {
         const create = await ContaUtilizador.create({
             funcionario_id: req.body.funcionario_id,
             tipo_utilizador: "nivel3"
