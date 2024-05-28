@@ -146,6 +146,7 @@ const updateContaUtilizador = async (req, res) => {
         );
         if (contaUtilizador) {
             contaUtilizador.update({
+                where: { conta_utilizador_id: req.params.id },
                 email: req.body.email,
                 tipo_utilizador: req.body.tipo_utilizador,
                 funcionario_id: req.body.funcionario_id,
