@@ -1,6 +1,7 @@
 import ResponsavelDepartamento from '../models/responsavelDepartamento.js';
 import Funcionario from '../models/funcionarios.js';
 import Departamento from '../models/departamentos.js';
+import ContaUtilizador from '../models/contaUtilizadores.js';
 
 
 const getResponsavelDepartamentos = async (req, res) => {
@@ -73,11 +74,24 @@ const getresponvalpordepartamento = async (req, res) => {
 const createResponsavelDepartamento = async (req, res) => {
     try {
         const departamento = await Departamento.create(req.body);
+        if(req.body.funcionario_id in ContaUtilizador && ContaUtilizador.tipo_utilizador == "nivel3"){
         const responsavelDepartamento = await ResponsavelDepartamento.create({
             departamento_id: departamento.departamento_id,
             funcionario_id: req.body.funcionario_id
         });
+    
         return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+    } else {
+        const create = await ContaUtilizador.create({
+            funcionario_id: req.body.funcionario_id,
+            tipo_utilizador: "nivel3"
+        });
+        const responsavel = await ResponsavelDepartamento.create({
+            departamento_id: departamento.departamento_id,
+            funcionario_id: create.funcionario_id
+        });
+        return res.json({ Status: "Success", responsavel: responsavel });
+    }
     } catch (error) {
         return res.json({ Error: error });
     }
