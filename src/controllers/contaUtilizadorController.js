@@ -145,13 +145,13 @@ const updateContaUtilizador = async (req, res) => {
         }
         );
         if (contaUtilizador) {
-            contaUtilizador.update({
+            ContaUtilizador.update({
                 email: req.body.email,
                 tipo_utilizador: req.body.tipo_utilizador,
                 funcionario_id: req.body.funcionario_id,
                 cliente_id: req.body.cliente_id,
             });
-            await contaUtilizador.reload();
+            await ContaUtilizador.reload();
             res.json({ Status: "Success", contaUtilizador: contaUtilizador });
         } else {
             res.status(404).json({ error: "ContaUtilizador não encontrado" });
