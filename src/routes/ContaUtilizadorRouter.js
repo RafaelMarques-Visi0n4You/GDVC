@@ -4,7 +4,7 @@ import { getContaUtilizadores, getContaUtilizador, createContaUtilizador, update
 import verificarToken from "../middleware/authMiddleware.js";
 
 router.get('/get', getContaUtilizadores);
-router.get('/get/:criado_por_id', getContaUtilizador);
+router.get('/get/:id', getContaUtilizador);
 router.post('/getByEmpresa', getContaUtilizadoresEmpresa);
 router.post('/create', createContaUtilizador);
 router.put('/update/:id', verificarToken, updateContaUtilizador);
