@@ -2,6 +2,7 @@ import { or, where } from 'sequelize';
 import ContaUtilizador from '../models/contaUtilizadores.js';
 import funcionarios from '../models/funcionarios.js';
 import clientes from '../models/clientes.js';
+import { reset } from 'nodemon';
 
 const getContaUtilizadores = async (req, res) => {
     try {
@@ -95,6 +96,7 @@ const getContaUtilizador = async (req, res) => {
     }
 }
 
+
 const createContaUtilizador = async (req, res) => {
     try {
         if (
@@ -107,7 +109,20 @@ const createContaUtilizador = async (req, res) => {
             (req.body.funcionario_id !== null || req.body.funcionario_id !== 0) &&
             (req.body.cliente_id !== null || req.body.cliente_id !== 0)
           ){
-        const contaUtilizador = await ContaUtilizador.create(req.body, {
+
+        const { email, password } = req.body;
+
+        const hashedPassword = await bcrypt.hash(password.toString(), 10);
+
+        const contaUtilizador = await ContaUtilizador.create({
+            email : email,
+            password : hashedPassword,
+            tipo_utilizador : req.body.tipo_utilizador,
+            reset : 0,
+            funcionario_id : req.body.funcionario_id,
+            cliente_id : req.body.cliente_id,
+            criado_por_id : req.body.conta_utilizador_id,
+        }, {
             attributes: {
                 exclude: ['password']
             }
