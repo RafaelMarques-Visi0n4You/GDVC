@@ -145,12 +145,7 @@ const updateContaUtilizador = async (req, res) => {
         }
         );
         if (contaUtilizador) {
-            contaUtilizador.update({
-                email: req.body.email,
-                tipo_utilizador: req.body.tipo_utilizador,
-                funcionario_id: req.body.funcionario_id,
-                cliente_id: req.body.cliente_id,
-            });
+            contaUtilizador.update(req.body);
             await contaUtilizador.reload();
             res.json({ Status: "Success", contaUtilizador: contaUtilizador });
         } else {
