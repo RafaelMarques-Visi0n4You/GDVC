@@ -100,7 +100,7 @@ const getContaUtilizador = async (req, res) => {
 
 const createContaUtilizador = async (req, res) => {
     try {
-        const  {password } = req.body;
+        const  {password } = req.body.password;
 
         const hashedPassword = await bcrypt.hash(password.toString(), 10);
         if (
