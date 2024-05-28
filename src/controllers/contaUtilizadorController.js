@@ -102,7 +102,7 @@ const createContaUtilizador = async (req, res) => {
     try {
         const {password } = req.body.password;
 
-        const hashedPassword = await bcrypt.hash(password.toString(), 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         if (
           (req.body.funcionario_id === null || req.body.funcionario_id === 0) &&
           (req.body.cliente_id === null || req.body.cliente_id === 0)
