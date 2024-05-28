@@ -7,7 +7,7 @@ router.get('/get', getContaUtilizadores);
 router.get('/get/:id', getContaUtilizador);
 router.post('/getByEmpresa', getContaUtilizadoresEmpresa);
 router.post('/create', createContaUtilizador);
-router.put('/update/:id', updateContaUtilizador);
+router.put('/update/:id',verificarToken, updateContaUtilizador);
 router.put('/updateToken/:id', updateContaUtilizador);
 router.delete('/delete/:id', verificarToken, deleteContaUtilizador);
 router.put('/setAcesso/:id', verificarToken, setAcesso);
