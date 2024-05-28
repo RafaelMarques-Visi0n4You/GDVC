@@ -3,6 +3,7 @@ import ContaUtilizador from '../models/contaUtilizadores.js';
 import funcionarios from '../models/funcionarios.js';
 import clientes from '../models/clientes.js';
 import { reset } from 'nodemon';
+import bcrypt from 'bcrypt';
 
 const getContaUtilizadores = async (req, res) => {
     try {
