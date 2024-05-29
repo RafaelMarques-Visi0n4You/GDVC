@@ -73,27 +73,71 @@ const getresponvalpordepartamento = async (req, res) => {
 
 const createResponsavelDepartamento = async (req, res) => {
     try {
-        const departamento = await Departamento.create(req.body);
-        if(req.body.funcionario_id in ContaUtilizador && ContaUtilizador.tipo_utilizador == "nivel3"){
-        const responsavelDepartamento = await ResponsavelDepartamento.create({
-            departamento_id: departamento.departamento_id,
-            funcionario_id: req.body.funcionario_id
+        
+
+        
+        const departamento = await Departamento.create({
+            empresa_id: req.body.empresa_id,
+            nome: req.body.nome
         });
-    
-        return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
-    } if(!req.body.funcionario_id in ContaUtilizador) {
-        const create = await ContaUtilizador.create({
-            funcionario_id: req.body.funcionario_id,
-            tipo_utilizador: "nivel3"
+
+        
+        
+        const contaUtilizadorExistente = await ContaUtilizador.findOne({
+            where: {
+                funcionario_id: req.body.funcionario_id
+            }
         });
-        const responsavel = await ResponsavelDepartamento.create({
-            departamento_id: departamento.departamento_id,
-            funcionario_id: create.funcionario_id
-        });
-        return res.json({ Status: "Success", responsavel: responsavel });
-    }
+        
+        if (contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel3" ) {
+          
+           
+            const responsavelDepartamento = await ResponsavelDepartamento.create({
+                departamento_id: departamento.departamento_id,
+                funcionario_id: req.body.funcionario_id
+            });
+            
+           
+
+            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+        } else {
+            
+            let contaUtilizador;
+            const email = await Funcionario.findOne({
+                where: {
+                    funcionario_id: req.body.funcionario_id
+                }
+            });
+            if (!contaUtilizadorExistente) {
+                contaUtilizador = await ContaUtilizador.create({
+                    funcionario_id: req.body.funcionario_id,
+                    tipo_utilizador: "nivel3",
+                    email: email.email,
+                    password: req.body.password
+                });
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
+               
+
+                
+                contaUtilizador = await ContaUtilizador.update(
+                    { 
+                        tipo_utilizador: "nivel3" 
+                    },
+                    { where: { funcionario_id: req.body.funcionario_id } }
+                );
+            }
+            
+            
+            const responsavelDepartamento = await ResponsavelDepartamento.create({
+                departamento_id: departamento.departamento_id,
+                funcionario_id: req.body.funcionario_id
+            });
+        
+            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+        }
+        
     } catch (error) {
-        return res.json({ Error: error });
+        return res.json({ Error: error.message });
     }
 }
 
