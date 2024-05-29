@@ -75,7 +75,7 @@ const createResponsavelDepartamento = async (req, res) => {
     try {
         
 
-        
+
         const departamento = await Departamento.create({
             empresa_id: req.body.empresa_id,
             nome: req.body.nome
@@ -142,22 +142,77 @@ const createResponsavelDepartamento = async (req, res) => {
 }
 
 const updateResponsavelDepartamento = async (req, res) => {
-    try {
-        const responsavelDepartamento = await ResponsavelDepartamento.findAll({
+    try{
+
+        const contaUtilizadorExistente = await ContaUtilizador.findOne({
             where: {
-                departamento_id: req.body.departamento_id,
-                funcionario_id: req.params.funcionario_id,
+                funcionario_id: req.body.funcionario_id,
             }
         });
-        if (!responsavelDepartamento) {
-            return res.json({ Error: "ResponsavelDepartamento não encontrado" });
+        
+        if (contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel3" ) {
+          
+           
+            const responsavelDepartamento = await ResponsavelDepartamento.findAll({
+                where: {
+                    departamento_id: req.body.departamento_id,
+                    funcionario_id: req.body.funcionario_id,
+                }
+            });
+
+            if (!responsavelDepartamento) {
+                return res.json({ Error: "ResponsavelDepartamento não encontrado" });
+            }
+            await ResponsavelDepartamento.update(req.body);
+            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+
+        } else {
+    
+            let contaUtilizador;
+            const email = await Funcionario.findOne({
+                where: {
+                    funcionario_id: req.body.funcionario_id,
+                }
+            });
+            if (!contaUtilizadorExistente) {
+                contaUtilizador = await ContaUtilizador.create({
+                    funcionario_id: req.body.funcionario_id,
+                    tipo_utilizador: "nivel3",
+                    email: email.email,
+                    password: req.body.password
+                });
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
+               
+
+                
+                contaUtilizador = await ContaUtilizador.update(
+                    { 
+                        tipo_utilizador: "nivel3" 
+                    },
+                    { where: { funcionario_id: req.body.funcionario_id } }
+                );
+            }
+            
+            
+            const responsavelDepartamento = await ResponsavelDepartamento.findAll({
+                where: {
+                    departamento_id: req.body.departamento_id,
+                    funcionario_id: req.body.funcionario_id,
+                }
+            });
+            if (!responsavelDepartamento) {
+                return res.json({ Error: "ResponsavelDepartamento não encontrado" });
+            }
+            await ResponsavelDepartamento.update(req.body);
+            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
         }
-        await ResponsavelDepartamento.update(req.body);
-        return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+        
     } catch (error) {
-        return res.json({ Error: error });
+        return res.json({ Error: error.message });
     }
 }
+
+
 
 const deleteResponsavelDepartamento = async (req, res) => {
     try {
