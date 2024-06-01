@@ -79,7 +79,7 @@ const getcontasclientesempresa = async (req, res) => {
 
 const getContaUtilizador = async (req, res) => {
     try {
-        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id, {
+        const contaUtilizador = await ContaUtilizador.findByPk(req.params.id || req.params.criado_por_id, {
             attributes: {
                 exclude: ['password']
             },

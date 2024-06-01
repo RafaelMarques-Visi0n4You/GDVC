@@ -44,15 +44,12 @@ const getFuncionariosChefeEquipa = async (req, res) => {
 
 const getchefedetails = async (req, res) => {
     try{
-        const chefe = await ChefeEquipa.findOne({
-            where: {
-                equipa_id: req.body.equipa_id 
-            }
-        });
+        
 
-        const funcionario = await Funcionario.findOne({
+        const funcionario = await Funcionario.findAll({
             where: {
-                funcionario_id: chefe.funcionario_id
+                funcionario_id: chefe.funcionario_id,
+                equipa_id: req.body.equipa_id,
             }
         });
 
