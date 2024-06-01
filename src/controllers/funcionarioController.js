@@ -42,6 +42,27 @@ const getFuncionariosChefeEquipa = async (req, res) => {
     }
 }
 
+const getchefedetails = async (req, res) => {
+    try{
+        const chefe = await ChefeEquipa.findOne({
+            where: {
+                equipa_id: req.body.equipa_id 
+            }
+        });
+
+        const funcionario = await Funcionario.findOne({
+            where: {
+                funcionario_id: chefe.funcionario_id
+            }
+        });
+
+        res.json({Status: "Success", funcionario: funcionario, chefe: chefe});
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
+
 const getReponsvaelDepartamento = async (req, res) => {
     try {
         const responsavelDepartamento = await Funcionario.findAll({
@@ -160,5 +181,6 @@ export {
     getFuncionariosChefeEquipa,
     getfuncionariosequipa,
     getReponsvaelDepartamento,
-    setAcesso
+    setAcesso,
+    getchefedetails
 }
