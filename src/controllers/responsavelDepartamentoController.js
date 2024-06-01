@@ -2,6 +2,7 @@ import ResponsavelDepartamento from '../models/responsavelDepartamento.js';
 import Funcionario from '../models/funcionarios.js';
 import Departamento from '../models/departamentos.js';
 import ContaUtilizador from '../models/contaUtilizadores.js';
+import bcrypt from 'bcrypt';
 
 
 const getResponsavelDepartamentos = async (req, res) => {
@@ -50,23 +51,173 @@ const getresponvalpordepartamento = async (req, res) => {
                 departamento_id: req.body.departamento_id || req.body.id
             }
         });
+        const contaUtilizadorExistente = await ContaUtilizador.findOne({
+            where: {
+                funcionario_id: req.body.funcionario_id
+            }
+        });
+        
 
         if (responsaveldepartamento.length == 0) {
-            console.log("entrou")
-            const create = await ResponsavelDepartamento.create({
+        console.log("ResponsavelDepartamento não encontrado");
+       
+
+        
+       
+      
+        if (contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel3" ) {
+           
+           
+            const responsavelDepartamento = await ResponsavelDepartamento.create({
                 departamento_id: req.body.departamento_id,
                 funcionario_id: req.body.funcionario_id
             });
-            if (!create)
-                return res.json({ Error: "Erro ao criar responsavel departamento" });
-            return res.json({ Status: "Success", create: create });
+            
+            console.log("ResponsavelDepartamento criado com sucesso");
+
+            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+        } else {
+            console.log("ContaUtilizador não existe ou não é do tipo 'nivel3'");
+            let contaUtilizador;
+            const email = await Funcionario.findOne({
+                where: {
+                    funcionario_id: req.body.funcionario_id
+                }
+            });
+            const password = "1234567";
+            const hashedPassword = await bcrypt.hash(password.toString(), 10);
+            if (!contaUtilizadorExistente) {
+                contaUtilizador = await ContaUtilizador.create({
+                    funcionario_id: req.body.funcionario_id,
+                    tipo_utilizador: "nivel3",
+                    email: email.email,
+                    password: hashedPassword,
+                });
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
+                // Atualizar o tipo_utilizador para "nivel3" se a conta existir mas não for "nivel3"
+
+                console.log("ContaUtilizador existe mas não é do tipo 'nivel3'");
+                contaUtilizador = await ContaUtilizador.update(
+                    { 
+                        tipo_utilizador: "nivel3" 
+                    },
+                    { where: { funcionario_id: req.body.funcionario_id } }
+                );
+            }
+            
+            // Criar o ResponsavelDepartamento
+            const responsavelDepartamento = await ResponsavelDepartamento.create({
+                departamento_id: req.body.departamento_id,
+                funcionario_id: req.body.funcionario_id
+            });
+        
+            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
         }
-        return res.json({ Status: "Existe", responsaveldepartamento: responsaveldepartamento });
+    }
+    return res.json({ Status: "Existe", responsaveldepartamento: responsaveldepartamento });
     } catch (error) {
-        return res.json({ Error: error });
+        return res.json({ Error: error.message });
     }
 }
 
+const verficarresponsavel = async (req, res) => {
+    try {
+        if(req.body.funcionario_id){
+           
+            const contaUtilizadorExistente = await ContaUtilizador.findOne({
+                where: {
+                    funcionario_id: req.body.funcionario_id
+                }
+            });
+            if(!contaUtilizadorExistente){
+                const departamento = await Departamento.create({
+                    empresa_id: req.body.empresa_id,
+                    nome: req.body.nome
+                });
+                return res.json({ Error: "Conta de utilizador não existe", departamento: departamento});
+            }
+            if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3"){
+                
+                const contaUtilizador = await ContaUtilizador.update(
+                    { 
+                        tipo_utilizador: "nivel3" 
+                    },
+                    { where: { funcionario_id: req.body.funcionario_id } }
+                );
+
+                if(contaUtilizador){
+
+                    const departamento = await Departamento.create({
+                        empresa_id: req.body.empresa_id,
+                        nome: req.body.nome});
+
+                    const responsavelDepartamento = await ResponsavelDepartamento.create({
+                        departamento_id: departamento.departamento_id,
+                        funcionario_id: req.body.funcionario_id
+                    });
+
+                    if(responsavelDepartamento)
+                        return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+                }
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel3"){
+
+                const departamento = await Departamento.create({
+                    empresa_id: req.body.empresa_id,
+                    nome: req.body.nome
+                });
+
+                const responsavelDepartamento = await ResponsavelDepartamento.create({
+                    departamento_id: departamento.departamento_id,
+                    funcionario_id: req.body.funcionario_id
+                });
+                return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+            }
+        }
+            else {
+                if(req.body.funcionario_id === null){
+                   
+                const departamento = await Departamento.create({
+                    empresa_id: req.body.empresa_id,
+                    nome: req.body.nome
+                });
+                return res.json({ Status: "Success", departamento: departamento });
+            }
+        }
+        } catch (error) {
+            return res.json({ Error: error.message });
+        }
+    }
+
+    const criarcontautilizador = async (req, res) => {
+        try {
+    
+            const  {password } = req.body;
+    
+            const hashedPassword = await bcrypt.hash(password.toString(), 10);
+            console.log("rotaaqui");
+                const contaUtilizador = await ContaUtilizador.create({
+                    funcionario_id: req.body.funcionario_id,
+                    tipo_utilizador: "nivel3",
+                    email: req.body.email,
+                    password: hashedPassword
+                });    
+    
+                if(contaUtilizador)
+                    {
+                        const responsavelDepartamento = await ResponsavelDepartamento.create({
+                            departamento_id: req.body.departamento_id,
+                            funcionario_id: req.body.funcionario_id
+                        });
+                        if(responsavelDepartamento)
+                            return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
+                    }
+    
+                return res.json({ Status: "Success", contaUtilizador: contaUtilizador });
+            } catch (error) {
+                return res.json({ Error: error.message });
+            }
+    
+        }
 
 
 
@@ -88,6 +239,8 @@ const createResponsavelDepartamento = async (req, res) => {
                 funcionario_id: req.body.funcionario_id
             }
         });
+
+
         
         if (contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel3" ) {
           
@@ -103,16 +256,12 @@ const createResponsavelDepartamento = async (req, res) => {
         } else {
             
             let contaUtilizador;
-            const email = await Funcionario.findOne({
-                where: {
-                    funcionario_id: req.body.funcionario_id
-                }
-            });
+            
             if (!contaUtilizadorExistente) {
                 contaUtilizador = await ContaUtilizador.create({
                     funcionario_id: req.body.funcionario_id,
                     tipo_utilizador: "nivel3",
-                    email: email.email,
+                    email: req.body.email,
                     password: req.body.password
                 });
             } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
@@ -150,36 +299,47 @@ const updateResponsavelDepartamento = async (req, res) => {
             }
         });
         
+        
         if (contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel3" ) {
           
-           
-            const responsavelDepartamento = await ResponsavelDepartamento.findAll({
-                where: {
-                    departamento_id: req.body.departamento_id,
-                    funcionario_id: req.body.funcionario_id,
-                }
-            });
-
+           console.log("ContaUtilizador já existe e é do tipo 'nivel3aaaa");
+           const responsavelDepartamento = await ResponsavelDepartamento.findOne({
+            where: {
+                departamento_id: req.body.departamento_id || req.body.id
+            }
+        });
+        
             if (!responsavelDepartamento) {
                 return res.json({ Error: "ResponsavelDepartamento não encontrado" });
             }
-            await ResponsavelDepartamento.update(req.body);
+           
+            await ResponsavelDepartamento.update(req.body, {
+                where: {
+                    departamento_id: req.body.departamento_id || req.body.id,
+                    
+                }
+            });
             return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
 
         } else {
-    
-            let contaUtilizador;
-            const email = await Funcionario.findOne({
+            console.log("ContaUtilizador não existe ou não é do tipo 'nivel3'");
+
+           const  email = await Funcionario.findOne({
                 where: {
-                    funcionario_id: req.body.funcionario_id,
+                    funcionario_id: req.body.funcionario_id
                 }
             });
+            
+            let contaUtilizador;
+            const password = "1234567";
+            const hashedPassword = await bcrypt.hash(password.toString(), 10);
+            
             if (!contaUtilizadorExistente) {
                 contaUtilizador = await ContaUtilizador.create({
                     funcionario_id: req.body.funcionario_id,
                     tipo_utilizador: "nivel3",
                     email: email.email,
-                    password: req.body.password
+                    password: hashedPassword,
                 });
             } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
                
@@ -194,16 +354,20 @@ const updateResponsavelDepartamento = async (req, res) => {
             }
             
             
-            const responsavelDepartamento = await ResponsavelDepartamento.findAll({
+            const responsavelDepartamento = await ResponsavelDepartamento.findOne({
                 where: {
-                    departamento_id: req.body.departamento_id,
-                    funcionario_id: req.body.funcionario_id,
+                    departamento_id: req.body.departamento_id || req.body.id
                 }
             });
             if (!responsavelDepartamento) {
                 return res.json({ Error: "ResponsavelDepartamento não encontrado" });
             }
-            await ResponsavelDepartamento.update(req.body);
+            await ResponsavelDepartamento.update(req.body, {
+                where: {
+                    departamento_id: req.body.departamento_id || req.body.id,
+                    
+                }
+            });
             return res.json({ Status: "Success", responsavelDepartamento: responsavelDepartamento });
         }
         
@@ -232,7 +396,9 @@ const deleteResponsavelDepartamento = async (req, res) => {
     }
 }
 
-const getResponsavel = async (req, res) => {
+
+
+const getresponsaveldetails = async (req, res) => {
     try {
         const responsaveldepartamento = await ResponsavelDepartamento.findAll({
             include: [
@@ -267,6 +433,9 @@ export {
     updateResponsavelDepartamento,
     deleteResponsavelDepartamento,
     getresponvalpordepartamento,
-    getResponsavel
+    
+    getresponsaveldetails,
+    verficarresponsavel,
+    criarcontautilizador
 }
 

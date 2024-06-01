@@ -1,5 +1,6 @@
 import Funcionario from '../models/funcionarios.js';
 import equipa from '../models/equipas.js';
+import ChefeEquipa from '../models/chefeEquipa.js';
 
 const getFuncionarios = async (req, res) => {
     try {
@@ -37,6 +38,27 @@ const getFuncionariosChefeEquipa = async (req, res) => {
         });
         res.json({ Status: "Success", funcionarios: funcionarios });
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+const getchefedetails = async (req, res) => {
+    try{
+        const chefe = await ChefeEquipa.findOne({
+            where: {
+                equipa_id: req.body.equipa_id 
+            }
+        });
+
+        const funcionario = await Funcionario.findOne({
+            where: {
+                funcionario_id: chefe.funcionario_id
+            }
+        });
+
+        res.json({Status: "Success", funcionario: funcionario, chefe: chefe});
+    }
+    catch(error){
         res.status(500).json({ error: error.message });
     }
 }
@@ -89,10 +111,25 @@ const createFuncionario = async (req, res) => {
 
 const updateFuncionario = async (req, res) => {
     try {
+
+        const chefeequipa = await ChefeEquipa.findAll({
+            where: {
+                    funcionario_id: req.params.id
+            }
+        })
+        console.log(chefeequipa);
+
         const funcionario = await Funcionario.findByPk(req.params.id);
         if (funcionario) {
             const updatedfuncionario = await Funcionario.update(req.body, {
                 where: { funcionario_id: req.params.id }
+            });
+            if(chefeequipa)
+                ChefeEquipa.destroy({
+                where: {
+                    funcionario_id: req.params.id
+                }
+            
             });
             res.json({ Status: "Success", funcionario: updatedfuncionario });
         } else {
@@ -144,5 +181,6 @@ export {
     getFuncionariosChefeEquipa,
     getfuncionariosequipa,
     getReponsvaelDepartamento,
-    setAcesso
+    setAcesso,
+    getchefedetails
 }
