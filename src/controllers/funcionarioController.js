@@ -1,5 +1,6 @@
 import Funcionario from '../models/funcionarios.js';
 import equipa from '../models/equipas.js';
+import ChefeEquipa from '../models/chefeEquipa.js';
 
 const getFuncionarios = async (req, res) => {
     try {
@@ -89,10 +90,25 @@ const createFuncionario = async (req, res) => {
 
 const updateFuncionario = async (req, res) => {
     try {
+
+        const chefeequipa = await ChefeEquipa.findAll({
+            where: {
+                    funcionario_id: req.params.id
+            }
+        })
+        console.log(chefeequipa);
+
         const funcionario = await Funcionario.findByPk(req.params.id);
         if (funcionario) {
             const updatedfuncionario = await Funcionario.update(req.body, {
                 where: { funcionario_id: req.params.id }
+            });
+            if(chefeequipa)
+                ChefeEquipa.destroy({
+                where: {
+                    funcionario_id: req.params.id
+                }
+            
             });
             res.json({ Status: "Success", funcionario: updatedfuncionario });
         } else {
