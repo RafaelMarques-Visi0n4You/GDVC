@@ -396,7 +396,9 @@ const deleteResponsavelDepartamento = async (req, res) => {
     }
 }
 
-const getResponsavel = async (req, res) => {
+
+
+const getresponsaveldetails = async (req, res) => {
     try {
         const responsaveldepartamento = await ResponsavelDepartamento.findAll({
             include: [
@@ -431,7 +433,8 @@ export {
     updateResponsavelDepartamento,
     deleteResponsavelDepartamento,
     getresponvalpordepartamento,
-    getResponsavel,
+    
+    getresponsaveldetails,
     verficarresponsavel,
     criarcontautilizador
 }
