@@ -14,9 +14,9 @@ const setupSocket = (server) => {
     io = new Server(server, {
         cors: {
             // origin: [process.env.HOST]
-            // origin: ['http://192.168.1.193:3000']
+            // origin: ['http://192.168.1.240:3000']
             origin: ["https://gdvc.onrender.com"]
-            
+
         }
     });
 
@@ -50,6 +50,7 @@ async function sendPushNotification(departamento, message) {
             where: { funcionario_id: funcionario.funcionario_id }
         });
 
+
         let messages = [];
         if (!Expo.isExpoPushToken(contaUtilizador.notification)) {
             console.error(`O token ${contaUtilizador.notification} não é válido.`);
@@ -59,11 +60,14 @@ async function sendPushNotification(departamento, message) {
         messages.push({
             to: contaUtilizador.notification,
             sound: 'default',
+            title: 'Gestão de Visitas',
             body: message,
             data: { message },
             priority: 'high',
             contentAvailable: true,
         });
+
+
 
         let chunks = expo.chunkPushNotifications(messages);
         let tickets = [];
