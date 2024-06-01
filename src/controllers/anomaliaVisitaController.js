@@ -34,7 +34,7 @@ const createAnomaliaVisita = async (req, res) => {
     try {
         let fotografiaUrl = 'null'; // Definir o valor padrão como 'null'
         if (req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
+            const result = await cloudinary.uploader.upload(req.file.path, { //
                 resource_type: 'auto',
                 secure: true
             });
@@ -52,6 +52,7 @@ const createAnomaliaVisita = async (req, res) => {
 
         return res.json({ status: "Success", anomaliaVisita: anomaliaVisita });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: error.message });
     }
 }

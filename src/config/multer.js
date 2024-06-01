@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
 
@@ -23,6 +23,11 @@ const storage = new CloudinaryStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+// const upload =  multer({ storage: storage });
+
+//want a console log 
+
+const upload = multer({ storage: storage }).single('foto');
+
 
 export default upload;
