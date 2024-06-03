@@ -4,7 +4,7 @@ import { getEmpresas, getEmpresaById, createEmpresa, updateEmpresa, deleteEmpres
 import verificarToken from '../middleware/authMiddleware.js';
 
 
-router.post('/get', verificarToken, getEmpresas);
+router.post('/get', getEmpresas);
 router.get('/get/:id', getEmpresaById);
 router.post('/create', verificarToken, createEmpresa);
 router.put('/update/:id', verificarToken, updateEmpresa);
