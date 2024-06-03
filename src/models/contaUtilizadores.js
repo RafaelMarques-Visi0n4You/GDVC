@@ -1,5 +1,5 @@
 import { sequelize } from '../config/sequelize.js';
-
+import { DataTypes } from 'sequelize';
 import Funcionario from './funcionarios.js';
 import Cliente from './clientes.js';
 
