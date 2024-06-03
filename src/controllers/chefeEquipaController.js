@@ -1,6 +1,6 @@
 import ChefeEquipa from "../models/chefeEquipa.js";
 import Funcionario from "../models/funcionarios.js";
-import ContaUtilizador from "../models/contaUtilizador.js";
+import ContaUtilizador from "../models/contaUtilizadores.js"
 import bcrypt from "bcrypt";
 
 const getChefesEquipa = async (req, res) => {
