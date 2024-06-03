@@ -10,7 +10,7 @@ router.post('/create', verificarToken, createEmpresa);
 router.put('/update/:id', verificarToken, updateEmpresa);
 router.delete('/delete/:id', verificarToken, deleteEmpresa);
 router.put('/setAcesso/:id', verificarToken, setAcesso);
-router.get('/get', verificarToken, getTodasEmpresas)
+router.get('/get', getTodasEmpresas)
 
 
 export default router;
