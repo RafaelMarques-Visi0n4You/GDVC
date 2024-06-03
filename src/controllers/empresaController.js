@@ -17,7 +17,11 @@ const getEmpresas = async (req, res) => {
 
 const getEmpresaById = async (req, res) => {
     try {
-        const empresa = await Empresa.findByPk();
+        const empresa = await Empresa.findOne({
+            where: {
+                empresa_id: req.params.id
+            }
+        });
         const plano = await PlanoSubscricaoEmpresa.findOne({
             where: {
                 empresa_id: req.params.id
