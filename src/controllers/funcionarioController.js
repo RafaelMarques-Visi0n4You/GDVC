@@ -33,7 +33,8 @@ const getFuncionariosChefeEquipa = async (req, res) => {
         const funcionarios = await Funcionario.findAll({
             where: {
                 equipa_id: req.body.equipa_id,
-                empresa_id: req.body.empresa_id
+                empresa_id: req.body.empresa_id,
+                ativo: 1
             }
         });
         res.json({ Status: "Success", funcionarios: funcionarios });
