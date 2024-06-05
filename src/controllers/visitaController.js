@@ -111,7 +111,7 @@ const getNivel3Visitas = async (req, res) => {
                     include: [
                         {
                             model: Equipas,
-                            attributes: ['equipa_id', 'cor_equipa'],
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
                             where: { departamento_id: departamentoID, ativo: 1 }
                         }
                     ]
@@ -349,7 +349,7 @@ const getNivel1Visitas = async (req, res) => {
                     include: [
                         {
                             model: Equipas,
-                            attributes: ['equipa_id', 'cor_equipa'],
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
                         }
                     ]
                 },
@@ -433,7 +433,7 @@ const getEmpresaVisitas = async (req, res) => {
                     include: [
                         {
                             model: Equipas,
-                            attributes: ['equipa_id', 'cor_equipa'],
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
                         }
                     ]
                 },
