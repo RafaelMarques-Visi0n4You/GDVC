@@ -66,7 +66,7 @@ const getchefeporequipa = async (req, res) => {
                         email: email.email,
                         password: hashedPassword,
                     });
-                } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel2") {
+                } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel1") {
                     // Atualizar o tipo_utilizador para "nivel3" se a conta existir mas não for "nivel3"
     
                     
@@ -168,7 +168,7 @@ const updateChefeEquipa = async (req, res) => {
                     email: email.email,
                     password: hashedPassword,
                 });
-            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel2") {
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador === "nivel1") {
                
 
                 

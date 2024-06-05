@@ -93,7 +93,7 @@ const getresponvalpordepartamento = async (req, res) => {
                     email: email.email,
                     password: hashedPassword,
                 });
-            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3" || contaUtilizadorExistente.tipo_utilizador !== "nivel4"  ) {
                 // Atualizar o tipo_utilizador para "nivel3" se a conta existir mas não for "nivel3"
 
                 console.log("ContaUtilizador existe mas não é do tipo 'nivel3'");
@@ -136,7 +136,7 @@ const verficarresponsavel = async (req, res) => {
                 });
                 return res.json({ Error: "Conta de utilizador não existe", departamento: departamento});
             }
-            if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3"){
+            if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3" || contaUtilizadorExistente.tipo_utilizador !== "nivel4"  ){
                 
                 const contaUtilizador = await ContaUtilizador.update(
                     { 
@@ -264,7 +264,7 @@ const createResponsavelDepartamento = async (req, res) => {
                     email: req.body.email,
                     password: req.body.password
                 });
-            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3" || contaUtilizadorExistente.tipo_utilizador !== "nivel4"  ) {
                
 
                 
@@ -341,7 +341,7 @@ const updateResponsavelDepartamento = async (req, res) => {
                     email: email.email,
                     password: hashedPassword,
                 });
-            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3") {
+            } if(contaUtilizadorExistente && contaUtilizadorExistente.tipo_utilizador !== "nivel3" || contaUtilizadorExistente.tipo_utilizador !== "nivel4"  ) {
                
 
                 
