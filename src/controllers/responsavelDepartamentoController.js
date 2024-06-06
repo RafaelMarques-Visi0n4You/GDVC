@@ -8,6 +8,9 @@ import bcrypt from 'bcrypt';
 const getResponsavelDepartamentos = async (req, res) => {
     try {
         const responsavelDepartamentos = await ResponsavelDepartamento.findAll({
+            order: [
+                ['departamento_id', 'ASC']
+            ],
             include: [
                 {
                     model: Funcionario,
