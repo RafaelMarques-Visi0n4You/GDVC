@@ -6,7 +6,7 @@ import verificarToken from '../middleware/authMiddleware.js';
 router.get('/getAll', verificarToken, getAllVisitas);
 router.post('/getContactDetails', verificarToken, getContactDetails);
 router.post('/get', verificarToken, getVisitas);
-router.post('/getByEmpresa', verificarToken, getEmpresaVisitas);
+router.post('/getByEmpresa', getEmpresaVisitas);
 router.post('/getByNivel1', verificarToken, getNivel1Visitas);
 router.post('/getByNivel3', verificarToken, getNivel3Visitas);
 router.post('/getVisitasPendentes', verificarToken, getVisitasPendentes);
