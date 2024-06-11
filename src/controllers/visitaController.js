@@ -103,12 +103,6 @@ const getNivel3Visitas = async (req, res) => {
                 {
                     model: Contratos,
                     attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
-                    include: [
-                        {
-                            model: Cliente,
-                            attributes: ['cliente_id', 'nome'],
-                        }
-                    ]
                 },
                 {
                     model: AgendaServico,
@@ -347,12 +341,6 @@ const getNivel1Visitas = async (req, res) => {
                 {
                     model: Contratos,
                     attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
-                    include: [
-                        {
-                            model: Cliente,
-                            attributes: ['cliente_id', 'nome'],
-                        }
-                    ]
                 },
                 {
                     model: AgendaServico,
@@ -434,7 +422,6 @@ const getEmpresaVisitas = async (req, res) => {
                 {
                     model: Contratos,
                     attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
-                    
                 },
                 {
                     model: AgendaServico,
