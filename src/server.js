@@ -34,6 +34,8 @@ import ContaUtilizador from './models/contaUtilizadores.js';
 import Empresas from './models/empresas.js';
 import Funcionarios from './models/funcionarios.js';
 import Equipas from './models/equipas.js';
+import TipoServicosHasEquipas from './routes/TipoServicosHasEquipas.js';
+
 
 dotenv.config();
 
@@ -68,6 +70,7 @@ app.use('/responsaveldepartamento', ResponsavelDepartamentoRouter);
 app.use('/chefeequipa', ChefeEquipaRouter);
 app.use('/tarefaservicovisita', TarefaServicoVisitaRouter);
 app.use('/anomaliavisita', AnomaliaVisitaRouter);
+app.use('/tiposervicohasequipas', TipoServicosHasEquipas);
 
 app.get('/me', verificarToken, async (req, res) => {
   console.log(req.userId);
