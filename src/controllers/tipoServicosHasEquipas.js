@@ -1,0 +1,59 @@
+import TipoServicosHasEquipas from "../models/tipoServicosHasEquipas.js";
+
+const getTipoServicosHasEquipas = async (req, res) => {
+    try {
+        const tipoServicosHasEquipas = await TipoServicosHasEquipas.findAll();
+        return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+const getTipoServicosHasEquipasById = async (req, res) => {
+    try {
+        const tipoServicosHasEquipas = await TipoServicosHasEquipas.findByPk(req.params.id);
+        if (!tipoServicosHasEquipas) {
+            return res.json({ Error: "TipoServicosHasEquipas não encontrado" });
+        }
+        return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}	
+
+const createTipoServicosHasEquipas = async (req, res) => {
+    try {
+        const tipoServicosHasEquipas = await TipoServicosHasEquipas.create(req.body);
+        return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+const updateTipoServicosHasEquipas = async (req, res) => {
+    try {
+        const tipoServicosHasEquipas = await TipoServicosHasEquipas.findByPk(req.params.id);
+        if (!tipoServicosHasEquipas) {
+            return res.json({ Error: "TipoServicosHasEquipas não encontrado" });
+        }
+        await tipoServicosHasEquipas.update(req.body);
+        return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+const deleteTipoServicosHasEquipas = async (req, res) => {
+    try {
+        const tipoServicosHasEquipas = await TipoServicosHasEquipas.findByPk(req.params.id);
+        if (!tipoServicosHasEquipas) {
+            return res.json({ Error: "TipoServicosHasEquipas não encontrado" });
+        }
+        await tipoServicosHasEquipas.destroy();
+        return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+export { getTipoServicosHasEquipas, getTipoServicosHasEquipasById, createTipoServicosHasEquipas, updateTipoServicosHasEquipas, deleteTipoServicosHasEquipas };
