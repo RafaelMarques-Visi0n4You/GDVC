@@ -3,6 +3,7 @@ import TipoServicosHasEquipas from "../models/tipoSevicosHasEquipas.js";
 const getTipoServicosHasEquipas = async (req, res) => {
     try {
         const tipoServicosHasEquipas = await TipoServicosHasEquipas.findAll({
+            order: [['tipoServicos_has_equipas_id', 'ASC']],
             include: [
                 {
                     model: 'tipo_servicos',
@@ -12,8 +13,8 @@ const getTipoServicosHasEquipas = async (req, res) => {
                     model: 'equipas',
                     attributes: ['equipa_id', 'nome']
                 }
-            ],
-            order: [['tipoServicos_has_equipas_id', 'ASC']]
+            ]
+            
         });
         return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
     } catch (error) {
