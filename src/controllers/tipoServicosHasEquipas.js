@@ -1,4 +1,4 @@
-import TipoServicosHasEquipas from "../models/tipoServicosHasEquipas.js";
+import TipoServicosHasEquipas from "../models/tipoSevicosHasEquipas.js";
 
 const getTipoServicosHasEquipas = async (req, res) => {
     try {
