@@ -1,4 +1,6 @@
 import TipoServicosHasEquipas from "../models/tipoSevicosHasEquipas.js";
+import TipoServicos from "../models/tipoServicos.js";
+import Equipas from "../models/equipas.js";
 
 const getTipoServicosHasEquipas = async (req, res) => {
     try {
@@ -6,11 +8,11 @@ const getTipoServicosHasEquipas = async (req, res) => {
             order: [['tipoServicos_has_equipas_id', 'ASC']],
             include: [
                 {
-                    model: 'tipo_servicos',
+                    model: TipoServicos,
                     attributes: ['tipo_servico_id', 'nome']
                 },
                 {
-                    model: 'equipas',
+                    model: Equipas,
                     attributes: ['equipa_id', 'nome']
                 }
             ]
