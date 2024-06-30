@@ -19,8 +19,8 @@ router.put('/updateStatus', verificarToken, updateStatus);
 router.put('/acceptVisit', verificarToken, acceptVisit);
 router.post('/sendEmailWithoutNextVisit', verificarToken, sendEmailWithoutNextVisit);
 router.post('/sendEmailWithNextVisit', verificarToken, sendEmailWithNextVisit);
-router.get('/getvisitasnaorealizadaslvl3', verificarToken, getvisitasnaorealizadaslvl3);
-router.get('/getvisitasnaorealizadaslvl4', verificarToken, getvisitasnaorealizadaslvl4);
+router.post('/getvisitasnaorealizadaslvl3', getvisitasnaorealizadaslvl3);
+router.post('/getvisitasnaorealizadaslvl4' , getvisitasnaorealizadaslvl4);
 
 
 export default router;
