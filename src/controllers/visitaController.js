@@ -955,7 +955,7 @@ const getvisitasnaorealizadaslvl4 = async (req, res) => {
         const dataAtual = new Date();
         const horaAtual = new Date().getHours() + ":" + new Date().getMinutes() + ":00";
        
-        const dataVisita = new Date(visita.data_visita);
+        const dataVisita = visita.data_visita;
         const horainicio = visita.hora_visita_inicio;
         console.log(horainicio);
 
