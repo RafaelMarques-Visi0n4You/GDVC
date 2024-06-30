@@ -869,22 +869,21 @@ const sendEmailWithoutNextVisit = async (req, res) => {
     }
 }
 
-const getvisitadodia = async (req, res) => {
+const getvisitasnaorealizadas = async (req, res) => {
     try {
         const visitas = await Visita.findAll({
             where: {
-                data_visita: new Date()
+                estado_servico: 'agendada',
             },
-            include: [
-                {
-                    model: AgendaServico,
-                    attributes: ['equipa_id', 'empresa_id'],
-                },
-
-            ]
         });
 
-        return res.json({ Status: "Success", visitas: visitas });
+        const visitasnaorealizadas = visitas.filter(visita => {
+            const dataAtual = new Date();
+            const dataVisita = new Date(visita.data_visita);
+            return dataVisita < dataAtual;
+        });
+
+        return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
     } catch (error) {
         return res.json({ Error: error });
     }
@@ -908,5 +907,5 @@ export {
     getVisitasPendentes,
     getVisitasPendentesNivel4,
     acceptVisit,
-    getvisitadodia
+    getvisitasnaorealizadas
 }
