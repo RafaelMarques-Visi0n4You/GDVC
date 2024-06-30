@@ -1,4 +1,5 @@
 import Cliente from '../models/clientes.js';
+import Contratos from '../models/contratos.js';
 
 const getClientes = async (req, res) => {
     try {
@@ -87,13 +88,25 @@ const getMyClients = async (req, res) => {
         const clientes = await Cliente.findAll({
             where: {
                 empresa_id: req.body.id || req.body.empresa_id
-            }
+            },
+            order: [
+                ['cliente_id', 'ASC']
+            ],
+            include: [
+                {
+                    model: Contratos,
+                    attributes: ['contrato_id', 'nome'], 
+                },
+    
+            ]
         });
         res.json({ Status: "Success", clientes: clientes });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
+
+
 
 
 export {
