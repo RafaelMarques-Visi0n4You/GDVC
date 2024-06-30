@@ -861,6 +861,27 @@ const sendEmailWithoutNextVisit = async (req, res) => {
     }
 }
 
+const getvisitadodia = async (req, res) => {
+    try {
+        const visitas = await Visita.findAll({
+            where: {
+                data_visita: new Date()
+            },
+            include: [
+                {
+                    model: AgendaServico,
+                    attributes: ['equipa_id', 'empresa_id'],
+                },
+
+            ]
+        });
+
+        return res.json({ Status: "Success", visitas: visitas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
 
 export {
     getVisitas,
@@ -878,5 +899,6 @@ export {
     getNivel3Visitas,
     getVisitasPendentes,
     getVisitasPendentesNivel4,
-    acceptVisit
+    acceptVisit,
+    getvisitadodia
 }
