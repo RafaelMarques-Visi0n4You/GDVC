@@ -884,24 +884,14 @@ const getvisitasnaorealizadaslvl3 = async (req, res) => {
                 ],
                 include: [
                     {
-                        model: Contratos,
-                        attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
-                        include: [
-                            {
-                                model: Cliente,
-                                attributes: ['cliente_id', 'nome_completo'],
-                            }
-                        ]
-                    },
-                    {
                         model: AgendaServico,
                         attributes: ['empresa_id'],
-                        where: { empresa_id: empresaID, ativo: 1 },
+                        where: { empresa_id: empresaID},
                         include: [
                             {
                                 model: Equipas,
                                 attributes: ['equipa_id', 'cor_equipa', 'nome'],
-                                where: { departamento_id: departamentoID, ativo: 1 }
+                                where: { departamento_id: departamentoID }
                             }
                         ]
                     },
@@ -910,11 +900,18 @@ const getvisitasnaorealizadaslvl3 = async (req, res) => {
             });
     
 
-        const visitasnaorealizadas = visitas.filter(visita => {
-            const dataAtual = new Date();
-            const dataVisita = new Date(visita.data_visita);
-            return dataVisita < dataAtual;
-        });
+            const visitasnaorealizadas = visitas.filter(visita => {
+                const dataAtual = new Date();
+                const horaAtual = new Date().getHours() + ":" + new Date().getMinutes() + ":00";
+               
+                const dataVisita = new Date(visita.data_visita);
+                const horainicio = visita.hora_visita_inicio;
+                console.log(horainicio);
+        
+                
+                return (dataVisita < dataAtual && horainicio < horaAtual);
+            });
+        
 
         return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
     } catch (error) {
