@@ -902,14 +902,22 @@ const getvisitasnaorealizadaslvl3 = async (req, res) => {
 
             const visitasnaorealizadas = visitas.filter(visita => {
                 const dataAtual = new Date();
-                const horaAtual = new Date().getHours() + ":" + new Date().getMinutes() + ":00";
-               
                 const dataVisita = new Date(visita.data_visita);
-                const horainicio = visita.hora_visita_inicio;
-                console.log(horainicio);
-        
-                
-                return (dataVisita < dataAtual && horainicio < horaAtual);
+    
+                const [horainicioHora, horainicioMinuto, horainicioSegundo] = visita.hora_visita_inicio.split(':');
+                const dataHoraVisita = new Date(
+                    dataVisita.getFullYear(),
+                    dataVisita.getMonth(),
+                    dataVisita.getDate(),
+                    parseInt(horainicioHora, 10),
+                    parseInt(horainicioMinuto, 10),
+                    parseInt(horainicioSegundo, 10)
+                );
+    
+                console.log("Data e Hora Atual:", dataAtual);
+                console.log("Data e Hora da Visita:", dataHoraVisita);
+    
+                return dataHoraVisita < dataAtual;
             });
         
 
@@ -920,12 +928,11 @@ const getvisitasnaorealizadaslvl3 = async (req, res) => {
 }
 
 const getvisitasnaorealizadaslvl4 = async (req, res) => {
-
     const empresaID = req.body.empresa_id;
-    
+
     try {
         const visitas = await Visita.findAll({
-            where:{
+            where: {
                 estado_servico: 'agendada',
             },
             order: [
@@ -941,33 +948,39 @@ const getvisitasnaorealizadaslvl4 = async (req, res) => {
                         {
                             model: Equipas,
                             attributes: ['equipa_id', 'cor_equipa', 'nome'],
-                            
                         }
                     ]
                 },
-
             ]
         });
 
-        console.log(visitas);
-
-    const visitasnaorealizadas = visitas.filter(visita => {
-        const dataAtual = new Date();
-        const horaAtual = new Date().getHours() + ":" + new Date().getMinutes() + ":00";
        
-        const dataVisita = visita.data_visita;
-        const horainicio = visita.hora_visita_inicio;
-        console.log(horainicio);
 
-        
-        return (dataVisita < dataAtual && horainicio < horaAtual);
-    });
+        const visitasnaorealizadas = visitas.filter(visita => {
+            const dataAtual = new Date();
+            const dataVisita = new Date(visita.data_visita);
 
-    return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
-} catch (error) {
-    return res.json({ Error: error });
-}
-}
+            const [horainicioHora, horainicioMinuto, horainicioSegundo] = visita.hora_visita_inicio.split(':');
+            const dataHoraVisita = new Date(
+                dataVisita.getFullYear(),
+                dataVisita.getMonth(),
+                dataVisita.getDate(),
+                parseInt(horainicioHora, 10),
+                parseInt(horainicioMinuto, 10),
+                parseInt(horainicioSegundo, 10)
+            );
+
+            console.log("Data e Hora Atual:", dataAtual);
+            console.log("Data e Hora da Visita:", dataHoraVisita);
+
+            return dataHoraVisita < dataAtual;
+        });
+
+        return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+};
 
 
 
