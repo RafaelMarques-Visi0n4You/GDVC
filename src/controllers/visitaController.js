@@ -682,22 +682,67 @@ const sendEmailWithNextVisit = async (req, res) => {
 const acceptVisit = async (req, res) => {
     const id = req.body.id;
     try {
-
-        const visita = await Visita.findByPk(id);
+        const visita = await Visita.findOne({
+            where: { visita_id: id },
+            include: [
+                {
+                    model: AgendaServico,
+                    attributes: ['equipa_id'],
+                }
+            ]
+        });
 
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
 
-        const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
+        const visitas = await Visita.findAll({
+            include: [
+                {
+                    model: AgendaServico,
+                    attributes: ['equipa_id'],
+                }
+            ]
+        });
+
+        
+
+        const hasOverlap = visitas.some(v => {
+            
+
+            if (v.visita_id === visita.visita_id) {
+                
+                return false;
+            }
+
+            const isSameTeam = v.agenda_servico.equipa_id === visita.agenda_servico.equipa_id;
+            const isSameDate = v.data_visita === visita.data_visita;
+            const isOverlapping = (
+                v.hora_visita_inicio < visita.hora_visita_fim && 
+                v.hora_visita_fim > visita.hora_visita_inicio   
+            );
+
+           
+
+            return isSameTeam && isSameDate && isOverlapping;
+        });
+
+       
+
+        if (hasOverlap) {
+            return res.json({ Error: "Há visitas sobrepostas" });
+        }
+
+        const agenda = await AgendaServico.update(
+            { ativo: 1 },
+            { where: { agenda_servico_id: visita.agenda_servico_id } }
+        );
 
         if (!agenda) {
             return res.json({ Error: "Agenda não encontrada" });
         }
 
-        console.log("Agenda:", agenda);
         return res.json({ Status: "Success", agenda: agenda });
-
 
     } catch (error) {
         console.log(error);
