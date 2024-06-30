@@ -141,7 +141,7 @@ const getAgendaServicoById = async (req, res) => {
 
         const visita = await Visita.findOne(
             {
-                attributes: ['visita_id', 'contrato_id', 'data_visita', 'hora_visita_inicio', 'hora_visita_fim', 'inicio_visita', 'fim_visita', 'iniciado_por_id'],
+                attributes: ['visita_id', 'contrato_id', 'data_visita', 'hora_visita_inicio', 'hora_visita_fim', 'inicio_visita', 'fim_visita', 'iniciado_por_id', 'estado_servico'],
                 where: {
                     agenda_servico_id: id
                 },
