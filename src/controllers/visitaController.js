@@ -869,13 +869,46 @@ const sendEmailWithoutNextVisit = async (req, res) => {
     }
 }
 
-const getvisitasnaorealizadas = async (req, res) => {
-    try {
-        const visitas = await Visita.findAll({
-            where: {
-                estado_servico: 'agendada',
-            },
-        });
+const getvisitasnaorealizadaslvl3 = async (req, res) => {
+
+        const empresaID = req.body.empresa_id;
+        const departamentoID = req.body.departamento_id;
+        try {
+            const visitas = await Visita.findAll({
+                where:{
+                    estado_servico: 'agendada',
+                },
+                order: [
+                    ['data_visita', 'ASC'],
+                    ['hora_visita_inicio', 'ASC']
+                ],
+                include: [
+                    {
+                        model: Contratos,
+                        attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                        include: [
+                            {
+                                model: Cliente,
+                                attributes: ['cliente_id', 'nome_completo'],
+                            }
+                        ]
+                    },
+                    {
+                        model: AgendaServico,
+                        attributes: ['empresa_id'],
+                        where: { empresa_id: empresaID, ativo: 1 },
+                        include: [
+                            {
+                                model: Equipas,
+                                attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                                where: { departamento_id: departamentoID, ativo: 1 }
+                            }
+                        ]
+                    },
+    
+                ]
+            });
+    
 
         const visitasnaorealizadas = visitas.filter(visita => {
             const dataAtual = new Date();
@@ -888,6 +921,61 @@ const getvisitasnaorealizadas = async (req, res) => {
         return res.json({ Error: error });
     }
 }
+
+const getvisitasnaorealizadaslvl4 = async (req, res) => {
+
+    const empresaID = req.body.empresa_id;
+    
+    try {
+        const visitas = await Visita.findAll({
+            where:{
+                estado_servico: 'agendada',
+            },
+            order: [
+                ['data_visita', 'ASC'],
+                ['hora_visita_inicio', 'ASC']
+            ],
+            include: [
+                {
+                    model: Contratos,
+                    attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                    include: [
+                        {
+                            model: Cliente,
+                            attributes: ['cliente_id', 'nome_completo'],
+                        }
+                    ]
+                },
+                {
+                    model: AgendaServico,
+                    attributes: ['empresa_id'],
+                    where: { empresa_id: empresaID, ativo: 1 },
+                    include: [
+                        {
+                            model: Equipas,
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                            where: { ativo: 1 }
+                        }
+                    ]
+                },
+
+            ]
+        });
+
+
+    const visitasnaorealizadas = visitas.filter(visita => {
+        const dataAtual = new Date();
+        const dataVisita = new Date(visita.data_visita);
+        return dataVisita < dataAtual;
+    });
+
+    return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
+} catch (error) {
+    return res.json({ Error: error });
+}
+}
+
+
 
 
 export {
@@ -907,5 +995,6 @@ export {
     getVisitasPendentes,
     getVisitasPendentesNivel4,
     acceptVisit,
-    getvisitasnaorealizadas
+    getvisitasnaorealizadaslvl3,
+    getvisitasnaorealizadaslvl4,
 }
