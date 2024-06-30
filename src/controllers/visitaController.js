@@ -730,7 +730,7 @@ const acceptVisit = async (req, res) => {
        
 
         if (hasOverlap) {
-            return res.json({ Status: "Existe equipas sobrepostas"});
+            return res.json({ Error: "Há visitas sobrepostas" });
         }
 
         const agenda = await AgendaServico.update(
