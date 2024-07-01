@@ -71,4 +71,35 @@ const deleteTipoServicosHasEquipas = async (req, res) => {
     }
 }
 
-export { getTipoServicosHasEquipas, getTipoServicosHasEquipasById, createTipoServicosHasEquipas, updateTipoServicosHasEquipas, deleteTipoServicosHasEquipas };
+const verificartiposervico = async (req, res) => {
+    try {
+        if(req.body.equipa_id){
+           
+                const tipoServicos = await TipoServicos.create({
+                    nome: req.body.nome
+                });
+                
+                    const tiposervicohasequipa = await TipoServicosHasEquipas.create({
+                        tipo_servico_id: tipoServicos.tipo_servico_id,
+                        equipa_id: req.body.equipa_id
+                    });
+
+                      
+                return res.json({ Status: "Success", tiposervicohasequipa: tiposervicohasequipa });
+            } 
+       
+            else {
+                if(req.body.funcionario_id === null){
+                   
+                    const tipoServicos = await TipoServicos.create({
+                        nome: req.body.nome
+                    });
+                return res.json({ Status: "Success", tipoServicos: tipoServicos });
+            }
+        }
+        } catch (error) {
+            return res.json({ Error: error.message });
+        }
+    }
+
+export { getTipoServicosHasEquipas, getTipoServicosHasEquipasById, createTipoServicosHasEquipas, updateTipoServicosHasEquipas, deleteTipoServicosHasEquipas, verificartiposervico };
