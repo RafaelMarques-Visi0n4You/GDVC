@@ -102,4 +102,29 @@ const verificartiposervico = async (req, res) => {
         }
     }
 
-export { getTipoServicosHasEquipas, getTipoServicosHasEquipasById, createTipoServicosHasEquipas, updateTipoServicosHasEquipas, deleteTipoServicosHasEquipas, verificartiposervico };
+const getTipoServicosHasEquipasByEquipas = async (req, res) => {
+    try {
+        const tipoServicosHasEquipas = await TipoServicosHasEquipas.findAll({
+            where: {
+                equipa_id: req.body.equipa_id
+            },
+            include: [
+                {
+                    model: TipoServicos,
+                    attributes: ['tipo_servico_id', 'nome']
+                },
+                {
+                    model: Equipas,
+                    attributes: ['equipa_id', 'nome']
+                }
+            ]
+        });
+        return res.json({ Status: "Success", tipoServicosHasEquipas: tipoServicosHasEquipas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+
+
+export { getTipoServicosHasEquipas, getTipoServicosHasEquipasById, createTipoServicosHasEquipas, updateTipoServicosHasEquipas, deleteTipoServicosHasEquipas, verificartiposervico, getTipoServicosHasEquipasByEquipas };
