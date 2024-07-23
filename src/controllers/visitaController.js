@@ -570,17 +570,33 @@ const createVisita = async (req, res) => {
 }
 
 const updateVisita = async (req, res) => {
+    let novasVisitas = [];
     try {
         const visita = await Visita.findByPk(req.params.id);
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
-        await visita.update(req.body);
-        return res.json({ Status: "Success", visita: visita });
+        
+        const dataInicio = new Date(req.body.data_visita);
+            const dataFim = new Date(req.body.data_visita_fim);
+
+            for (let data = dataInicio; data <= dataFim; data.setDate(data.getDate() + 1)) {
+                const novaVisita = await Visita.update({
+                    data_visita: data,
+                    hora_visita_inicio: horaInicio,
+                    hora_visita_fim: horaFim,
+                });
+                novasVisitas.push(novaVisita);
+            }
+
+        return res.json({ Status: "Success", visitas: novasVisitas });
+        
     } catch (error) {
         return res.json({ Error: error });
     }
 }
+
+
 
 const deleteVisita = async (req, res) => {
     try {
