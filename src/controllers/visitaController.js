@@ -550,15 +550,7 @@ const getAllVisitas = async (req, res) => {
 
 const getVisitaById = async (req, res) => {
     try {
-        const visita = await Visita.findByPk(req.params.id, {
-            include: [
-                {
-                    model: AgendaServico,
-                    attributes: ['equipa_id'],
-                }
-            ]
-        
-        });
+        const visita = await Visita.findByPk(req.params.id);
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
@@ -578,33 +570,17 @@ const createVisita = async (req, res) => {
 }
 
 const updateVisita = async (req, res) => {
-    let novasVisitas = [];
     try {
         const visita = await Visita.findByPk(req.params.id);
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
-        
-        const dataInicio = new Date(req.body.data_visita);
-            const dataFim = new Date(req.body.data_visita_fim);
-
-            for (let data = dataInicio; data <= dataFim; data.setDate(data.getDate() + 1)) {
-                const novaVisita = await visita.update({
-                    data_visita: data,
-                    hora_visita_inicio: req.body.hora_visita_inicio,
-                    hora_visita_fim: req.body.hora_visita_fim,
-                });
-                novasVisitas.push(novaVisita);
-            }
-
-        return res.json({ Status: "Success", visitas: novasVisitas });
-        
+        await visita.update(req.body);
+        return res.json({ Status: "Success", visita: visita });
     } catch (error) {
         return res.json({ Error: error });
     }
 }
-
-
 
 const deleteVisita = async (req, res) => {
     try {
@@ -706,67 +682,22 @@ const sendEmailWithNextVisit = async (req, res) => {
 const acceptVisit = async (req, res) => {
     const id = req.body.id;
     try {
-        const visita = await Visita.findOne({
-            where: { visita_id: id },
-            include: [
-                {
-                    model: AgendaServico,
-                    attributes: ['equipa_id'],
-                }
-            ]
-        });
+
+        const visita = await Visita.findByPk(id);
 
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
 
-        const visitas = await Visita.findAll({
-            include: [
-                {
-                    model: AgendaServico,
-                    attributes: ['equipa_id'],
-                }
-            ]
-        });
-
-        
-
-        const hasOverlap = visitas.some(v => {
-            
-
-            if (v.visita_id === visita.visita_id) {
-                
-                return false;
-            }
-
-            const isSameTeam = v.agenda_servico.equipa_id === visita.agenda_servico.equipa_id;
-            const isSameDate = v.data_visita === visita.data_visita;
-            const isOverlapping = (
-                v.hora_visita_inicio < visita.hora_visita_fim && 
-                v.hora_visita_fim > visita.hora_visita_inicio   
-            );
-
-           
-
-            return isSameTeam && isSameDate && isOverlapping;
-        });
-
-       
-
-        if (hasOverlap) {
-            return res.json({ Error: "Há visitas sobrepostas" });
-        }
-
-        const agenda = await AgendaServico.update(
-            { ativo: 1 },
-            { where: { agenda_servico_id: visita.agenda_servico_id } }
-        );
+        const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
 
         if (!agenda) {
             return res.json({ Error: "Agenda não encontrada" });
         }
 
+        console.log("Agenda:", agenda);
         return res.json({ Status: "Success", agenda: agenda });
+
 
     } catch (error) {
         console.log(error);
@@ -885,121 +816,6 @@ const sendEmailWithoutNextVisit = async (req, res) => {
     }
 }
 
-const getvisitasnaorealizadaslvl3 = async (req, res) => {
-
-        const empresaID = req.body.empresa_id;
-        const departamentoID = req.body.departamento_id;
-        try {
-            const visitas = await Visita.findAll({
-                where:{
-                    estado_servico: 'agendada',
-                },
-                order: [
-                    ['data_visita', 'ASC'],
-                    ['hora_visita_inicio', 'ASC']
-                ],
-                include: [
-                    {
-                        model: AgendaServico,
-                        attributes: ['empresa_id'],
-                        where: { empresa_id: empresaID},
-                        include: [
-                            {
-                                model: Equipas,
-                                attributes: ['equipa_id', 'cor_equipa', 'nome'],
-                                where: { departamento_id: departamentoID }
-                            }
-                        ]
-                    },
-    
-                ]
-            });
-    
-
-            const visitasnaorealizadas = visitas.filter(visita => {
-                const dataAtual = new Date();
-                const dataVisita = new Date(visita.data_visita);
-    
-                const [horainicioHora, horainicioMinuto, horainicioSegundo] = visita.hora_visita_inicio.split(':');
-                const dataHoraVisita = new Date(
-                    dataVisita.getFullYear(),
-                    dataVisita.getMonth(),
-                    dataVisita.getDate(),
-                    parseInt(horainicioHora, 10),
-                    parseInt(horainicioMinuto, 10),
-                    parseInt(horainicioSegundo, 10)
-                );
-    
-                console.log("Data e Hora Atual:", dataAtual);
-                console.log("Data e Hora da Visita:", dataHoraVisita);
-    
-                return dataHoraVisita < dataAtual;
-            });
-        
-
-        return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
-    } catch (error) {
-        return res.json({ Error: error });
-    }
-}
-
-const getvisitasnaorealizadaslvl4 = async (req, res) => {
-    const empresaID = req.body.empresa_id;
-
-    try {
-        const visitas = await Visita.findAll({
-            where: {
-                estado_servico: 'agendada',
-            },
-            order: [
-                ['data_visita', 'ASC'],
-                ['hora_visita_inicio', 'ASC']
-            ],
-            include: [
-                {
-                    model: AgendaServico,
-                    attributes: ['empresa_id'],
-                    where: { empresa_id: empresaID },
-                    include: [
-                        {
-                            model: Equipas,
-                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
-                        }
-                    ]
-                },
-            ]
-        });
-
-       
-
-        const visitasnaorealizadas = visitas.filter(visita => {
-            const dataAtual = new Date();
-            const dataVisita = new Date(visita.data_visita);
-
-            const [horainicioHora, horainicioMinuto, horainicioSegundo] = visita.hora_visita_inicio.split(':');
-            const dataHoraVisita = new Date(
-                dataVisita.getFullYear(),
-                dataVisita.getMonth(),
-                dataVisita.getDate(),
-                parseInt(horainicioHora, 10),
-                parseInt(horainicioMinuto, 10),
-                parseInt(horainicioSegundo, 10)
-            );
-
-            console.log("Data e Hora Atual:", dataAtual);
-            console.log("Data e Hora da Visita:", dataHoraVisita);
-
-            return dataHoraVisita < dataAtual;
-        });
-
-        return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
-    } catch (error) {
-        return res.json({ Error: error });
-    }
-};
-
-
-
 
 export {
     getVisitas,
@@ -1017,7 +833,5 @@ export {
     getNivel3Visitas,
     getVisitasPendentes,
     getVisitasPendentesNivel4,
-    acceptVisit,
-    getvisitasnaorealizadaslvl3,
-    getvisitasnaorealizadaslvl4,
+    acceptVisit
 }
