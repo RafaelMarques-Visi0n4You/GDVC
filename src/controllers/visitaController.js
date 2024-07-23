@@ -590,7 +590,7 @@ const updateEstado = async (req, res) => {
         }
         await visita.update(
             {
-                estado_servico: req.body.estado_servico,
+                estado_servico: req.body.estado,
             }
         );
         return res.json({ Status: "Success", visita: visita });
