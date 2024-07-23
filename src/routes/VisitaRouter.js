@@ -13,7 +13,7 @@ router.post('/getVisitasPendentes', verificarToken, getVisitasPendentes);
 router.post('/getVisitasPendentesnivel4',  getVisitasPendentesNivel4);
 router.get('/get/:id', verificarToken, getVisitaById);
 router.post('/create', verificarToken, createVisita);
-router.put('/update/:id', verificarToken, updateVisita);
+router.put('/update/:id', updateVisita);
 router.delete('/delete/:id', verificarToken, deleteVisita);
 router.put('/updateStatus', verificarToken, updateStatus);
 router.put('/acceptVisit', verificarToken, acceptVisit);
