@@ -582,6 +582,24 @@ const updateVisita = async (req, res) => {
     }
 }
 
+const updateEstado = async (req, res) => {
+    try {
+        const visita = await Visita.findByPk(req.params.id);
+        if (!visita) {
+            return res.json({ Error: "Visita não encontrada" });
+        }
+        await visita.update(
+            {
+                estado_servico: req.body.estado_servico,
+            }
+        );
+        return res.json({ Status: "Success", visita: visita });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+}
+
+
 const deleteVisita = async (req, res) => {
     try {
         const visita = await Visita.findByPk(req.params.id);
@@ -833,5 +851,6 @@ export {
     getNivel3Visitas,
     getVisitasPendentes,
     getVisitasPendentesNivel4,
-    acceptVisit
+    acceptVisit,
+    updateEstado
 }
