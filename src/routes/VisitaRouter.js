@@ -16,7 +16,7 @@ router.post('/create', verificarToken, createVisita);
 router.put('/update/:id', verificarToken, updateVisita);
 router.delete('/delete/:id', verificarToken, deleteVisita);
 router.put('/updateStatus', verificarToken, updateStatus);
-router.put('/updateestado/:id', verificarToken, updateEstado);
+router.put('/updateestado/:id', updateEstado);
 router.put('/acceptVisit', verificarToken, acceptVisit);
 router.post('/sendEmailWithoutNextVisit', verificarToken, sendEmailWithoutNextVisit);
 router.post('/sendEmailWithNextVisit', verificarToken, sendEmailWithNextVisit);
