@@ -426,7 +426,7 @@ const getEmpresaVisitas = async (req, res) => {
     try {
         const visitas = await Visita.findAll({
             order: [
-                ['data_visita', 'ASC'],
+                ['data_visita', 'DESC'],
                 ['hora_visita_inicio', 'ASC']
             ],
             include: [
