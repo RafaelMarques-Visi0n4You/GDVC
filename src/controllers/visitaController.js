@@ -591,8 +591,8 @@ const updateVisita = async (req, res) => {
             for (let data = dataInicio; data <= dataFim; data.setDate(data.getDate() + 1)) {
                 const novaVisita = await visita.update({
                     data_visita: data,
-                    hora_visita_inicio: horaInicio,
-                    hora_visita_fim: horaFim,
+                    hora_visita_inicio: req.body.hora_visita_inicio,
+                    hora_visita_fim: req.body.hora_visita_fim,
                 });
                 novasVisitas.push(novaVisita);
             }
