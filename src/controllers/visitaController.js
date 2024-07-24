@@ -834,6 +834,118 @@ const sendEmailWithoutNextVisit = async (req, res) => {
     }
 }
 
+const getvisitasnaorealizadaslvl3 = async (req, res) => {
+    const empresaID = req.body.empresa_id;
+    const departamentoID = req.body.departamento_id;
+    try {
+        const visitas = await Visita.findAll({
+            where:{
+                estado_servico: 'agendada',
+            },
+            order: [
+                ['data_visita', 'ASC'],
+                ['hora_visita_inicio', 'ASC']
+            ],
+            include: [
+                {
+                    model: AgendaServico,
+                    attributes: ['empresa_id'],
+                    where: { empresa_id: empresaID},
+                    include: [
+                        {
+                            model: Equipas,
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                            where: { departamento_id: departamentoID }
+                        }
+                    ]
+                },
+
+            ]
+        });
+
+
+        const visitasnaorealizadas = visitas.filter(visita => {
+            const dataAtual = new Date();
+            const horaAtual = new Date().getHours() + ":" + new Date().getMinutes() + ":00";
+
+            const dataVisita = new Date(visita.data_visita);
+            const horainicio = visita.hora_visita_inicio;
+            console.log(horainicio);
+            const [horainicioHora, horainicioMinuto, horainicioSegundo] = visita.hora_visita_inicio.split(':');
+            const dataHoraVisita = new Date(
+                dataVisita.getFullYear(),
+                dataVisita.getMonth(),
+                dataVisita.getDate(),
+                parseInt(horainicioHora, 10),
+                parseInt(horainicioMinuto, 10),
+                parseInt(horainicioSegundo, 10)
+            );
+
+            console.log("Data e Hora Atual:", dataAtual);
+            console.log("Data e Hora da Visita:", dataHoraVisita);
+
+            return dataHoraVisita < dataAtual;
+        });
+
+        return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
+    } catch (error) {
+        return res.json({ Error: error });
+    }
+};
+const getvisitasnaorealizadaslvl4 = async (req, res) => {
+const empresaID = req.body.empresa_id;
+
+try {
+    const visitas = await Visita.findAll({
+        where:{
+            estado_servico: 'agendada',
+        },
+        order: [
+            ['data_visita', 'ASC'],
+            ['hora_visita_inicio', 'ASC']
+        ],
+        include: [
+            {
+                model: AgendaServico,
+                attributes: ['empresa_id'],
+                where: { empresa_id: empresaID },
+                include: [
+                    {
+                        model: Equipas,
+                        attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                        
+                    }
+                ]
+            },
+        ]
+    });
+    console.log(visitas);
+const visitasnaorealizadas = visitas.filter(visita => {
+    const dataAtual = new Date();
+    
+   
+    const dataVisita = new Date(visita.data_visita);
+    const [horainicioHora, horainicioMinuto, horainicioSegundo] = visita.hora_visita_inicio.split(':');
+                const dataHoraVisita = new Date(
+                    dataVisita.getFullYear(),
+                    dataVisita.getMonth(),
+                    dataVisita.getDate(),
+                    parseInt(horainicioHora, 10),
+                    parseInt(horainicioMinuto, 10),
+                    parseInt(horainicioSegundo, 10)
+                );
+
+                console.log("Data e Hora Atual:", dataAtual);
+                console.log("Data e Hora da Visita:", dataHoraVisita);
+
+                return dataHoraVisita < dataAtual;
+            });
+return res.json({ Status: "Success", visitasnaorealizadas: visitasnaorealizadas });
+} catch (error) {
+return res.json({ Error: error });
+}
+}
+
 
 export {
     getVisitas,
@@ -852,5 +964,7 @@ export {
     getVisitasPendentes,
     getVisitasPendentesNivel4,
     acceptVisit,
-    updateEstado
+    updateEstado,
+    getvisitasnaorealizadaslvl3,
+    getvisitasnaorealizadaslvl4,
 }
