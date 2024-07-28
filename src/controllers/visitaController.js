@@ -742,6 +742,10 @@ const cancelarvisita = async (req, res) => {
 
         const estado = await Visita.update({ estado_servico: 'cancelada' }, { where: { visita_id: id } });
 
+
+        visita.estado_servico = 'cancelada';
+        await visita.save();
+
         if (!agenda) {
             return res.json({ Error: "Agenda não encontrada" });
         }
@@ -769,6 +773,9 @@ const aguardarvisita = async (req, res) => {
         const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
 
         const estado = await Visita.update({ estado_servico: 'a aguardar' }, { where: { visita_id: id } });
+
+        visita.estado_servico = 'a aguardar';
+        await visita.save();
 
         if (!agenda) {
             return res.json({ Error: "Agenda não encontrada" });
