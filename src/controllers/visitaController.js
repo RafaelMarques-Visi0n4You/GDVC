@@ -728,7 +728,7 @@ const acceptVisit = async (req, res) => {
     }
 }
 
-const denyVisit = async (req, res) => {
+const cancelarvisita = async (req, res) => {
     const id = req.body.id;
     try {
 
@@ -739,6 +739,8 @@ const denyVisit = async (req, res) => {
         }
 
         const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
+
+        const estado = await Visita.update({ estado_servico: 'cancelada' }, { where: { visita_id: id } });
 
         if (!agenda) {
             return res.json({ Error: "Agenda não encontrada" });
@@ -972,4 +974,5 @@ export {
     updateEstado,
     getvisitasnaorealizadaslvl3,
     getvisitasnaorealizadaslvl4,
+    cancelarvisita
 }
