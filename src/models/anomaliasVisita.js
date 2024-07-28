@@ -21,7 +21,8 @@ const AnomaliasVisita = sequelize.define('anomalias_visita', {
         allowNull: false
     },
     fotografia: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        allowNull: true
     },
     estado: {
         type: DataTypes.TEXT
