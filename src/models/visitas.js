@@ -45,7 +45,7 @@ const Visitas = sequelize.define('visitas', {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
-            isIn: [['agendada', 'terminada', 'cancelada', 'em andamento']]
+            isIn: [['agendada', 'terminada', 'cancelada', 'em andamento', 'pendente', 'a aguardar', 'nao aprovada']]
         }
     },
     inicio_visita: {
