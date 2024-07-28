@@ -756,6 +756,34 @@ const cancelarvisita = async (req, res) => {
     }
 }
 
+const aguardarvisita = async (req, res) => {
+    const id = req.body.id;
+    try {
+
+        const visita = await Visita.findByPk(id);
+
+        if (!visita) {
+            return res.json({ Error: "Visita não encontrada" });
+        }
+
+        const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
+
+        const estado = await Visita.update({ estado_servico: 'a aguardar' }, { where: { visita_id: id } });
+
+        if (!agenda) {
+            return res.json({ Error: "Agenda não encontrada" });
+        }
+
+        console.log("Agenda:", agenda);
+        return res.json({ Status: "Success", agenda: agenda });
+
+
+    } catch (error) {
+        console.log(error);
+        return res.json({ Error: error });
+    }
+}
+
 const updateStatus = async (req, res) => {
     const id = req.body.id;
     try {
@@ -974,5 +1002,6 @@ export {
     updateEstado,
     getvisitasnaorealizadaslvl3,
     getvisitasnaorealizadaslvl4,
-    cancelarvisita
+    cancelarvisita, 
+    aguardarvisita
 }
