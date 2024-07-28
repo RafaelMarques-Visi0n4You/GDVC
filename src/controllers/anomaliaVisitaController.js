@@ -57,6 +57,23 @@ const createAnomaliaVisita = async (req, res) => {
     }
 }
 
+const createAnomaliaVisitaSemFoto = async (req, res) => {
+    try {
+        
+        const anomaliaVisita = await AnomaliaVisita.create({
+            visita_id: req.body.visita_id,
+            anomalia: req.body.anomalia,
+            estado: 'Pendente',
+            criado_por_id: req.body.criado_por_id,
+        });
+
+        return res.json({ status: "Success", anomaliaVisita: anomaliaVisita });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: error.message });
+    }
+}
+
 // const createAnomaliaVisita = async (req, res) => {
 //     try {
 //         const anomaliaVisita = await AnomaliaVisita.create(req.body);
@@ -101,5 +118,6 @@ export {
     getAnomaliaVisitaById,
     createAnomaliaVisita,
     updateAnomaliaVisita,
-    deleteAnomaliaVisita
+    deleteAnomaliaVisita,
+    createAnomaliaVisitaSemFoto
 }
