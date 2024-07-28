@@ -618,6 +618,11 @@ const deleteVisita = async (req, res) => {
             await nota.destroy();
         }
 
+        const anomalia = await AnomaliasVisita.findAll({ where: { visita_id: visita.visita_id } });
+        for (const anom of anomalia) {
+            await anom.destroy();
+        }
+
         await visita.destroy();
 
         const agenda = await AgendaServico.findByPk(agendaId);
