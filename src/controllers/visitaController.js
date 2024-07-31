@@ -570,10 +570,7 @@ const getVisitaById = async (req, res) => {
                 {
                     model: AgendaServico,
                     attributes: ['empresa_id'],
-                    where: {
-                        empresa_id: empresaID,
-                        ativo: 1
-                    },
+                    
                     include: [
                         {
                             model: Equipas,
