@@ -550,7 +550,16 @@ const getAllVisitas = async (req, res) => {
 
 const getVisitaById = async (req, res) => {
     try {
-        const visita = await Visita.findByPk(req.params.id);
+        const visita = await Visita.findByPk(req.params.id,
+            {
+                include: 
+                    {
+                        model: Equipas,
+                        attributes: ['nome', 'equipa_id'],
+                    }
+                
+            }
+        );
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
