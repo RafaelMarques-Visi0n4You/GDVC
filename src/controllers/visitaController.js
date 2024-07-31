@@ -550,9 +550,23 @@ const getAllVisitas = async (req, res) => {
 
 const getVisitaById = async (req, res) => {
     try {
-        const visita = await Visita.findByPk(req.params.id,
-            {
+        const visita = await Visita.findByPk(req.params.id,{
+            order: [
+                ['data_visita', 'DESC'],
+                ['hora_visita_inicio', 'ASC']
+            ],
             include: [
+
+                {
+                    model: Contratos,
+                    attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                    include: [
+                        {
+                            model: Cliente,
+                            attributes: ['cliente_id', 'nome_completo'],
+                        }
+                    ]
+                },
                 {
                     model: AgendaServico,
                     attributes: ['empresa_id'],
@@ -569,8 +583,7 @@ const getVisitaById = async (req, res) => {
                 },
 
             ]
-            }
-        );
+    });
         if (!visita) {
             return res.json({ Error: "Visita não encontrada" });
         }
