@@ -552,12 +552,23 @@ const getVisitaById = async (req, res) => {
     try {
         const visita = await Visita.findByPk(req.params.id,
             {
-                include: 
-                    {
-                        model: Equipas,
-                        attributes: ['nome', 'equipa_id'],
-                    }
-                
+            include: [
+                {
+                    model: AgendaServico,
+                    attributes: ['empresa_id'],
+                    where: {
+                        empresa_id: empresaID,
+                        ativo: 1
+                    },
+                    include: [
+                        {
+                            model: Equipas,
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                        }
+                    ]
+                },
+
+            ]
             }
         );
         if (!visita) {
