@@ -259,7 +259,7 @@ const getAgendaServicoById = async (req, res) => {
 }
 
 
-const createAgendaServico = async (req, res) => {
+const createAgendaServicoLVL1 = async (req, res) => {
     try {
         console.log("entrei");
         let novasVisitas = [];
@@ -276,7 +276,7 @@ const createAgendaServico = async (req, res) => {
                     // fim_visita: "09:00:00",
                     agenda_servico_id: agendaServico.agenda_servico_id,
                     contrato_id: req.body.contrato_id,
-                    estado_servico: "agendada",
+                    estado_servico: "pendente",
                 }
             )
             novasVisitas.push(novavisita);
@@ -295,7 +295,7 @@ const createAgendaServico = async (req, res) => {
                     hora_visita_fim: horaFim,
                     agenda_servico_id: agendaServico.agenda_servico_id,
                     contrato_id: req.body.contrato_id,
-                    estado_servico: "agendada",
+                    estado_servico: "pendente",
                 });
                 novasVisitas.push(novaVisita);
             }
@@ -445,6 +445,120 @@ const getByEquipas = async (req, res) => {
     }
 }
 
+const createAgendaServico = async (req, res) => {
+    try {
+        console.log("entrei");
+        let novasVisitas = [];
+        let agendaServico;// Initialize the agendaServico variable with an empty object
+
+        if (req.body.data_visita == req.body.data_visita_fim) {
+            agendaServico = await AgendaServico.create(req.body);
+            const novavisita = await Visita.create(
+                {
+                    data_visita: req.body.data_visita,
+                    hora_visita_inicio: req.body.hora_visita_inicio,
+                    hora_visita_fim: req.body.hora_visita_fim,
+                    // inicio_visita: "09:00:00",
+                    // fim_visita: "09:00:00",
+                    agenda_servico_id: agendaServico.agenda_servico_id,
+                    contrato_id: req.body.contrato_id,
+                    estado_servico: "agendada",
+                }
+            )
+            novasVisitas.push(novavisita);
+        }
+        else {
+            const dataInicio = new Date(req.body.data_visita);
+            const dataFim = new Date(req.body.data_visita_fim);
+            const horaInicio = req.body.hora_visita_inicio;
+            const horaFim = req.body.hora_visita_fim;
+
+            for (let data = dataInicio; data <= dataFim; data.setDate(data.getDate() + 1)) {
+                agendaServico = await AgendaServico.create(req.body); // Cria uma nova agenda de serviço para cada data
+                const novaVisita = await Visita.create({
+                    data_visita: data,
+                    hora_visita_inicio: horaInicio,
+                    hora_visita_fim: horaFim,
+                    agenda_servico_id: agendaServico.agenda_servico_id,
+                    contrato_id: req.body.contrato_id,
+                    estado_servico: "agendada",
+                });
+                novasVisitas.push(novaVisita);
+            }
+
+        }
+
+        if (!novasVisitas.length) {
+            return res.json({ Error: "Nenhuma visita criada" });
+        }
+
+
+        // Criação de notas para cada visita
+        for (const visita of novasVisitas) {
+            if (req.body.nota) {
+                await NotaVisita.create({
+                    visita_id: visita.visita_id,
+                    nota: req.body.nota,
+                    criado_por_id: req.body.criado_por_id
+                });
+            }
+        }
+
+        const servico = await ContratosHasServicos.findOne({
+            where: {
+                contrato_id: req.body.contrato_id
+            }
+        });
+
+
+        if (!servico) {
+            return res.json({ Error: "Serviço não encontrado" });
+        }
+
+        // console.log("Servico id", servico.servico_id)
+
+        // Criação de notas para cada visita
+        for (const visita of novasVisitas) {
+            // Criação de tarefas para cada visita
+            const tarefas = await ServicosHasTarefas.findAll({
+                where: {
+                    servico_id: servico.servico_id
+                }
+            });
+
+            if (!tarefas) {
+                return res.json({ Error: "Tarefas não encontradas" });
+            }
+
+            for (let i = 0; i < tarefas.length; i++) {
+                const tarefa = tarefas[i];
+                await TarefasServicosVisita.create({
+                    visita_id: visita.visita_id,
+                    tarefa: tarefa.tarefa,
+                    estado: "em andamento",
+                    tempo_estimado: tarefa.tempo_estimado,
+                    tipo_tempo_estimado: tarefa.tipo_tempo_estimado
+                });
+            }
+        }
+
+        let teste;
+        if (req.body.ativo == 0) {
+            console.log('Emitindo evento nova-visita-para-aprovar');
+
+            teste = io.emit('nova-visita-para-aprovar', req.body.departamento);
+            console.log("teste", teste);
+            sendPushNotification(req.body.departamento, 'Nova visita para aprovar')
+        }
+
+
+        return res.json({ Status: "Success", Teste: teste, agendaServico: agendaServico, visitas: novasVisitas });
+    } catch (error) {
+        console.log(error);
+        return res.json({ Error: error });
+    }
+}
+
 
 
 
@@ -456,5 +570,6 @@ export {
     deleteAgendaServico,
     getByEquipas,
     getClientAgendas,
-    getByAgendasId
+    getByAgendasId,
+    createAgendaServicoLVL1
 };

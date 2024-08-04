@@ -64,6 +64,12 @@ const getContratoById = async (req, res) => {
 const createContrato = async (req, res) => {
     try {
         const contrato = await Contrato.create(req.body);
+        const contratoHasServico = await ContratosHasServicos.create({
+            contrato_id: contrato.contrato_id,
+            servico_id: req.body.servico_id,
+            data_contratacao: contrato.data_inicio,
+            prioritario: req.body.prioritario,
+        });
         return res.json({ Status: "Success", contrato: contrato, contratoHasServico: contratoHasServico });
     } catch (error) {
         return res.json({ Error: error });
