@@ -1112,6 +1112,12 @@ const acceptVisit = async (req, res) => {
 
         const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
 
+        const estado = await Visita.update({ estado_servico: 'agendada' }, { where: { visita_id: id } });
+        
+
+        visita.estado_servico = 'agendada';
+        await visita.save();
+
         if (!agenda) {
             return res.json({ Error: "Agenda não encontrada" });
         }
