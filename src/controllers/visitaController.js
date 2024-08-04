@@ -547,7 +547,10 @@ const getAguardarVisitas = async (req, res) => {
                         }
                     ]
                 },
-
+                {
+                    model: NotasVisitas,
+                    attributes: ['nota', 'data_criacao'],
+                },
             ]
         });
 
