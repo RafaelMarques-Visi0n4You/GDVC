@@ -1,6 +1,9 @@
 import express from 'express';
 const router = express.Router();
-import { getAllVisitas, getContactDetails, getVisitas, getEmpresaVisitas, getNivel1Visitas, getNivel3Visitas, getVisitasPendentes, getVisitaById, createVisita, updateVisita, deleteVisita, updateStatus, acceptVisit, sendEmailWithoutNextVisit, sendEmailWithNextVisit, getVisitasPendentesNivel4, getvisitasnaorealizadaslvl3, getvisitasnaorealizadaslvl4, updateEstado, cancelarvisita, aguardarvisita } from '../controllers/visitaController.js';
+import { getAllVisitas, getContactDetails, getVisitas, getEmpresaVisitas, getNivel1Visitas, getNivel3Visitas, getVisitasPendentes, getVisitaById, createVisita, updateVisita, deleteVisita, updateStatus, acceptVisit, sendEmailWithoutNextVisit, sendEmailWithNextVisit, getVisitasPendentesNivel4, getvisitasnaorealizadaslvl3, getvisitasnaorealizadaslvl4, updateEstado, cancelarvisita, aguardarvisita, getAguardarVisitas,
+    getVisitasNaoAprovada,
+    getVisitasEstadoPendentes,
+    getAgendadasVisitas, } from '../controllers/visitaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
 router.get('/getAll', verificarToken, getAllVisitas);
@@ -24,6 +27,11 @@ router.post('/getvisitasnaorealizadaslvl3', getvisitasnaorealizadaslvl3);
 router.post('/getvisitasnaorealizadaslvl4' , getvisitasnaorealizadaslvl4);
 router.put('/cancelarvisita', verificarToken, cancelarvisita);
 router.put('/aguardarvisita', verificarToken, aguardarvisita);
+router.post('/getAguardarVisitas', verificarToken, getAguardarVisitas);
+router.post('/getVisitasNaoAprovada', verificarToken, getVisitasNaoAprovada);
+router.post('/getVisitasEstadoPendentes', verificarToken, getVisitasEstadoPendentes);
+router.post('/getAgendadasVisitas', verificarToken, getAgendadasVisitas);
+
 
 
 export default router;
