@@ -455,6 +455,5 @@ export {
     deleteAgendaServico,
     getByEquipas,
     getClientAgendas,
-    getByAgendasId,
-    createAgendaServicoLVL1
+    getByAgendasId
 };
