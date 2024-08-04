@@ -7,8 +7,7 @@ import {
     deleteAgendaServico,
     getByEquipas,
     getClientAgendas,
-    getByAgendasId,
-    createAgendaServicoLVL1
+    getByAgendasId
 } from '../controllers/agendaServicoController.js';
 import verificarToken from "../middleware/authMiddleware.js";
 
@@ -22,6 +21,5 @@ router.post('/getByEquipas', verificarToken, getByEquipas);
 router.post('/create', verificarToken, createAgendaServico);
 router.put('/update/:id', verificarToken, updateAgendaServico);
 router.delete('/delete/:id', verificarToken, deleteAgendaServico);
-router.post('/createLVL1', verificarToken, createAgendaServicoLVL1);
 
 export default router;
