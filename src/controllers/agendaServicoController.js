@@ -276,7 +276,7 @@ const createAgendaServicoLVL1 = async (req, res) => {
                     // fim_visita: "09:00:00",
                     agenda_servico_id: agendaServico.agenda_servico_id,
                     contrato_id: req.body.contrato_id,
-                    estado_servico: "pendente",
+                    estado_servico: req.body.estado_servico,
                 }
             )
             novasVisitas.push(novavisita);
@@ -295,7 +295,7 @@ const createAgendaServicoLVL1 = async (req, res) => {
                     hora_visita_fim: horaFim,
                     agenda_servico_id: agendaServico.agenda_servico_id,
                     contrato_id: req.body.contrato_id,
-                    estado_servico: "pendente",
+                    estado_servico: req.body.estado_servico,
                 });
                 novasVisitas.push(novaVisita);
             }
