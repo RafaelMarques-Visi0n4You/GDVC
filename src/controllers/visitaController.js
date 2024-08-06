@@ -185,9 +185,16 @@ const getVisitasPendentes = async (req, res) => {
                 ['hora_visita_inicio', 'ASC']
             ],
             include: [
+
                 {
                     model: Contratos,
                     attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                    include: [
+                        {
+                            model: Cliente,
+                            attributes: ['cliente_id', 'nome_completo'],
+                        }
+                    ]
                 },
                 {
                     model: AgendaServico,
@@ -265,9 +272,16 @@ const getVisitasPendentesNivel4 = async (req, res) => {
                 ['hora_visita_inicio', 'ASC']
             ],
             include: [
+
                 {
                     model: Contratos,
                     attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                    include: [
+                        {
+                            model: Cliente,
+                            attributes: ['cliente_id', 'nome_completo'],
+                        }
+                    ]
                 },
                 {
                     model: AgendaServico,
