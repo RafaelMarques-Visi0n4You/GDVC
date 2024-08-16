@@ -1190,10 +1190,10 @@ const cancelarvisita = async (req, res) => {
 
         const agenda = await AgendaServico.update({ ativo: 1 }, { where: { agenda_servico_id: visita.agenda_servico_id } });
 
-        const estado = await Visita.update({ estado_servico: 'nao aprovada' }, { where: { visita_id: id } });
+        const estado = await Visita.update({ estado_servico: 'cancelada' }, { where: { visita_id: id } });
 
 
-        visita.estado_servico = 'nao aprovada';
+        visita.estado_servico = 'cancelada';
         await visita.save();
 
         if (!agenda) {
