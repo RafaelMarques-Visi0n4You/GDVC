@@ -44,7 +44,7 @@ const ContaUtilizador = sequelize.define('conta_utilizadores', {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
-            isIn: [['nivel1', 'nivel2', 'nivel3', 'nivel4']]
+            isIn: [['nivel1', 'nivel2', 'nivel3', 'nivel4', 'nivel5']]
         }
     },
     ativo: {
