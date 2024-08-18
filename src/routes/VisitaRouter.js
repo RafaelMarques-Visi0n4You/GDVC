@@ -3,6 +3,7 @@ const router = express.Router();
 import { getAllVisitas, getContactDetails, getVisitas, getEmpresaVisitas, getNivel1Visitas, getNivel3Visitas, getVisitasPendentes, getVisitaById, createVisita, updateVisita, deleteVisita, updateStatus, acceptVisit, sendEmailWithoutNextVisit, sendEmailWithNextVisit, getVisitasPendentesNivel4, getvisitasnaorealizadaslvl3, getvisitasnaorealizadaslvl4, updateEstado, cancelarvisita, aguardarvisita, getAguardarVisitas,
     getVisitasNaoAprovada,
     getVisitasEstadoPendentes,
+    getHistoricoVisitas,
     getAgendadasVisitas,denyVisit } from '../controllers/visitaController.js';
 import verificarToken from '../middleware/authMiddleware.js';
 
@@ -32,6 +33,7 @@ router.post('/getVisitasNaoAprovada', verificarToken, getVisitasNaoAprovada);
 router.post('/getVisitasEstadoPendentes', verificarToken, getVisitasEstadoPendentes);
 router.post('/getAgendadasVisitas', verificarToken, getAgendadasVisitas);
 router.put('/denyVisit', verificarToken, denyVisit);
+router.post('/getHistoricoVisitas', verificarToken, getHistoricoVisitas);
 
 
 
