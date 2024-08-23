@@ -33,7 +33,7 @@ router.post('/getVisitasNaoAprovada', verificarToken, getVisitasNaoAprovada);
 router.post('/getVisitasEstadoPendentes', verificarToken, getVisitasEstadoPendentes);
 router.post('/getAgendadasVisitas', verificarToken, getAgendadasVisitas);
 router.put('/denyVisit', verificarToken, denyVisit);
-router.post('/getHistoricoVisitas', verificarToken, getHistoricoVisitas);
+router.post('/getHistoricoVisitas', getHistoricoVisitas);
 
 
 
