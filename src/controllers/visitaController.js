@@ -621,7 +621,7 @@ const getHistoricoVisitas = async (req, res) => {
     try {
         const visitas = await Visita.findAll({
             where: {
-                estado_servico: 'terminada' || 'cancelada'
+                estado_servico: 'terminada'
             },
             order: [
                 ['data_visita', 'DESC'],
