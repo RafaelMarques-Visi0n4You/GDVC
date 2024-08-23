@@ -12,7 +12,7 @@ import TarefasServicosVisita from '../models/tarefasServicosVisita.js';
 import AnomaliasVisita from '../models/anomaliasVisita.js';
 import ResponsavelDepartamento from '../models/responsavelDepartamento.js';
 import NotasVisitas from '../models/notasVisitas.js';
-const { Op } = require('sequelize');
+import { Op } from 'sequelize';
 
 
 //4 tipos de perfil [nível 1 - Funcionário, nível 2 - Chef da equipa, nível 3 – Supervisor, nível 4 - Diretor (admin) ]
@@ -622,10 +622,9 @@ const getHistoricoVisitas = async (req, res) => {
     try {
         const visitas = await Visita.findAll({
             where: {
-                [Op.or]: [
-                  { estado_servico: 'terminada' },
-                  { estado_servico: 'cancelada' }
-                ]
+              estado_servico: {
+                [Op.in]: ['terminada', 'cancelada']
+              }
             },
             order: [
                 ['data_visita', 'DESC'],
