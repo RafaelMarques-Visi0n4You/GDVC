@@ -622,9 +622,45 @@ const getHistoricoVisitas = async (req, res) => {
     try {
         const visitas = await Visita.findAll({
             where: {
-              estado_servico: {
-                [Op.in]: ['terminada', 'cancelada']
-              }
+              estado_servico: "terminada"
+            },
+            order: [
+                ['data_visita', 'DESC'],
+                ['hora_visita_inicio', 'ASC']
+            ],
+            include: [
+
+                {
+                    model: Contratos,
+                    attributes: ['contrato_id', 'nome', 'morada_servico', 'cod_postal_servico', 'localidade_servico'],
+                    include: [
+                        {
+                            model: Cliente,
+                            attributes: ['cliente_id', 'nome_completo'],
+                        }
+                    ]
+                },
+                {
+                    model: AgendaServico,
+                    attributes: ['empresa_id'],
+                    where: {
+                        empresa_id: empresaID,
+                        ativo: 1
+                    },
+                    include: [
+                        {
+                            model: Equipas,
+                            attributes: ['equipa_id', 'cor_equipa', 'nome'],
+                        }
+                    ]
+                },
+
+            ]
+        });
+
+        const visitas2 = await Visita.findAll({
+            where: {
+              estado_servico: "cancelada"
             },
             order: [
                 ['data_visita', 'DESC'],
@@ -661,48 +697,8 @@ const getHistoricoVisitas = async (req, res) => {
         });
 
 
-        // Array para armazenar as visitas com informações de serviço
-        const visitasComServicos = [];
-
-        // Iterar sobre cada visita
-        for (const visita of visitas) {
-            const contratoID = visita.contrato_id;
-            const contrato = await Contratos.findByPk(contratoID);
-
-            if (contrato) {
-                // Criando o campo 'endereco' a partir dos campos de morada, código postal e localidade do contrato
-                visita.dataValues.endereco = `${contrato.morada_servico}, ${contrato.cod_postal_servico} ${contrato.localidade_servico}`;
-            } else {
-                visita.dataValues.endereco = "Endereço não especificado";
-            }
-
-            // Consultar a tabela contratos_has_servicos para obter o id de cadas servico associado a este contrato
-            const servicos = await ContratosHasServicos.findAll({
-                where: {
-                    contrato_id: contratoID
-                }
-            });
-
-            // Array para armazenar os detalhes dos serviços
-            const detalhesServicos = [];
-
-            // Iterar sobre cada serviço e obter o nome e o ID do serviço na tabela Servicos
-            for (const servico of servicos) {
-                const servicoID = servico.servico_id;
-                const servicoInfo = await Servicos.findByPk(servicoID);
-                if (servicoInfo) {
-                    // Inclua o nome e o ID do serviço nos detalhes
-                    detalhesServicos.push({
-                        servico_id: servicoID,
-                        nome: servicoInfo.nome
-                    });
-                }
-            }
-
-            // Inclui os detalhes dos serviços na visita atual
-            visita.dataValues.servicos = detalhesServicos;
-            visitasComServicos.push(visita);
-        }
+        const visitasComServicos = visitas.concat(visitas2);
+        
 
         return res.json({ Status: "Success", visitas: visitasComServicos });
     } catch (error) {
