@@ -52,7 +52,20 @@ const getContratoById = async (req, res) => {
             return res.json({ Error: "Servico não encontrado" });
         }
 
+        const contratoHasServico = await ContratosHasServicos.findOne({
+            where: {
+                contrato_id: req.body.id
+            }
+        });
+
+        if (!contratoHasServico) {
+            return res.json({ Error: "ContratoHasServico não encontrado" });
+        }
+
+
         contrato.dataValues.servico = servico;
+
+        contrato.dataValues.contratohasservico = contratoHasServico;
 
 
         return res.json({ Status: "Success", contrato: contrato });
