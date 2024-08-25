@@ -45,7 +45,7 @@ const getContratoById = async (req, res) => {
         }
 
         const servico = await Servicos.findByPk(servicoid.servico_id, {
-            attributes: ['nome', 'descricao']
+            attributes: ['nome', 'descricao', 'servico_id']
         });
 
         if (!servico) {
