@@ -106,7 +106,7 @@ const updateContrato = async (req, res) => {
             return res.json({ Error: "ContratoHasServico não encontrado" });
         }
 
-        await ContratosHasServicos.update({
+        await contratohasservico.update({
             servico_id: req.body.servico_id,
             data_contratacao: contrato.data_inicio,
             prioritario: req.body.prioritario,
