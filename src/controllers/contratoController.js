@@ -113,7 +113,7 @@ const updateContrato = async (req, res) => {
         });
 
         await contrato.update(req.body);
-        return res.json({ Status: "Success", contrato: contrato });
+        return res.json({ Status: "Success", contrato: contrato, contratoHasServico: contratohasservico });
     } catch (error) {
         return res.json({ Error: error });
     }
