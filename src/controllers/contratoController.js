@@ -82,6 +82,23 @@ const updateContrato = async (req, res) => {
         if (!contrato) {
             return res.json({ Error: "Contrato não encontrado" });
         }
+
+        const contratohasservico = await ContratosHasServicos.findOne({
+            where: {
+                contrato_id: req.params.id
+            }
+        });
+
+        if (!contratohasservico) {
+            return res.json({ Error: "ContratoHasServico não encontrado" });
+        }
+
+        await contratohasservico.update({
+            servico_id: req.body.servico_id,
+            data_contratacao: contrato.data_inicio,
+            prioritario: req.body.prioritario,
+        });
+
         await contrato.update(req.body);
         return res.json({ Status: "Success", contrato: contrato });
     } catch (error) {
