@@ -65,7 +65,7 @@ const getContratoById = async (req, res) => {
 
         contrato.dataValues.servico = servico;
 
-        contrato.dataValues.contratohasservico = contratoHasServico;
+        
 
 
         return res.json({ Status: "Success", contrato: contrato });
