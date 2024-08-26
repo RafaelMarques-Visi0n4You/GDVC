@@ -107,16 +107,19 @@ const updateContrato = async (req, res) => {
         }
 
         if (contratohasservico.servico_id !== req.body.servico_id) {
-            await contratohasservico.destroy();
 
-            const newContratohasservico = await ContratosHasServicos.create({
+            const contratoatualizado = await contratohasservico.update({
                 servico_id: req.body.servico_id,
                 contrato_id: req.params.id,
                 data_contratacao: contrato.data_inicio,
                 prioritario: req.body.prioritario
             });
 
+            await contratoatualizado.save();
+
             await contrato.update(req.body);
+
+
 
             return res.json({ Status: "Success", contrato: contrato, contratoHasServico: newContratohasservico });
         }
