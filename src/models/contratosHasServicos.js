@@ -4,9 +4,14 @@ import Servicos from './servicos.js';
 import Contratos from './contratos.js';
 
 const ContratosHasServicos = sequelize.define('contratos_has_servicos', {
-    servico_id: {
+    contrato_has_servicos_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true
+    },
+    servico_id: {
+        type: DataTypes.INTEGER,
+        
         references: {
             model: 'servicos',
             key: 'servico_id'
@@ -14,7 +19,7 @@ const ContratosHasServicos = sequelize.define('contratos_has_servicos', {
     },
     contrato_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
+        
         references: {
             model: 'contratos',
             key: 'contrato_id'
