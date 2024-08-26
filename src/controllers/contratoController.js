@@ -110,6 +110,7 @@ const updateContrato = async (req, res) => {
             servico_id: req.body.servico_id,
             data_contratacao: contrato.data_inicio,
             prioritario: req.body.prioritario,
+            contrato_id: req.params.id
         });
 
         await contrato.update(req.body);
