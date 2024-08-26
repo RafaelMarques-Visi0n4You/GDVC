@@ -106,22 +106,34 @@ const updateContrato = async (req, res) => {
             return res.json({ Error: "ContratoHasServico não encontrado" });
         }
 
+        if (contratohasservico.servico_id !== req.body.servico_id) {
+            await contratohasservico.destroy();
+
+            const newContratohasservico = await ContratosHasServicos.create({
+                servico_id: req.body.servico_id,
+                contrato_id: req.params.id,
+                data_contratacao: contrato.data_inicio,
+                prioritario: req.body.prioritario
+            });
+
+            await contrato.update(req.body);
+
+            return res.json({ Status: "Success", contrato: contrato, contratoHasServico: newContratohasservico });
+        }
+
         await contratohasservico.update({
-            where: {
-                contrato_id: req.params.id
-            },
-            servico_id: req.body.servico_id,
             data_contratacao: contrato.data_inicio,
-            prioritario: req.body.prioritario,
-            contrato_id: req.params.id
+            prioritario: req.body.prioritario
         });
 
+       
         await contrato.update(req.body);
+
         return res.json({ Status: "Success", contrato: contrato, contratoHasServico: contratohasservico });
     } catch (error) {
-        return res.json({ Error: error });
+        return res.json({ Error: error.message });
     }
-}
+};
 
 const deleteContrato = async (req, res) => {
     try {
