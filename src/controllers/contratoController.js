@@ -107,6 +107,9 @@ const updateContrato = async (req, res) => {
         }
 
         await contratohasservico.update({
+            where: {
+                contrato_id: req.params.id
+            },
             servico_id: req.body.servico_id,
             data_contratacao: contrato.data_inicio,
             prioritario: req.body.prioritario,
